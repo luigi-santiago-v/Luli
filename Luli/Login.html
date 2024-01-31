@@ -4,53 +4,33 @@
 <meta charset = "UTF-8">
 <title> LuLi Hydroponics </title>
 
-<style>
-    body {
-        background-color:cornsilk;
-    }
-    p:hover {color:burlywood;}
-    #userInput{
-        font-size: 1.3em ;
-        position: relative;
-        top:100px; left:40%;
-    }
-    p{
-        font-size: 1.3em ;
-        position: relative;
-        top:100px; left:40%;
-    }
-    img{
-    
-        position: relative;
-        top:100px; left:40%;
-    }
-    a{
-        color:black;
-        font-style: normal;
-        text-decoration:none;
-        font-size: 2;
-    
-    }
-    
-    </style>
+<link href = "style.css"
+      rel = "stylesheet" >
 
 </head>
 <body>
 
-<img src = "hydroponic.png" alt = "hydroPlant" width = 200 height =200>
+    <a href = Luli.html target = "_blank "> <div id="center"><img src = "hydroponic.png" alt = "hydroPlant" width = 200 height =200 ></div> </a>
+
 
 <!--come back to fix before site is live -->
 <form>
-    <p>
+    <p id="center">
     <label> Username <label>
     <input type = "text" name = "Username">
     </p>
-    <p>
+    
+    <p id = "center">
     <label>Password</label>
     <input type = "password" name = "Password">
     </p>
-    <input id = "userInput" type = "submit" target >
+   <div id = "center"> <input id = "userInput" type = "submit" target > </div>
 </form>
 </body>
-
+<footer>
+    <p id="copyright" >
+    &copy;
+    Luli Hydroponics 2023
+    </p>
+</footer>
 </html>
