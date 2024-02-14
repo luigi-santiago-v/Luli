@@ -56,7 +56,7 @@ def create_account():
         users.insert_one({'username': username, 'password': hashed_password})
         
         flash('Account created successfully!', 'success')
-        return redirect(url_for('serve_welcome_page'))  # Assuming you have an 'index' route for your main page
+        return redirect(url_for('serve_welcome_page')) 
     return '''
         <form method="post">
             Username: <input type="text" name="username"><br>
@@ -99,14 +99,15 @@ def login():
 
 
 if __name__ == "__main__":
-    ### How to run this ###
+    ### How to run this file ###
     """
     1. Create a virtualenv and install packages
         $ pip3 install virtualenv           [ only run this once]
         $ virtualenv venv                   [ this create a virtual python environment called "venv"]
         $ activate venv/bin/activate        [ mac only, this is how to enable the venv so it doesnt install packages to your global python]
         $ pip install -r requirements.txt   [ this installs the necessary modules for the code to run (i.e. Flask)]
-    2. python main.py
+    2. cd Luli/backend
+    3. python main.py
     3. View the url in the output           [ usually http://127.0.0.1:5000 ]
     4. Open it in browser
     """
