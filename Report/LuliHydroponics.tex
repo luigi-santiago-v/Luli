@@ -1,29 +1,101 @@
-% This is a simple sample document.  For more complicated documents take a look in the exercise tab. Note that everything that comes after a % symbol is treated as comment and ignored when the code is compiled.
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{lipsum} % For generating dummy text
+\usepackage{tocbibind}
 
-\documentclass{article} % \documentclass{} is the first command in any LaTeX code.  It is used to define what kind of document you are creating such as an article or a book, and begins the document preamble
+\begin{document}
 
-\usepackage{amsmath} % \usepackage is a command that allows you to add functionality to your LaTeX code
+% Cover Page
+\begin{titlepage}
+    \centering
+    \vspace*{0.5 cm}
+    \textbf{\Large Title of the Project}\\[0.5 cm]
+    List of Group Members\\[0.5 cm]
+    Technical Advisor: Name \hfill Signature: \_\_\_\_\_\_\_\_\_\_\_ Date: \_\_\_\_\_\_\_\_\_\_\_\\[0.5 cm]
+    Course Instructor: Name \hfill Signature: \_\_\_\_\_\_\_\_\_\_\_ Date: \_\_\_\_\_\_\_\_\_\_\_\\[0.5 cm]
+    \vfill
+\end{titlepage}
 
-\title{Simple Sample} % Sets article title
-\author{My Name} % Sets authors name
-\date{\today} % Sets date for date compiled
+% Overview
+\section*{Overview}
+\addcontentsline{toc}{section}{Overview}
+\lipsum[1-4] % Replace with your project overview
 
-% The preamble ends with the command \begin{document}
-\begin{document} % All begin commands must be paired with an end command somewhere
-    \maketitle % creates title using information in preamble (title, author, date)
-    
-    \section{Hello World!} % creates a section
-    
-    \textbf{Hello World!} Today I am learning \LaTeX. %notice how the command will end at the first non-alphabet charecter such as the . after \LaTeX
-     \LaTeX{} is a great program for writing math. I can write in line math such as $a^2+b^2=c^2$ %$ tells LaTexX to compile as math
-     . I can also give equations their own space: 
-    \begin{equation} % Creates an equation environment and is compiled as math
-    \gamma^2+\theta^2=\omega^2
-    \end{equation}
-    If I do not leave any blank lines \LaTeX{} will continue  this text without making it into a new paragraph.  Notice how there was no indentation in the text after equation (1).  
-    Also notice how even though I hit enter after that sentence and here $\downarrow$
-     \LaTeX{} formats the sentence without any break.  Also   look  how      it   doesn't     matter          how    many  spaces     I put     between       my    words.
-    
-    For a new paragraph I can leave a blank space in my code. 
+% Dedication (Optional)
+\section*{Dedication}
+\addcontentsline{toc}{section}{Dedication}
+\lipsum[1] % Replace with your dedication text
 
-\end{document} % This is the end of the document
+% Acknowledgment (Optional)
+\section*{Acknowledgment}
+\addcontentsline{toc}{section}{Acknowledgment}
+\lipsum[1] % Replace with your acknowledgment text
+
+% Table of Contents
+\tableofcontents
+\pagebreak
+
+% List of Tables
+\listoftables
+\pagebreak
+
+% List of Figures
+\listoffigures
+\pagebreak
+
+% Abstract
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+\lipsum[1] % Replace with your abstract
+
+% Narrative Sections (Example structure)
+\section{Introduction}
+\lipsum[2-3] % Replace with actual content
+
+\subsection{Subsection Example}
+\lipsum[4]
+
+\subsubsection{Sub-Subsection Example}
+\lipsum[5]
+
+% Figures and Tables example
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{example-image}
+    \caption{Example Figure}
+    \label{fig:example}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Column 1 & Column 2 & Column 3 \\
+        \hline
+        Item 1 & Item 2 & Item 3 \\
+        \hline
+    \end{tabular}
+    \caption{Example Table}
+    \label{tab:example}
+\end{table}
+
+% Conclusion
+\section{Conclusion}
+\lipsum[6] % Replace with your conclusion
+
+% Appendices
+\appendix
+\section{Appendix Title}
+\lipsum[7] % Replace with your appendices content
+
+% References
+\begin{thebibliography}{99}
+\bibitem{ref1} Author, A. (Year). Title of the work. Publisher.
+% Repeat for each reference
+\end{thebibliography}
+
+\end{document}
