@@ -66,6 +66,7 @@ def create_account():
     '''
 
 @app.route('/login', methods=['GET', 'POST'])
+@app.route('/Login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get the username and password from the submitted form
