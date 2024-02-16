@@ -8,6 +8,7 @@ This project aims to create a user-friendly, data-driven, and internet-connected
 - Comprehensive sensor suite for real-time monitoring
 - UV lighting and water management for optimal plant growth
 - Community web application for knowledge and tips exchange
+  - Python Flask + MongoDB backend
 - Designed with food deserts and local community reliance in mind
 - **Budget:** $500
 - **Duration:** 9 months
