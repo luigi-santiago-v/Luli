@@ -1,0 +1,188 @@
+/*
+Theme Name: Luli Hydroponics Website
+Description: DeFines the style of the Luli ui
+Author: Luigi Santiago-Villa
+Author URI: https://github.com/luigi-santiago-v
+Tags: retro,bright,colorful,simple
+*/
+
+.nav_list
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    
+    
+    
+.button
+{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 10px 10px ;
+   border: 3px solid black;
+   width: 70px; 
+   height: 70px; 
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border-radius: 15px 15px;
+   margin-top: auto;
+}
+    
+.user 
+{
+   display: inline-block;
+   width: 150px;
+   height: 150px;
+   border-radius: 15px 15px 15px 15px;
+   margin-top: 40px;
+   margin-bottom: 60px;
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-size: cover;
+   background-image: url('hydroponic.png');
+}
+    
+.profile
+{
+   margin-right: 04px;
+}
+    
+.password
+{
+   margin-right: 4px;
+}
+    
+.module_login
+{
+   font-size: 23px;
+   display: flex;
+   gap:15px;
+   flex-direction:column;
+   align-items: center;
+   width: 400px;
+   height: 500px;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+}
+    
+.module_login div 
+{
+   display: flex;
+   flex-direction: row;       
+}
+    
+ .button_label
+{
+   font-size: 18px;
+}
+    
+.button:hover
+{
+   background: gainsboro;
+   transform: scale(1.05, 1.05);
+}
+    
+body
+{
+   background: white;
+   display: grid;
+   grid-template-columns: 130px 1fr;
+   grid-template-rows:auto 700px;
+   grid-template-areas: 
+   "header header "
+   "nav art ";
+   font-size: 2em;
+   text-align: center;
+   border-radius:15px;
+   min-width: 700px;
+   font-family: monospace;
+}
+    
+    
+header 
+{
+   grid-area:header;
+   background: rgb(126 198 204);
+   line-height: 100%;
+   border-radius:15px 15px 0px 0px;
+   margin-bottom: 2px;
+   border: 4px solid black;
+}
+    
+.corner_topRight
+{
+   background: rgb(206 249 173);
+   line-height: 100%;
+   width: 10%;
+   height: 100%;
+   border-left: 4px solid black;
+   border-radius: 0px 11px 0px 0px;
+   float:right;
+}
+    
+.corner_bottomLeft
+{
+   background: rgb(206 249 173);
+   width:100%;
+   height:20%;
+   border-top: 4px solid black;
+   border-radius: 0px 0px 0px 10px;
+   margin-top: auto;       
+}
+    
+nav 
+{
+   grid-area:nav;
+   background: rgb(132 158 214);
+   border: 4px solid black;
+   border-radius: 0px 0px 0px 15px;
+   margin-top: -4px;
+   margin-right: -4px;    
+}
+     
+article
+{
+   grid-area: art;
+   display: flex;
+   background: rgb(237 176 102);
+   border-radius: 0px 0px 15px 0px;
+   width: auto;
+   border: 4px solid black;
+   margin-top: -4px;
+   justify-content: center;
+   align-items: center;
+    
+}
+    
+
+
+aside 
+{
+   background: goldenrod;
+   line-height: 180px;
+}
+    
+section 
+{
+   background: lightsteelblue;
+   line-height: 90px;
+}
+    
+footer 
+{
+   background: lemonchiffon;
+   line-height: 40px;
+}
+    
+.logo
+{
+   margin-top: 5px;
+   margin-left: 10px;
+   margin-right: 10px;
+}
+    
