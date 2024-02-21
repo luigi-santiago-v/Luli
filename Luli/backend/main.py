@@ -104,6 +104,7 @@ def login():
     return app.send_static_file('login.html')
 
 
+@app.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return redirect(url_for('login'))
