@@ -4,13 +4,13 @@
 #########################################
 
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import os
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
-
+from datetime import datetime
 
 
 
@@ -37,7 +37,7 @@ os.environ.pop('luli_secret_key', None) # Delete secret key from environment var
 def serve_welcome_page():
     return "Welcome!"
 
-@app.route('/Create_Account', methods=['GET', 'POST'])
+@app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'POST':
         username = request.form['username']
@@ -53,8 +53,8 @@ def create_account():
         
         # Insert new user into the database
         print(f"INSERTING: {username}::{hashed_password} into {users}")
-        users.insert_one({'username': username, 'password': hashed_password})
-        
+        current_time = datetime.now()
+        users.insert_one({'username': username, 'password': hashed_password, 'created':current_time})
         flash('Account created successfully!', 'success')
         return redirect(url_for('serve_welcome_page')) 
     return '''
@@ -66,7 +66,6 @@ def create_account():
     '''
 
 @app.route('/login', methods=['GET', 'POST'])
-@app.route('/Login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get the username and password from the submitted form
@@ -75,16 +74,22 @@ def login():
         
         # Query the database for the username
         user_document = users.find_one({'username': username})
-        
+        user_mongo_id = user_document['_id']
+            
+
         if user_document:
             # A document for the user exists, now check the password
-            stored_hash = user_document['password']
+            stored_hash = user_document.get('password')
             if check_password_hash(stored_hash, password):
                 # The hash matches the password provided
                 # Login is successful
                 # (Here you'd set up the user session and redirect to the next page)
                 flash('Login successful!', 'success')
-                return redirect(url_for('serve_welcome_page'))  # Assuming you have a dashboard route
+                session["logged_in"] = True
+                session["username"] = username
+                session["user_id"] = str(user_document['_id'])
+                users.update_one({'_id': user_mongo_id}, {'$set': {'last_login': datetime.now()}})
+                return redirect(url_for('serve_welcome_page')) 
             else:
                 # The hash does not match the password provided
                 flash('Login failed. Incorrect password.', 'error')
@@ -97,6 +102,11 @@ def login():
     
     # If it's a GET request, just render the login page
     return app.send_static_file('login.html')
+
+
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
