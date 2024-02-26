@@ -7,6 +7,7 @@
 \usepackage{lipsum} % For generating dummy text
 \usepackage{tocbibind}
 
+\newcommand{\comment}[1]{} % Create a custom comment command
 \begin{document}
 
 % Cover Page
@@ -35,17 +36,32 @@
 % Overview
 \section*{Overview}
 \addcontentsline{toc}{section}{Overview}
-\lipsum[1-4] % Replace with your project overview
+The hydroponics system has been successfully developed with a focus on user-friendliness, comprehensive data analytics, and internet connectivity. Functioning seamlessly as a household appliance, the initiative effectively addresses the crucial need for access to nutritious food in areas identified as food deserts. The automated system comprises multiple sensors for monitoring temperature, humidity, light intensity, and water pH, alongside a UV lighting system, water reservoir, water pump, and a microcontroller. These integrated components provide end-users with real-time insights into plant health and nutrient metrics.
+
+Additionally, a web application has been developed to facilitate user interaction, enabling the sharing of insights, posing queries, and exchanging settings presets. Serving as the central nexus for accessing sensor data and engaging with community-driven inputs, this platform significantly enhances user experience. Notably, the solution stands out from existing market offerings by its meticulous design tailored to address the unique challenges of food deserts and foster reliance on local communities through social networking.
+
+The project, spanning two college semesters and totaling nine months, adhered to a budget allocation of approximately \$500. Major milestones were achieved through meticulous planning and execution, encompassing design and implementation phases, further subdivided into research, component sourcing, component testing, and final integration. The resulting fully functional prototype, constructed from Oriented Strand Board (OSB), incorporates the aforementioned sensors, a microcontroller, lighting apparatus, and water management controls. The completion of a fully operational prototype was accomplished early in the project timeline, allowing for the cultivation of basic crops to vividly demonstrate the efficacy and functionality of the design.
+
+\comment{
+
 
 % Dedication (Optional)
 \section*{Dedication}
 \addcontentsline{toc}{section}{Dedication}
 \lipsum[1] % Replace with your dedication text
 
+
+}
+
+\comment {
+
+
 % Acknowledgment (Optional)
 \section*{Acknowledgment}
 \addcontentsline{toc}{section}{Acknowledgment}
 \lipsum[1] % Replace with your acknowledgment text
+
+}
 
 % Table of Contents
 \tableofcontents
@@ -62,7 +78,8 @@
 % Abstract
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
-\lipsum[1] % Replace with your abstract
+Addressing the need for fresh produce in urban areas identified as food deserts, this project presents a solution in the form of an open-sourced hydroponic system. The initiative is grounded in research highlighting the correlation between food accessibility and academic performance, particularly in communities lacking access to fresh produce. Hydroponics emerges as a solution, offering the advantage of eliminating the need for soil and vast land areas for cultivation. However, inexperienced growers face challenges in understanding system operation, nutrient requirements, and maintenance protocols, often leading to discouragement and disengagement. The technical approach centers on a block diagram comprising seven major components: the grow bed, water/nutrient reservoir, pump system, lighting system, sensors, processing unit, and software application. The system employs an ebb-and-flow hydroponic variant, facilitated by a microcontroller-controlled water pump mechanism. Critical hardware components, including sensors for plant health monitoring, UV LED grow lights, and a microcontroller, are integrated to ensure system functionality. Furthermore, the project incorporates a social component, enabling users to share presets and engage in community-driven knowledge exchange. A touch screen interface embedded within the system facilitates real-time visualization of sensor data and settings adjustments, enhancing user experience. Task execution is structured into four major categories: research/design, procurement, testing, and implementation. The research/design phase encompasses exploration of hydroponic practices, component selection, and system optimization. Procurement activities focus on acquiring necessary components while allowing for shipping and manufacturing lead times. Testing procedures ensure functionality and compatibility before integration. Finally, the implementation phase involves physical construction, sensor installation, microcontroller programming, and software application development, culminating in the creation of a fully operational prototype. Overall, this project represents a step towards democratizing access to fresh produce through hydroponic technology, addressing challenges in system usability, maintenance, and user engagement.
+
 
 % Narrative Sections (Example structure)
 \section{Introduction}
