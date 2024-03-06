@@ -4,7 +4,7 @@
 #########################################
 
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 import os
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -12,7 +12,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from datetime import datetime
 
+def custom_flash(message, category, return_page):
+    # Create a response object that redirects the user to the specified page.
+    # The 'return_page' parameter should be the endpoint name as a string
+    response = make_response(redirect(url_for(return_page)))
 
+    # Set two cookies in the response: one for the flash message text and another for the category of the message.
+    # These cookies are temporary and should be read and then cleared by the client-side code once displayed to the user.
+    response.set_cookie('flash_message', message)
+    response.set_cookie('flash_category', category)
+
+    # Return the modified response object, which now includes the redirection and the set cookies.
+    return response
 
 relative_static_path = "../frontend/static"
 relative_templates_path = "../frontend/templates"
@@ -35,7 +46,7 @@ os.environ.pop('luli_secret_key', None) # Delete secret key from environment var
 
 @app.route('/')
 def serve_welcome_page():
-    return "Welcome!"
+    return app.send_static_file('Luli.html')
 
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
@@ -45,8 +56,8 @@ def create_account():
         
         # Check if the username already exists in the database
         if users.find_one({'username': username}):
-            flash('Username already exists. Choose a different one.', 'error')
-            return redirect(url_for('login'))
+            return custom_flash('Username already exists. Choose a different one.', 'error', 'login')
+            
         
         # Hash the password for security
         hashed_password = generate_password_hash(password)
@@ -55,8 +66,9 @@ def create_account():
         print(f"INSERTING: {username}::{hashed_password} into {users}")
         current_time = datetime.now()
         users.insert_one({'username': username, 'password': hashed_password, 'created':current_time})
-        flash('Account created successfully!', 'success')
-        return redirect(url_for('serve_welcome_page')) 
+        
+        return custom_flash('Account created successfully!', 'success', 'serve_welcome_page')
+        
     return '''
         <form method="post">
             Username: <input type="text" name="username"><br>
@@ -84,7 +96,8 @@ def login():
                 # The hash matches the password provided
                 # Login is successful
                 # (Here you'd set up the user session and redirect to the next page)
-                flash('Login successful!', 'success')
+                # NOTE: flash not implemented yet because current HTML is not a Flask template
+                ##flash('Login successful!', 'success')
                 session["logged_in"] = True
                 session["username"] = username
                 session["user_id"] = str(user_document['_id'])
@@ -92,14 +105,14 @@ def login():
                 return redirect(url_for('serve_welcome_page')) 
             else:
                 # The hash does not match the password provided
-                flash('Login failed. Incorrect password.', 'error')
+                # Don't tell the user the password was wrong, just say the credentials were incorrect
+                #   prevents account enumeration attacks
+                return custom_flash("Incorrect credentials.", "error", "login")
         else:
             # No user document with that username exists
-            flash('Login failed. Username not found.', 'error')
-        
-        # For both cases above, if login failed, redirect back to login page
-        return redirect(url_for('login'))
-    
+            # Don't tell the user the username was wrong, just say the credentials were incorrect
+            #   prevents account enumeration attacks
+            return custom_flash("Incorrect credentials.", "error", "login")
     # If it's a GET request, just render the login page
     return app.send_static_file('login.html')
 

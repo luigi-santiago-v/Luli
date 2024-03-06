@@ -10,6 +10,40 @@
 
 </head>
 
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+     // Function to get the value of a cookie by name
+      function getCookie(name) {
+         let cookieArray = document.cookie.split(';');
+         for(let i = 0; i < cookieArray.length; i++) {
+            let cookiePair = cookieArray[i].split('=');
+            if(name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+            }
+         }
+         return null;
+      }
+      
+      // Function to clear a cookie by name
+      function clearCookie(name) {
+         document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      }
+      
+      // Retrieve and display the flash message and category, if they exist
+      let message = getCookie('flash_message');
+      let category = getCookie('flash_category');
+      
+      if(message && category) {
+         // Display the flash message in an alert or inject into the page's HTML
+         alert(`${category}: ${message}`); // This is a simple example; customize based on your needs
+      
+         // Clear the cookies so the message doesn't reappear on refresh
+         clearCookie('flash_message');
+         clearCookie('flash_category');
+      }
+      });
+</script>
+
 <body>
  
    <header>
@@ -49,22 +83,22 @@
          <div class = "user">
             
          </div>
-         <div>
-         <label for="username" class="profile" > Username:</label>
-         <input type="text" id="username" name="username" style="margin-bottom: 15px;">
-         </div>
-         <div>
-         <label for="password" class="password" >Password:</label>
-         <input type="password" id="password" name="password" style="margin-bottom: 15px;">
-         </div>
-         <button type="button">Login</button>
+         <form method="POST" action="/login">
+            <p id="center">
+                <label> Username </label>
+                <input type="text" name="username">
+            </p>
+            
+            <p id="center">
+                <label>Password</label>
+                <input type="password" name="password">
+            </p>
+            <div id="center"><input id="userInput" type="submit" value="Login"></div>
+         </form>
       </div>
    </article> 
    
    
 
 </body>
-
-
-
 </html>
