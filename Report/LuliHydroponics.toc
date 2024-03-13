@@ -3,9 +3,9 @@
 \contentsline {section}{List of Tables}{2}{}%
 \contentsline {section}{List of Figures}{3}{}%
 \contentsline {section}{Abstract}{4}{}%
-\contentsline {section}{\numberline {1}Introduction}{4}{}%
-\contentsline {subsection}{\numberline {1.1}Subsection Example}{4}{}%
-\contentsline {subsubsection}{\numberline {1.1.1}Sub-Subsection Example}{4}{}%
-\contentsline {section}{\numberline {2}Conclusion}{5}{}%
-\contentsline {section}{\numberline {A}Appendix Title}{5}{}%
+\contentsline {section}{\numberline {1}Narrative - what to title this?}{4}{}%
+\contentsline {subsection}{\numberline {1.1}Server Configuration}{4}{}%
+\contentsline {subsubsection}{\numberline {1.1.1}Sub-Subsection Example}{5}{}%
+\contentsline {section}{\numberline {2}Conclusion}{6}{}%
+\contentsline {section}{\numberline {A}Appendix Title}{6}{}%
 \contentsline {section}{References}{6}{}%

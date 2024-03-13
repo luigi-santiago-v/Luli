@@ -7,6 +7,7 @@
 \usepackage{lipsum} % For generating dummy text
 \usepackage{tocbibind}
 
+
 \newcommand{\comment}[1]{} % Create a custom comment command
 \begin{document}
 
@@ -78,18 +79,39 @@ The project, spanning two college semesters and totaling nine months, adhered to
 % Abstract
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
-This project addresses food deserts by developing an accessible, internet-connected hydroponics system, enabling urban households to grow nutritious food. Leveraging temperature, humidity, light intensity, and water pH sensors, alongside UV lighting and a microcontroller, the system facilitates real-time plant health monitoring. A unique feature is its community-driven web application, allowing users to exchange growing tips and presets, significantly lowering the entry barrier for novices. Designed with a focus on food desert challenges and community engagement, the project aims to make home-grown crops viable for everyone. Over nine months and with a \$500 budget, this initiative will produce a functional prototype that demonstrates efficient crop cultivation, highlighting a technology-driven, socially inclusive approach to mitigate food insecurity in urban areas.
+\noindent This project addresses food deserts by developing an accessible, internet-connected hydroponics system, enabling urban households to grow nutritious food. Leveraging temperature, humidity, light intensity, and water pH sensors, alongside UV lighting and a microcontroller, the system facilitates real-time plant health monitoring. A unique feature is its community-driven web application, allowing users to exchange growing tips and presets, significantly lowering the entry barrier for novices. Designed with a focus on food desert challenges and community engagement, the project aims to make home-grown crops viable for everyone. Over nine months and with a \$500 budget, this initiative will produce a functional prototype that demonstrates efficient crop cultivation, highlighting a technology-driven, socially inclusive approach to mitigate food insecurity in urban areas.
 
 
 % Narrative Sections (Example structure)
-\section{Introduction}
-\lipsum[2-3] % Replace with actual content
+\section{Narrative - what to title this?}
+\noindent  Words go here
 
-\subsection{Subsection Example}
-\lipsum[4]
+\subsection{Server Configuration}
+\noindent The central server is configured to hose the web application and manage the data 
+from the hydroponics systems. The server runs on a Debian operating system. Debian is a popular and widely used Linux distribution known for its reliability and extensive package management system. Debian offers a wide range of software packages through its repositories. It is favored for server environments due to its reliability and security features, making it a suitable choice for hosting various web applications, services, and data management systems.
+\newline
+\newline
 
+\noindent Flask is a simple and flexible framework for building web applications using Python. It helps developers create websites by providing tools for handling web page requests, organizing URLs, and displaying content. In Flask, routes serve as mappings between specific URLs and Python functions, enabling the application to respond to different requests. You can define custom functions for each URL endpoint, allowing dynamic content generation based on user interactions. Using the \verb|@app.route()| decorator, you specify the URL pattern associated with a particular function. Dynamic URLs can include variable parts, passed as arguments to the associated function, facilitating personalized responses. Within these functions, you can implement logic to generate dynamic content, such as fetching data from databases or processing user inputs. This approach enables the creation of dynamic web applications where each URL endpoint serves specific functionalities, thus offering a tailored user experience.
+\newline
+\newline
+\noindent To enhance network reliability and accessibility for remote services, the deployment and configuration of the No-IP Dynamic Update Client (DUC) were undertaken on the Debian-based system. No-IP is a dynamic DNS service that allows internet users to provide a fixed domain name to their dynamically changing IP address, thereby ensuring that the connection to the server remains uninterrupted despite changes in the network configuration. This is particularly useful for hosting servers, remote access, and other network services that require constant accessibility over the internet. To integrate No-IP's DUC into the system's services for automatic startup and recovery, a systemd service unit file was meticulously crafted and deployed. This configuration specifies the execution of the No-IP DUC software as a background service, thereby enabling it to update DNS records automatically whenever the system's IP address changes. Through careful examination and troubleshooting of systemd service file settings, potential issues were identified and resolved, ensuring seamless operation. The implementation enhances the system's network reliability and facilitates uninterrupted remote access.
+\newline
+\newline
+\noindent The remote server has two ports exposed to the internet, one for the web application and one for SSH. To reduce the risk of unauthorized access, the SSH port was changed from the default port 22 to a non-standard port. This simple security measure significantly reduces the number of unauthorized login attempts and enhances the system's overall security. The web application port was also changed to a nonstandard port to further reduce the risk of unauthorized access. In addition to altering the default ports for SSH and the web application, two additional security measures were implemented on the remote server: fail2ban and ufw.
+\newline
+\newline
+\noindent Fail2ban is an intrusion prevention software framework that operates by monitoring log files for patterns indicating unsuccessful login attempts or other malicious activity. Upon detection of such patterns, fail2ban dynamically updates firewall rules to block the IP addresses associated with the detected activity. By effectively blocking malicious actors attempting unauthorized access, fail2ban enhances the server's security posture and mitigates the risk of successful brute-force attacks.
+\newline
+\newline
+\noindent UFW, or Uncomplicated Firewall, is a front-end for managing firewall rules in Linux-based systems. It provides a user-friendly interface for configuring firewall settings and managing network traffic. UFW simplifies the process of creating and maintaining firewall rules, enabling administrators to define access policies based on specific criteria such as IP addresses, ports, and protocols. By leveraging UFW to enforce firewall rules, administrators can restrict access to services running on the server, thereby reducing the attack surface and enhancing overall security.
+\newline
+\newline
+\noindent By combining the use of non-standard ports with fail2ban and UFW, the security posture of the remote server is significantly bolstered against unauthorized access attempts and potential malicious activity. These measures collectively contribute to mitigating the risks associated with operating services accessible over the internet, safeguarding the confidentiality, integrity, and availability of the hosted resources.
+\newline
+\newline
 \subsubsection{Sub-Subsection Example}
-\lipsum[5]
+\noindent Words go here
 
 % Figures and Tables example
 \begin{figure}[H]
@@ -114,12 +136,12 @@ This project addresses food deserts by developing an accessible, internet-connec
 
 % Conclusion
 \section{Conclusion}
-\lipsum[6] % Replace with your conclusion
+\noindent Words go here
 
 % Appendices
 \appendix
 \section{Appendix Title}
-\lipsum[7] % Replace with your appendices content
+\noindent Words go here
 
 % References
 \begin{thebibliography}{99}

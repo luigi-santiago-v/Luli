@@ -1,3 +1,5 @@
+# SOURCE: https://forums.pimoroni.com/t/ltr390-micropython-code/22314/2
+
 # WS Sensor UV 1 Sept 2021 Working
 import utime
 import math
