@@ -4,25 +4,28 @@ from bson.objectid import ObjectId
 #       API FUNCTIONS       #
 #############################
 '''
-    List of Valid API Endpoints
-    - /api/update_settings
-    - /api/get_settings
-    - /api/update_uv_data
-    - /api/get_uv_data
-    - /api/update_ph_data
-    - /api/get_ph_data
-    - /api/update_temp_data
-    - /api/get_temp_data
-    - /api/update_humidity_data
-    - /api/get_humidity_data
-    - /api/get_all_data
-    - /api/test
+    List of Valid API Endpoints and Their Methods:
+    ENDPOINT:                       METHODS:
+    - /api/test                     GET
+    - /api/get_hardware_id          GET
+    - /api/set_hardware_id          POST
+    - /api/update_settings          POST
+    - /api/get_settings             GET
+    - /api/get_humidity_data        GET
+    - /api/get_uv_data              GET
+    - /api/get_ph_data              GET
+    - /api/get_temp_data            GET
+    - /api/get_all_data             GET
+    - /api/update_uv_data           POST
+    - /api/update_ph_data           POST
+    - /api/update_temp_data         POST
+    - /api/update_humidity_data     POST
 '''
 
 # Do it all in a function here because we can pass it "app" which is the same "app" as main.py
 # this way avoids circular imports and lets us clean up the main.py file and keep the API defined here
 
-def register_api_routes(app, users_settings_collection, users_data_collection):
+def register_api_routes(app, users_settings_collection, users_data_collection, users_collection):
 
     ## USER SETTINGS
     @app.route('/api/get_settings', methods=['GET'])
@@ -48,6 +51,30 @@ def register_api_routes(app, users_settings_collection, users_data_collection):
         else:
             users_settings_collection.update_one({'user_id': user_id}, {'$set': {'settings': request.json}})
         return "Settings updated successfully."
+
+    @app.route('/api/set_hardware_id', methods=['POST'])
+    def api_set_hardware_id():
+        if not session.get("logged_in"):
+            return "You are not logged in."
+        user_id = session.get("user_id")
+        user_id = ObjectId(user_id)
+        user_credentials = users_collection.find_one({'user_id': user_id})
+        if not user_credentials:
+            users_collection.insert_one({'user_id': user_id, 'hardware_id': request.json})
+        else:
+            users_collection.update_one({'user_id': user_id}, {'$set': {'hardware_id': request.json}})
+        return "Hardware ID updated successfully."
+    
+    @app.route('/api/get_hardware_id', methods=['GET'])
+    def api_get_hardware_id():
+        if not session.get("logged_in"):
+            return "You are not logged in."
+        user_id = session.get("user_id")
+        user_id = ObjectId(user_id)
+        user_credentials = users_collection.find_one({'user_id': user_id})
+        if not user_credentials:
+            return "No hardware ID found for this user."
+        return user_credentials['hardware_id']
 
     ## SENSOR READINGS - GET
 

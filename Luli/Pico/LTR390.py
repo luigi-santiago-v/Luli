@@ -43,48 +43,48 @@ GAIN_18 = (0x4)
 
 
 class LTR390:
-	def __init__(self, address=ADDR):
-		self.i2c = I2C(0, scl=Pin(1), sda=Pin(0), freq=100000)
-		self.address = address
+    def __init__(self, address=ADDR):
+        self.i2c = I2C(0, scl=Pin(1), sda=Pin(0), freq=100000)
+        self.address = address
 
-		self.ID = self.Read_Byte(LTR390_PART_ID)
-		# print("ID = %#x" %self.ID)
-		if(self.ID != 0xB2):
-			print("read ID error!,Check the hardware...")
-			return
+        self.ID = self.Read_Byte(LTR390_PART_ID)
+        # print("ID = %#x" %self.ID)
+        if(self.ID != 0xB2):
+            print("read ID error!,Check the hardware...")
+            return
 
-		self.Write_Byte(LTR390_MAIN_CTRL, 0x0A) #  UVS in Active Mode
-		self.Write_Byte(LTR390_MEAS_RATE, RESOLUTION_20BIT_utime400MS | RATE_2000MS) #  Resolution=18bits, Meas Rate = 100ms
-		self.Write_Byte(LTR390_GAIN, GAIN_3) #  Gain Range=3.
-		# self.Write_Byte(LTR390_INT_CFG, 0x34) # UVS_INT_EN=1, Command=0x34
-		# self.Write_Byte(LTR390_GAIN, GAIN_3) #  Resolution=18bits, Meas Rate = 100ms
-		
-	def Read_Byte(self, cmd):
-		rdate = self.i2c.readfrom_mem(int(self.address), int(cmd), 1)
-		return rdate[0]
+        self.Write_Byte(LTR390_MAIN_CTRL, 0x0A) #  UVS in Active Mode
+        self.Write_Byte(LTR390_MEAS_RATE, RESOLUTION_20BIT_utime400MS | RATE_2000MS) #  Resolution=18bits, Meas Rate = 100ms
+        self.Write_Byte(LTR390_GAIN, GAIN_3) #  Gain Range=3.
+        # self.Write_Byte(LTR390_INT_CFG, 0x34) # UVS_INT_EN=1, Command=0x34
+        # self.Write_Byte(LTR390_GAIN, GAIN_3) #  Resolution=18bits, Meas Rate = 100ms
+        
+    def Read_Byte(self, cmd):
+        rdate = self.i2c.readfrom_mem(int(self.address), int(cmd), 1)
+        return rdate[0]
 
-	def Write_Byte(self, cmd, val):
-		self.i2c.writeto_mem(int(self.address), int(cmd), bytes([int(val)]))
-		
-	def UVS(self):
-		# self.Write_Byte(LTR390_MAIN_CTRL, 0x0A) #  UVS in Active Mode
-		Data1 = self.Read_Byte(LTR390_UVSDATA)
-		Data2 = self.Read_Byte(LTR390_UVSDATA + 1)
-		Data3 = self.Read_Byte(LTR390_UVSDATA + 2)
-		uv =  (Data3 << 16)| (Data2 << 8) | Data1
-		# UVS = Data3*65536+Data2*256+Data1
-		# print("UVS = ", UVS)
-		return uv
+    def Write_Byte(self, cmd, val):
+        self.i2c.writeto_mem(int(self.address), int(cmd), bytes([int(val)]))
+        
+    def UVS(self):
+        # self.Write_Byte(LTR390_MAIN_CTRL, 0x0A) #  UVS in Active Mode
+        Data1 = self.Read_Byte(LTR390_UVSDATA)
+        Data2 = self.Read_Byte(LTR390_UVSDATA + 1)
+        Data3 = self.Read_Byte(LTR390_UVSDATA + 2)
+        uv =  (Data3 << 16)| (Data2 << 8) | Data1
+        # UVS = Data3*65536+Data2*256+Data1
+        # print("UVS = ", UVS)
+        return uv
 # ========= End LTR390 UV sensor driver =============
 if __name__ == '__main__':
-	sensor = LTR390()
-	utime.sleep(1)
-	try:
-		while True:
-			UVS = sensor.UVS()
-			print("UVS: %d" %UVS)
-			utime.sleep(0.5)
-			
-	except KeyboardInterrupt:
-		# sensor.Disable()
-		exit()
+    sensor = LTR390()
+    utime.sleep(1)
+    try:
+        while True:
+            UVS = sensor.UVS()
+            print("UVS: %d" %UVS)
+            utime.sleep(0.5)
+            
+    except KeyboardInterrupt:
+        # sensor.Disable()
+        exit()

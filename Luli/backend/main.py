@@ -39,7 +39,7 @@ os.environ.pop('luli_secret_key', None) # Delete secret key from environment var
 from api import register_api_routes
 
 # Call the register function with the app object to set up the api endpoints
-register_api_routes(app, users_data_collection=users_data_collection, users_settings_collection=users_settings_collection)
+register_api_routes(app, users_data_collection=users_data_collection, users_settings_collection=users_settings_collection, users_collection=users_collection)
 
 @app.route('/')
 def serve_welcome_page():
@@ -53,7 +53,8 @@ def create_account():
         
         # Check if the username already exists in the database
         if users_collection.find_one({'username': username}):
-            return flash('Username already exists. Choose a different one.', 'error')
+            #return flash('Username already exists. Choose a different one.', 'error')
+            return "Username already exists. Choose a different one."
             
         
         # Hash the password for security
@@ -64,7 +65,9 @@ def create_account():
         current_time = datetime.now()
         users_collection.insert_one({'username': username, 'password': hashed_password, 'created':current_time})
         
-        return flash('Account created successfully!', 'success')
+        
+        #flash('Account created successfully!', 'success')
+        return redirect(url_for('login'))  
         
     return '''
         <form method="post">
@@ -109,7 +112,7 @@ def login():
             #   prevents account enumeration attacks
             return flash("Incorrect credentials.", "error")
     # If it's a GET request, just render the login page
-    return app.send_static_file('login.html')
+    return app.send_static_file('Luli.html')
 
 
 @app.route('/logout', methods=['GET'])
