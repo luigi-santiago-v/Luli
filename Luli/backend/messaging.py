@@ -2,9 +2,9 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from bson.objectid import ObjectId
 
-def follow_user(user_id, user_to_follow_id, mongoclient_url='mongodb://localhost:27017'):
-    user_id = ObjectId(user_id)
-    user_to_follow_id = ObjectId(user_to_follow_id)
+def follow_user(FROM_user_id, TO_user_id, mongoclient_url='mongodb://localhost:27017'):
+    user_id = ObjectId(FROM_user_id)
+    user_to_follow_id = ObjectId(TO_user_id)
     
     client = MongoClient(mongoclient_url)
     DATABASE = client['user_data']
@@ -21,9 +21,9 @@ def follow_user(user_id, user_to_follow_id, mongoclient_url='mongodb://localhost
         return True
     return False
 
-def message_user(user_id, user_to_message_id, message, mongoclient_url='mongodb://localhost:27017'):
-    user_id = ObjectId(user_id)
-    user_to_message_id = ObjectId(user_to_message_id)
+def message_user(FROM_user_id, TO_user_id, message, mongoclient_url='mongodb://localhost:27017'):
+    user_id = ObjectId(FROM_user_id)
+    user_to_message_id = ObjectId(TO_user_id)
 
     client = MongoClient(mongoclient_url)
     DATABASE = client['user_data']
@@ -44,6 +44,21 @@ def message_user(user_id, user_to_message_id, message, mongoclient_url='mongodb:
         return True
     return False
 
+def get_most_recent_message(FROM_user_id, TO_user_id, mongoclient_url='mongodb://localhost:27017'):
+    user_id = ObjectId(FROM_user_id)
+    user_to_message_id = ObjectId(TO_user_id)
+
+    client = MongoClient(mongoclient_url)
+    DATABASE = client['user_data']
+    users_messages_collection = DATABASE.messages
+    
+    # Query by 'receiver_id' instead of 'user_id'
+    user_messages = users_messages_collection.find({'receiver_id': user_to_message_id})
+    
+    user_messages_list = list(user_messages)
+    if len(user_messages_list) == 0:
+        return None
+    return user_messages_list[-1]
 
 def user_id_to_username(user_id, mongoclient_url='mongodb://localhost:27017'):
     user_id = ObjectId(user_id)
@@ -76,7 +91,7 @@ def test_follow_user():
 def test_check_messages():
     user_id = ObjectId('6615f9b445f79acfdde258eb')  # Liam_TEST
     user_to_message_id = ObjectId('6615f98545f79acfdde258ea')  # Luigi_TEST
-    message = "Hello, how are you?"
+    message = "Hello, how are you?!!!"
     message_user(user_id, user_to_message_id, message)
     client = MongoClient()
     DATABASE = client['user_data']
@@ -106,5 +121,7 @@ if __name__ == "__main__":
     messages = DATABASE.messages.find({'receiver_id': ObjectId(username_to_user_id('Liam_TEST'))})
     message_values = [message['message'] for message in messages]
     print("Messages for Liam_TEST to read: ", message_values)
+
+    print("Most recent message for Luigi_TEST: ", get_most_recent_message(username_to_user_id('Liam_TEST'), username_to_user_id('Luigi_TEST')))
 
     print("All tests passed!")
