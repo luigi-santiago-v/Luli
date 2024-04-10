@@ -9,15 +9,23 @@ def follow_user(FROM_user_id, TO_user_id, mongoclient_url='mongodb://localhost:2
     client = MongoClient(mongoclient_url)
     DATABASE = client['user_data']
     users_collection = DATABASE.credentials
-    users_friends_collection = DATABASE.friends
     
     # Make sure users exist
     user = users_collection.find_one({'_id': user_id})
     user_to_follow = users_collection.find_one({'_id': user_to_follow_id})
 
-    # If both users exist, add the user_to_follow to the user's friends list
-    if user and user_to_follow:
-        users_friends_collection.insert_one({'user_id': user_id, 'followed_user_id': user_to_follow_id})
+    # If both users exist and the user_to_follow is not already in the followed_users list, add the user_to_follow to the user's friends list
+    print(user_to_follow_id not in user.get('followed_users', []))
+    if user and user_to_follow and user_to_follow_id not in user.get('followed_users', []):
+        # Check if the user already has a 'followed_users' field
+        if 'followed_users' in user:
+            # If the 'followed_users' field exists, append the user_to_follow_id to the list
+            users_collection.update_one({'_id': user_id}, {'$push': {'followed_users': user_to_follow_id}})
+        else:
+            # If the 'followed_users' field does not exist, create a new list with the user_to_follow_id
+            users_collection.update_one({'_id': user_id}, {'$set': {'followed_users': [user_to_follow_id]}})
+        return True
+    elif user_to_follow_id in user.get('followed_users', []):
         return True
     return False
 
@@ -83,9 +91,10 @@ def username_to_user_id(username, mongoclient_url='mongodb://localhost:27017'):
 
 
 def test_follow_user():
-    user_id = '6615f9b445f79acfdde258eb' # Liam_TEST
-    user_to_follow_id = '6615f98545f79acfdde258ea' # Luigi_TEST
+    user_id = username_to_user_id('Liam_TEST')
+    user_to_follow_id = username_to_user_id('Luigi_TEST')
     assert follow_user(user_id, user_to_follow_id) == True
+    assert follow_user(user_to_follow_id, user_id) == True
 
 
 def test_check_messages():
