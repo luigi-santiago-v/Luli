@@ -29,6 +29,18 @@ def follow_user(FROM_user_id, TO_user_id, mongoclient_url='mongodb://localhost:2
         return True
     return False
 
+def get_followed_users(user_id, mongoclient_url='mongodb://localhost:27017'):
+    user_id = ObjectId(user_id)
+    
+    client = MongoClient(mongoclient_url)
+    DATABASE = client['user_data']
+    users_collection = DATABASE.credentials
+    
+    user = users_collection.find_one({'_id': user_id})
+    if user:
+        return user.get('followed_users', [])
+    return None
+
 def message_user(FROM_user_id, TO_user_id, message, mongoclient_url='mongodb://localhost:27017'):
     user_id = ObjectId(FROM_user_id)
     user_to_message_id = ObjectId(TO_user_id)
@@ -62,6 +74,22 @@ def get_most_recent_message(FROM_user_id, TO_user_id, mongoclient_url='mongodb:/
     
     # Query by 'receiver_id' instead of 'user_id'
     user_messages = users_messages_collection.find({'receiver_id': user_to_message_id})
+    
+    user_messages_list = list(user_messages)
+    if len(user_messages_list) == 0:
+        return None
+    return user_messages_list[-1]
+
+def get_most_recent_message_from_user(FROM_user_id, TO_user_id, mongoclient_url='mongodb://localhost:27017'):
+    user_id = ObjectId(FROM_user_id)
+    user_to_message_id = ObjectId(TO_user_id)
+
+    client = MongoClient(mongoclient_url)
+    DATABASE = client['user_data']
+    users_messages_collection = DATABASE.messages
+    
+    # Query by 'sender_id' instead of 'user_id'
+    user_messages = users_messages_collection.find({'sender_id': user_id, 'receiver_id': user_to_message_id})
     
     user_messages_list = list(user_messages)
     if len(user_messages_list) == 0:
@@ -131,6 +159,23 @@ if __name__ == "__main__":
     message_values = [message['message'] for message in messages]
     print("Messages for Liam_TEST to read: ", message_values)
 
-    print("Most recent message for Luigi_TEST: ", get_most_recent_message(username_to_user_id('Liam_TEST'), username_to_user_id('Luigi_TEST')))
+    print("\n")
+    most_recent_message = get_most_recent_message(username_to_user_id('Liam_TEST'), username_to_user_id('Luigi_TEST'))
+    if most_recent_message:
+        sender_username = user_id_to_username(most_recent_message['sender_id'])
+        print(f"Most recent message for Luigi_TEST from {sender_username}: {most_recent_message['message']}")
+    else:
+        print("No recent message for Luigi_TEST")
+    print("\n")
+
+    most_recent_message = get_most_recent_message_from_user(username_to_user_id('Liam_TEST'), username_to_user_id('Luigi_TEST'))
+    if most_recent_message:
+        print(f"Most recent message from Liam_TEST to Luigi_TEST: {most_recent_message['message']}")
+    else:
+        print("No recent message from Liam_TEST to Luigi_TEST")
+
+    followed_users = get_followed_users(username_to_user_id('Liam_TEST'))
+    usernames = [user_id_to_username(user_id) for user_id in followed_users]
+    print(f"Liam_TEST follows: {usernames}")
 
     print("All tests passed!")
