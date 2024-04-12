@@ -1,5 +1,5 @@
 Report/images/
-
+*.gz
 .DS_Store
 venv/
 
