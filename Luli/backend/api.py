@@ -27,6 +27,18 @@ from bson.objectid import ObjectId
 
 def register_api_routes(app, users_settings_collection, users_data_collection, users_collection):
 
+    # API Login via username and password
+    @app.route('/api/login', methods=['POST'])
+    def api_login():
+        username = request.json.get('username')
+        password = request.json.get('password')
+        user = users_collection.find_one({'username': username, 'password': password})
+        if user:
+            session['logged_in'] = True
+            session['user_id'] = str(user['_id'])
+            return "Logged in successfully."
+        return "Invalid username or password."
+
     ## USER SETTINGS
     @app.route('/api/get_settings', methods=['GET'])
     def api_get_settings():

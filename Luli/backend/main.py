@@ -138,7 +138,7 @@ if __name__ == "__main__":
     2. cd Luli/backend
     3. Make sure MongoDB is running         [ On Mac: brew services start mongodb-community ]
     4. python main.py
-    5. View the url in the output           [ usually http://127.0.0.1:5000 ]
+    5. View the url in the output           [ If running locally: http://127.0.0.1:9696 ]
     6. Open it in browser
     """
 
