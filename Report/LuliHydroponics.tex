@@ -6,6 +6,7 @@
 \usepackage{titlesec}
 \usepackage{lipsum} % For generating dummy text
 \usepackage{tocbibind}
+\usepackage{url}
 
 
 \newcommand{\comment}[1]{} % Create a custom comment command
@@ -91,10 +92,60 @@ The project, spanning two college semesters and totaling nine months, adhered to
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{example-image}
+    \includegraphics[width=0.8\textwidth]{images/Schematic.jpg}
     \caption{Circuit Schematic Overview}
-    \label{fig:Schmatic_Full}
+    \label{fig:Schematic_Full}
 \end{figure}
+
+\noindent The hydroponics system's circuit design was specially crafted to ensure the seamless integration of its diverse components. These include multiple sensors, a microcontroller, a water pump, and a UV lighting system, each fulfilling a distinct role within the automated hydroponic framework. The design facilitates real-time monitoring of environmental conditions, nutrient levels, and plant health metrics, empowering users to optimize growth conditions and ensure robust crop development.
+\newline
+\newline
+\noindent Comprehensive sensor integration encompasses temperature, humidity, light intensity, and water pH, enabling thorough data collection crucial for plant growth assessment. The microcontroller acts as the system's core, gathering sensor data, managing component operations, and supporting user interaction through a web interface. Essential components like the water pump and UV lighting system play vital roles in sustaining optimal growth conditions by ensuring adequate hydration and nutrient distribution.
+\newline
+\newline
+\noindent The circuit design was meticulously planned to accommodate diverse power demands, establish effective communication protocols between sensors and the microcontroller, and enable seamless data exchange for real-time monitoring and control. This systematic approach resulted in a fully operational automated growing environment. The resulting circuit configuration forms a sturdy foundation for monitoring and managing key parameters essential for successful plant cultivation, allowing users to foster healthy crops with minimal manual intervention.
+\newline
+
+
+\noindent 1. \textbf{Microcontroller}
+\begin{itemize}
+    \item Raspberry Pi Pico W
+\end{itemize}
+
+\noindent 2. \textbf{Water Pump}
+\begin{itemize}
+    \item CrocSee 12VDC Diaphragm Pump
+\end{itemize}
+
+\noindent 3. \textbf{Power Supply Unit (PSU)} 
+\begin{itemize}
+    \item BMOUO 12V AC-to-DC Power Supply 
+    \item FILSHU 10A 250V Power Socket Inlet Switch
+\end{itemize}
+
+\noindent 4. \textbf{Buck Converter}
+\begin{itemize}
+    \item DORHEA C120503 12V to 5V DC Converter
+\end{itemize}
+
+\noindent 5. \textbf{Sensors}
+   \begin{itemize}
+   \item Four DHT22 sensors for temperature and humidity monitoring
+   \item LTR390 UV Light Sensor for measuring UV light intensity
+   \item HC-SR04 ultrasonic sensor
+   \item PH-4502C analog pH sensor
+   \end{itemize}
+
+\noindent 6. \textbf{Additional Circuit Parts}
+   \begin{itemize}
+   \item Flyback diode (1N4001RLGOSCT-ND)
+   \item 220µF Capacitor (16ZLH220MEFCT16.3X11)
+   \item Two N-Channel MOSFET (IRLZ34NPBF-ND)
+   \item 8:1 MUX (SN74LS151N)
+   \item 2.42" SSD1309 OLED display
+   \item 60W full spectrum grow lights
+   \end{itemize}
+
 
 \subsection{Server Configuration}
 \noindent The central server is configured to hose the web application and manage the data 
@@ -121,6 +172,48 @@ from the hydroponics systems. The server runs on a Debian operating system. Debi
 \newline
 \subsubsection{Sub-Subsection Example}
 \noindent Words go here
+
+\subsection{Component Testing}
+\subsubsection{pH Sensor - PH4502C}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{pH} & \textbf{Voltage [V]} \\
+        \hline
+        4 & 3.071\\
+        \hline
+        7 & 2.535\\
+        \hline
+        10 & 2.066\\
+        \hline
+    \end{tabular}
+    \caption{PH4502C pH to Voltage Conversion}
+    \label{tab:PH4502C}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/ph_from_amazon.jpg}
+    \caption{PH4502C pH Sensor \cite{ref_ph_amazon}}
+    \label{fig:PH4502C}
+\end{figure}
+\noindent The PH4502C is designed to output the following voltages shown in Table \ref{tab:PH4502C}.
+This data was provided by the manufacturer and was used to calibrate the pH sensor. An extensive calibration process was conducted for the PH4502C sensor module to ensure accurate pH readings. The sensor, equipped with two potentiometers for offset and slope adjustments, was designed to output a voltage correlating to the detected pH level, with a specified range of 0-5V.
+\newline
+\newline
+\noindent Initially, difficulties were encountered in the calibration process due to output voltage readings exceeding the safe input range of the Raspberry Pi Pico’s analog-to-digital converter (ADC). A voltage divider was implemented to attenuate the sensor's voltage output. Subsequent readings from the sensor module were consistently registering maximum ADC values, indicative of an over-voltage condition. It was concluded that the direct output from the sensor was unsuitable for direct interfacing with the Pico’s ADC.
+Following the integration of a voltage divider into the circuit, the output was reduced to acceptable levels within the Pico's ADC range of 0-3.3V. However, the initial calibration attempt, while using the voltage divider, produced a reading that did not align with the standard pH buffer solution. Consequently, the calibration process was refined by removing the voltage divider and reading the output directly from the sensor module, which resulted in a more stable and accurate voltage reading.
+\newline
+\newline
+\noindent The offset potentiometer was then carefully adjusted while the sensor was immersed in a pH 7 buffer solution. The voltage was monitored using a multimeter, and the potentiometer was tuned until the output voltage closely matched the expected 2.51V as indicated on the product page for a pH 7 solution. This calibration point was further verified through a MicroPython script, which confirmed a pH reading of 7, correlating to the observed voltage of 2.5V.
+\newline
+\newline
+\noindent An observation was made during the calibration that a red LED indicator on the sensor module was activated when the voltage dropped below 4V. It was inferred that this LED served as an indicator for out-of-range voltage conditions. The sensor was adjusted to maintain the output voltage above this threshold to prevent the activation of the LED indicator.
+Once the sensor output was adjusted to the correct voltage for a pH 7 solution, the calibration was deemed successful. The calibration state was documented as stable, and the expectation was set that, barring any significant handling or environmental changes, recalibration would not be necessary before each use. 
+\newline
+\newline
+
+
 
 % Figures and Tables example
 \begin{figure}[H]
@@ -154,8 +247,8 @@ from the hydroponics systems. The server runs on a Debian operating system. Debi
 
 % References
 \begin{thebibliography}{99}
-\bibitem{ref1} Author, A. (Year). Title of the work. Publisher.
-% Repeat for each reference
+    \bibitem{ref_ph_amazon} GAOHOU. (n.d.). PH0-14 Value Detect Sensor Module + PH Electrode Probe BNC For Arduino [Online]. Available: \url{https://www.amazon.com/dp/B0799BXMVJ?psc=1&ref=ppx_yo2ov_dt_b_product_details}
+    % Repeat for each reference
 \end{thebibliography}
 
 \end{document}
