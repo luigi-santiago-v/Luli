@@ -122,7 +122,23 @@ def logout():
 
 
 
+@app.route('/plants')
+def plants():
+    # Retrieve the document by its ID or another query
+    document_id = ObjectId('65fa4c38972991d86e690014')  # Update with your document's ObjectId
+    sensor_data_document = users_data_collection.find_one({"_id": document_id})
+    
+    # Extract sensor data from the document
+    sensor_data = sensor_data_document['sensor_data']
 
+    # Here we assume that 'sensor_data' is structured with the latest reading as the last entry
+    # If it's structured differently, you will need to adjust the logic to get the latest or desired sensor reading
+    latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else {}
+
+    # Render the HTML page with the sensor data
+    # The HTML file 'plants.html' should be in the 'templates' folder of your Flask application
+    return render_template('plants.html', sensor_data=latest_sensor_data)
+    
 
 
 
