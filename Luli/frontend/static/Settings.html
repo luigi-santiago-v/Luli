@@ -44,24 +44,98 @@ of refresh in units of second
     <div class="corner_bottomLeft"></div>
 </nav>
 <article>
-    <div class="settingsContainer">
 
+    <div class="settingsContainer">
+        
         <label for="waterCycle" id="slideLabelTop">Water Cycle</label>
         <div id = "containerSlideValue" style = "width:100%">
-        <input type="range" id="waterCycle" name="waterCycle" min="0" max="100" value="50" width = "80%" onclick ="adjustSettingValue()">
-        <div id = slideValue>test</div>
-
+            <input type="range" id="waterCycle" name="waterCycle" min="0" max="100" value="50" width = "80%" onclick ="adjustSettingValue()">
+            <div id = waterCycleValue>50</div>
         </div>
-        <label for="waterAmount" id="slideLabel">Water Amount</label>
-        <input type="range" id="waterAmount" name="waterAmount" min="0" max="100" value="50">
+
+         <label for="waterAmount" id="slideLabel">Water Amount</label>
+         <div id = "containerSlideValue" style = "width:100%">
+            <input type="range" id="waterAmount" name="waterAmount" min="0" max="100" value="50" onclick ="adjustSettingValue()">
+            <div id = waterAmountValue>50</div>
+         </div>
 
         <label for="lightCycle" id="slideLabel">Light Cycle</label>
-        <input type="range" id="lightCycle" name="lightCycle" min="0" max="100" value="50">
+        <div id = "containerSlideValue" style = "width:100%">
+            <input type="range" id="lightCycle" name="lightCycle" min="0" max="100" value="50" onclick ="adjustSettingValue()">
+            <div id = lightCycleValue>50</div>
+        </div>
 
         <label for="lightDuration" id="slideLabelBottom">Light Duration</label>
-        <input type="range" id="lightDuration" name="lightDuration" min="0" max="100" value="50">
+        <div id = "containerSlideValue" style = "width:100%">
+            <input type="range" id="lightDuration" name="lightDuration" min="0" max="100" value="50" onclick ="adjustSettingValue()">
+            <div id = lightDurationValue>50</div>
+        </div>
+    
     </div>
+
+    <div class = "plantInfoSettingsContainer">
+    
+        <div id = "plantAmount" class = "plantAmount" >
+            <label for="quantity">Number of Plants:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="6" class = "spinVisible" onchange = "updateSettingsCarousel()">
+        </div>
+
+        <!--
+            Plant Carousel will dynamically change if the user has more than 1 plant. Based off the plantinfo carousel
+            javascript populates the individual plant settings and needs back end to serve the info to the 
+            plant.html file to update the data stored on the 
+
+            +call the other carousel class = infoCarousel id = infoCarousel
+        -->
+
+        <div id = "plantCarousel" class = "plantCarousel">
+            <div id="indPlantSettings" class = "indPlantSettings" >
+
+                <div>
+                    <label for="plantType">Plant Type:</label>
+                    <select id="plantType" name="plantType">
+                            <option value="Spinach">Spinach</option>
+                            <option value="Romaine">Romaine</option>
+                            <option value="Basil">Basil</option>
+                            <option value="Cilantro">Cilantro</option>
+                            <option value="Green Onions">Green Onions</option>
+                            <option value="Kale">Kale</option>
+                            <option value="Mint">Mint</option>
+                            <option value="Oregano">Oregano</option>
+                            <option value="Parsley">Parsley</option>
+                            <option value="Radish">Radish</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label for="start">Date Planted:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" class="custom-calendar"/>
+                </div>
+                
+                <div>
+                    <label for="start">Date of Harvest:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" />
+                </div>
+            
+                <div>
+                    <label for="letters">Choose Container:</label>
+                    <select id="letters" name="letters">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                    </select>
+                </div>
+                
+            </div>
+
+
+        </div>
+
+    </div>
+
 </article>
 <script src="settingsSlide.js"  defer></script>
+<script src="dynamicSettingsCarousel.js"  defer></script>
 </body>
 </html>

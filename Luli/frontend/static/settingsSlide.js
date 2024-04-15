@@ -10,13 +10,31 @@ function adjustSettingValue(){
     let lightCycleValue = lightCycleSetting.value;
     let lightDurationValue = lightDurationSetting.value;
 
-    document.getElementById("slideLabelTop").innerHTML = waterCycleValue;
+    document.getElementById("waterCycleValue").innerHTML = waterCycleValue;
+    document.getElementById("waterAmountValue").innerHTML = waterAmountValue;
+    document.getElementById("lightCycleValue").innerHTML = lightCycleValue;
+    document.getElementById("lightDurationValue").innerHTML = lightDurationValue;
 
-    console.log("water: " + waterCycleValue);
+    let data = {
+        waterCycle: { label: 'Water Cycle', value: waterCycleValue },
+        waterAmount: { label: 'Water Amount', value: waterAmountValue },
+        lightCycle: { label: 'Light Cycle', value: lightCycleValue },
+        lightDuration: { label: 'Light Duration', value: lightDurationValue }
+    };
+
+    fetch('/save_settings', 
+    {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+
 
 }
 
-document.getElementById('waterCycle').addEventListener('onscroll', adjustSettingValue);
-document.getElementById('waterAmount').addEventListener('onscroll', adjustSettingValue);
-document.getElementById('lightCycle').addEventListener('onscroll', adjustSettingValue);
-document.getElementById('lightDuration').addEventListener('onscroll', adjustSettingValue);
+document.getElementById('waterCycle').addEventListener('input', adjustSettingValue);
+document.getElementById('waterAmount').addEventListener('input', adjustSettingValue);
+document.getElementById('lightCycle').addEventListener('input', adjustSettingValue);
+document.getElementById('lightDuration').addEventListener('input', adjustSettingValue);
