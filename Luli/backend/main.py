@@ -137,7 +137,7 @@ def plants():
 
     # Render the HTML page with the sensor data
     # The HTML file 'plants.html' should be in the 'templates' folder of your Flask application
-    return render_template('plants.html', sensor_data=latest_sensor_data)
+    return render_template('Plants.html', sensor_data=latest_sensor_data)
     
 
 
