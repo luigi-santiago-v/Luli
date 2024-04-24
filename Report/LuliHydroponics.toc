@@ -3,12 +3,26 @@
 \contentsline {section}{List of Tables}{3}{}%
 \contentsline {section}{List of Figures}{4}{}%
 \contentsline {section}{Abstract}{5}{}%
-\contentsline {section}{\numberline {1}Narrative - what to title this?}{5}{}%
-\contentsline {subsection}{\numberline {1.1}Circuit Design}{5}{}%
-\contentsline {subsection}{\numberline {1.2}Server Configuration}{7}{}%
-\contentsline {subsubsection}{\numberline {1.2.1}Sub-Subsection Example}{8}{}%
-\contentsline {subsection}{\numberline {1.3}Component Testing}{8}{}%
-\contentsline {subsubsection}{\numberline {1.3.1}pH Sensor - PH4502C}{8}{}%
-\contentsline {section}{\numberline {2}Conclusion}{10}{}%
-\contentsline {section}{\numberline {A}Appendix Title}{11}{}%
-\contentsline {section}{References}{11}{}%
+\contentsline {section}{\numberline {1}Design Methodology and Implementation}{5}{}%
+\contentsline {subsection}{\numberline {1.1}Circuit Design}{6}{}%
+\contentsline {subsection}{\numberline {1.2}Component Selection}{7}{}%
+\contentsline {subsection}{\numberline {1.3}LED Control Circuit}{8}{}%
+\contentsline {subsection}{\numberline {1.4}Motor Control Circuit}{9}{}%
+\contentsline {subsection}{\numberline {1.5}Component Testing}{9}{}%
+\contentsline {subsubsection}{\numberline {1.5.1}BMOUO 12V AC-to-DC Power Supply}{9}{}%
+\contentsline {subsubsection}{\numberline {1.5.2}DORHEA C120503 12V to 5V DC Converter}{9}{}%
+\contentsline {subsubsection}{\numberline {1.5.3}FILSHU 10A 250V Power Socket Inlet Switch}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.4}Raspberry Pi Pico W}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.5}DHT22 Temperature and Humidity Sensor}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.6}LTR390UV01 ALS + UV Sensor}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.7}HC-SR04 Ultrasonic Sensor}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.8}CrocSee 12VDC Diaphragm Pump}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.9}IRLZ34NPBF MOSFET}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.10}60W Full Spectrum Grow Lights}{10}{}%
+\contentsline {subsubsection}{\numberline {1.5.11}pH Sensor - PH4502C}{11}{}%
+\contentsline {subsection}{\numberline {1.6}Printed Circuit Board Design}{12}{}%
+\contentsline {subsection}{\numberline {1.7}Server Configuration}{14}{}%
+\contentsline {subsubsection}{\numberline {1.7.1}Flask Routes}{16}{}%
+\contentsline {section}{\numberline {2}Conclusion}{17}{}%
+\contentsline {section}{\numberline {A}Appendix Title}{17}{}%
+\contentsline {section}{References}{17}{}%

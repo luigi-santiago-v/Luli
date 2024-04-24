@@ -28,11 +28,11 @@ def led_off():
 # Main loop to turn motor on and off
 while True:
     motor_on()
+    led_on()
     time.sleep(5)  # motor is on for 5 seconds
     motor_off()
-    led_on()
-    time.sleep(1)
     led_off()
+    time.sleep(5)
     #time.sleep(5)  # motor is off for 5 seconds
 
 

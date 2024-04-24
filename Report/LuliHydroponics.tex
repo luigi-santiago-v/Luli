@@ -1,12 +1,16 @@
 \documentclass[12pt]{article}
-\usepackage{geometry}
+\usepackage[T1]{fontenc} % For setting T1 encoding instead of OT1, typewriter style quotation marks
+\usepackage{geometry} % For setting page margins
 \geometry{a4paper, margin=1in}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{titlesec}
-\usepackage{lipsum} % For generating dummy text
-\usepackage{tocbibind}
-\usepackage{url}
+\usepackage{graphicx} % For including images
+\usepackage{float} % For figure placement
+\usepackage{titlesec} % For customizing section titles
+\usepackage{lipsum} % For generating dummy text during development
+\usepackage{tocbibind} % For adding the table of contents to the table of contents
+\usepackage{url} % For adding URLs in the bibliography
+\usepackage{amsmath} % For IPC 2221 Formula
+
+
 
 
 \newcommand{\comment}[1]{} % Create a custom comment command
@@ -26,8 +30,8 @@
     {\large Lyles College of Engineering\par}
     {\large Electrical and Computer Engineering Department\par}
     \vspace{2cm}
-    {\large Dr. Kriehn\par}
-    {\large Professor Moore\par}
+    {\large Dr. Gregory Kriehn\par}
+    {\large Professor Roger Moore\par}
     \vspace{2cm}
     {\large BY\par}
     \vspace{1cm}
@@ -39,10 +43,12 @@
 \section*{Overview}
 \addcontentsline{toc}{section}{Overview}
 The hydroponics system has been successfully developed with a focus on user-friendliness, comprehensive data analytics, and internet connectivity. Functioning seamlessly as a household appliance, the initiative effectively addresses the crucial need for access to nutritious food in areas identified as food deserts. The automated system comprises multiple sensors for monitoring temperature, humidity, light intensity, and water pH, alongside a UV lighting system, water reservoir, water pump, and a microcontroller. These integrated components provide end-users with real-time insights into plant health and nutrient metrics.
-
-Additionally, a web application has been developed to facilitate user interaction, enabling the sharing of insights, posing queries, and exchanging settings presets. Serving as the central nexus for accessing sensor data and engaging with community-driven inputs, this platform significantly enhances user experience. Notably, the solution stands out from existing market offerings by its meticulous design tailored to address the unique challenges of food deserts and foster reliance on local communities through social networking.
-
-The project, spanning two college semesters and totaling nine months, adhered to a budget allocation of approximately \$500. Major milestones were achieved through meticulous planning and execution, encompassing design and implementation phases, further subdivided into research, component sourcing, component testing, and final integration. The resulting fully functional prototype, constructed from Oriented Strand Board (OSB), incorporates the aforementioned sensors, a microcontroller, lighting apparatus, and water management controls. The completion of a fully operational prototype was accomplished early in the project timeline, allowing for the cultivation of basic crops to vividly demonstrate the efficacy and functionality of the design.
+\newline
+\newline
+\noindent Additionally, a web application has been developed to facilitate user interaction, enabling the sharing of insights, posing queries, and exchanging settings presets. Serving as the central nexus for accessing sensor data and engaging with community-driven inputs, this platform significantly enhances user experience. Notably, the solution stands out from existing market offerings by its meticulous design tailored to address the unique challenges of food deserts and foster reliance on local communities through social networking.
+\newline
+\newline
+\noindent The project, spanning two college semesters and totaling nine months, adhered to a budget allocation of approximately \$500. Major milestones were achieved through meticulous planning and execution, encompassing design and implementation phases, further subdivided into research, component sourcing, component testing, and final integration. The resulting fully functional prototype, constructed from Oriented Strand Board (OSB), incorporates the aforementioned sensors, a microcontroller, lighting apparatus, and water management controls. The completion of a fully operational prototype was accomplished early in the project timeline, allowing for the cultivation of basic crops to vividly demonstrate the efficacy and functionality of the design.
 
 \comment{
 
@@ -84,8 +90,8 @@ The project, spanning two college semesters and totaling nine months, adhered to
 
 
 % Narrative Sections (Example structure)
-\section{Narrative - what to title this?}
-\noindent  Words go here
+\section{Design Methodology and Implementation}
+\noindent The hydroponics system was designed to address the challenges of food deserts by providing urban households with a sustainable and accessible means of growing fresh produce. The system's design methodology focused on integrating IoT capabilities, real-time monitoring, and community engagement features to enhance user experience and foster a sense of community among users. The implementation process involved sourcing components, designing the circuit, testing individual components, and integrating them into a functional system. The resulting hydroponics system comprises multiple sensors, a microcontroller, a water pump, and a UV lighting system, all working together to create an automated growing environment. The system's web application serves as a central hub for users to monitor plant health metrics, share insights, and exchange growing tips, enhancing the overall user experience. The project's successful completion demonstrates the feasibility of using technology to address food insecurity in urban areas and promote community-driven solutions to social challenges.
 
 \subsection{Circuit Design}
 \noindent
@@ -106,7 +112,7 @@ The project, spanning two college semesters and totaling nine months, adhered to
 \noindent The circuit design was meticulously planned to accommodate diverse power demands, establish effective communication protocols between sensors and the microcontroller, and enable seamless data exchange for real-time monitoring and control. This systematic approach resulted in a fully operational automated growing environment. The resulting circuit configuration forms a sturdy foundation for monitoring and managing key parameters essential for successful plant cultivation, allowing users to foster healthy crops with minimal manual intervention.
 \newline
 
-
+\subsection{Component Selection}
 \noindent 1. \textbf{Microcontroller}
 \begin{itemize}
     \item Raspberry Pi Pico W
@@ -144,36 +150,81 @@ The project, spanning two college semesters and totaling nine months, adhered to
    \item 8:1 MUX (SN74LS151N)
    \item 2.42" SSD1309 OLED display
    \item 60W full spectrum grow lights
+   \item 18 AWG wire
+   \item 22 AWG wire
    \end{itemize}
 
 
-\subsection{Server Configuration}
-\noindent The central server is configured to hose the web application and manage the data 
-from the hydroponics systems. The server runs on a Debian operating system. Debian is a popular and widely used Linux distribution known for its reliability and extensive package management system. Debian offers a wide range of software packages through its repositories. It is favored for server environments due to its reliability and security features, making it a suitable choice for hosting various web applications, services, and data management systems.
+\subsection{LED Control Circuit}
+
+\noindent In the development of the LED control system, a low-side switching configuration was implemented using the IRLZ34N N-channel MOSFET. This configuration effectively allows the modulation of a 12V LED strip via signals originating from a Raspberry Pi Pico W microcontroller. The circuit is designed such that the source terminal of the IRLZ34N MOSFET is connected directly to the ground. The drain terminal is connected to the ground terminal of the LED strip, facilitating the control of the negative power line of the strip. The gate terminal of the MOSFET is interfaced with GPIO22 on the Raspberry Pi Pico W, enabling digital control of the LED strip’s operational state. The positive terminal of the LED strip is connected to a 12V power supply, ensuring the provision of the necessary driving voltage for the LEDs.
 \newline
 \newline
-\noindent Flask is a simple and flexible framework for building web applications using Python. It helps developers create websites by providing tools for handling web page requests, organizing URLs, and displaying content. In Flask, routes serve as mappings between specific URLs and Python functions, enabling the application to respond to different requests. You can define custom functions for each URL endpoint, allowing dynamic content generation based on user interactions. Using the \verb|@app.route()| decorator, you specify the URL pattern associated with a particular function. Dynamic URLs can include variable parts, passed as arguments to the associated function, facilitating personalized responses. Within these functions, you can implement logic to generate dynamic content, such as fetching data from databases or processing user inputs. This approach enables the creation of dynamic web applications where each URL endpoint serves specific functionalities, thus offering a tailored user experience.
+\noindent The IRLZ34N MOSFET operates based on the principles of semiconductor physics concerning the movement of electrons and the manipulation of charge carriers within the device. As an N-channel MOSFET, the primary charge carriers are electrons, which are more mobile than holes. The MOSFET is constructed with a channel between the source and the drain, made of N-type semiconductor material. When a positive voltage is applied to the gate relative to the source, it creates an electric field that induces a conduction channel in the underlying silicon structure. This channel allows electrons to flow from the source to the drain when the gate voltage exceeds a certain threshold, thereby completing the circuit and allowing current to flow through the LED strip.
 \newline
 \newline
-\noindent To enhance network reliability and accessibility for remote services, the deployment and configuration of the No-IP Dynamic Update Client (DUC) were undertaken on the Debian-based system. No-IP is a dynamic DNS service that allows internet users to provide a fixed domain name to their dynamically changing IP address, thereby ensuring that the connection to the server remains uninterrupted despite changes in the network configuration. This is particularly useful for hosting servers, remote access, and other network services that require constant accessibility over the internet. To integrate No-IP's DUC into the system's services for automatic startup and recovery, a systemd service unit file was meticulously crafted and deployed. This configuration specifies the execution of the No-IP DUC software as a background service, thereby enabling it to update DNS records automatically whenever the system's IP address changes. Through careful examination and troubleshooting of systemd service file settings, potential issues were identified and resolved, ensuring seamless operation. The implementation enhances the system's network reliability and facilitates uninterrupted remote access.
+\noindent The effectiveness of this setup is derived from the MOSFET's ability to act as a switch controlled by the gate voltage. With no voltage on the gate, the channel remains non-conductive; hence, the circuit is open and no current flows through the LED strip. Application of a sufficient voltage (approximately 3.3V from the Pico W GPIO) to the gate allows for the formation of the conductive channel, thus closing the circuit and enabling current flow.
 \newline
 \newline
-\noindent The remote server has two ports exposed to the internet, one for the web application and one for SSH. To reduce the risk of unauthorized access, the SSH port was changed from the default port 22 to a non-standard port. This simple security measure significantly reduces the number of unauthorized login attempts and enhances the system's overall security. The web application port was also changed to a nonstandard port to further reduce the risk of unauthorized access. In addition to altering the default ports for SSH and the web application, two additional security measures were implemented on the remote server: fail2ban and ufw.
+The circuit's functionality was verified through a series of tests where the GPIO22 output was alternated between high and low states, corresponding to turning the LED strip on and off, respectively. These tests confirmed that the circuit performed as expected, with the MOSFET effectively controlling the connection between the LED strip and ground based on the GPIO signal. During testing, it was observed that the immediate activation of the LEDs upon application of the 12V supply was mitigated by ensuring correct MOSFET wiring and operation as described. Measurements of voltage levels at the gate, source, and drain were consistent with theoretical expectations, affirming the accuracy of the circuit design and the reliability of the components used.
 \newline
 \newline
-\noindent Fail2ban is an intrusion prevention software framework that operates by monitoring log files for patterns indicating unsuccessful login attempts or other malicious activity. Upon detection of such patterns, fail2ban dynamically updates firewall rules to block the IP addresses associated with the detected activity. By effectively blocking malicious actors attempting unauthorized access, fail2ban enhances the server's security posture and mitigates the risk of successful brute-force attacks.
+The implemented design effectively demonstrates the utility of using an N-channel MOSFET for controlling high-power devices like LED strips with low-voltage digital signals from microcontrollers. This configuration not only provides efficient switching capabilities but also simplifies the interfacing between high and low voltage systems in embedded applications. Further optimization of the circuit could involve the integration of additional control features such as dimming and flashing, which could be achieved by implementing PWM (Pulse Width Modulation) techniques through the Raspberry Pi Pico W.
+
+\subsection{Motor Control Circuit}
+\noindent The motor control circuit is similar to the LED control circuit, with the primary difference being the use of a CrocSee 12VDC diaphragm pump as the load. The CrocSee pump is a high-quality diaphragm pump designed for hydroponic systems, aquariums, and other applications requiring water circulation. The pump operates on a 12V DC power supply and is controlled by a Raspberry Pi Pico W microcontroller through an IRLZ34N N-channel MOSFET. The circuit configuration is based on a low-side switching design, allowing the microcontroller to modulate the pump's operational state by controlling the negative power line.
 \newline
 \newline
-\noindent UFW, or Uncomplicated Firewall, is a front-end for managing firewall rules in Linux-based systems. It provides a user-friendly interface for configuring firewall settings and managing network traffic. UFW simplifies the process of creating and maintaining firewall rules, enabling administrators to define access policies based on specific criteria such as IP addresses, ports, and protocols. By leveraging UFW to enforce firewall rules, administrators can restrict access to services running on the server, thereby reducing the attack surface and enhancing overall security.
+\noindent A 1N4001RLGOSCT diode is used in this circuit as a flyback diode to protect the MOSFET from voltage spikes generated by the pump's inductive load. When the pump is turned off, the inductive load generates a reverse voltage spike that can damage the MOSFET. The flyback diode provides a path for this voltage spike to dissipate safely, protecting the MOSFET and ensuring the circuit's longevity. The flyback diode is reverse biased during normal operation, allowing current to flow through the pump. When the pump is turned off, the diode becomes forward biased, providing a path for the voltage spike to dissipate harmlessly.
 \newline
 \newline
-\noindent By combining the use of non-standard ports with fail2ban and UFW, the security posture of the remote server is significantly bolstered against unauthorized access attempts and potential malicious activity. These measures collectively contribute to mitigating the risks associated with operating services accessible over the internet, safeguarding the confidentiality, integrity, and availability of the hosted resources.
+\noindent This circuit is controlled via GPIO21 on the Raspberry Pi Pico W, which is connected to the gate terminal of the IRLZ34N MOSFET. The source terminal of the MOSFET is connected to ground, while the drain terminal is connected to the ground terminal of the CrocSee pump. The positive terminal of the pump is connected to the 12V power supply, ensuring the necessary driving voltage for the pump's operation. By modulating the GPIO21 output between high and low states, the microcontroller can control the pump's operational state, enabling water circulation within the hydroponic system. 
 \newline
 \newline
-\subsubsection{Sub-Subsection Example}
-\noindent Words go here
+\noindent Some pumps can change direction by reversing the polarity of the power supply, but the CrocSee pump used in this circuit operates in a single direction. The pump's operational state can be controlled by turning it on and off as needed to maintain optimal water circulation within the hydroponic system. The circuit's functionality was verified through a series of tests, confirming that the pump could be controlled effectively using the Raspberry Pi Pico W microcontroller. The flyback diode successfully protected the MOSFET from voltage spikes generated by the pump's inductive load, ensuring the circuit's reliability and longevity.
+
 
 \subsection{Component Testing}
+\subsubsection{BMOUO 12V AC-to-DC Power Supply}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{DORHEA C120503 12V to 5V DC Converter}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{FILSHU 10A 250V Power Socket Inlet Switch}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{Raspberry Pi Pico W}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{DHT22 Temperature and Humidity Sensor}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{LTR390UV01 ALS + UV Sensor}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{HC-SR04 Ultrasonic Sensor}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{CrocSee 12VDC Diaphragm Pump}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{IRLZ34NPBF MOSFET}
+\noindent Words go here
+\newline
+\newline
+\subsubsection{60W Full Spectrum Grow Lights}
+\noindent Words go here
+\newline
+\newline
 \subsubsection{pH Sensor - PH4502C}
 \begin{table}[H]
     \centering
@@ -210,8 +261,74 @@ Following the integration of a voltage divider into the circuit, the output was 
 \newline
 \noindent An observation was made during the calibration that a red LED indicator on the sensor module was activated when the voltage dropped below 4V. It was inferred that this LED served as an indicator for out-of-range voltage conditions. The sensor was adjusted to maintain the output voltage above this threshold to prevent the activation of the LED indicator.
 Once the sensor output was adjusted to the correct voltage for a pH 7 solution, the calibration was deemed successful. The calibration state was documented as stable, and the expectation was set that, barring any significant handling or environmental changes, recalibration would not be necessary before each use. 
+
+\subsection{Printed Circuit Board Design}
+\noindent The hydroponics system is powered by a 12V30A power supply with a maximum current draw of 5A. Temporary prototyping solutions such as a solderless breadboard were used to test the system's functionality. However, to ensure long-term reliability and ease of maintenance, a custom-designed printed circuit board (PCB) was developed to house the system's components. The PCB design process involved creating a schematic diagram, laying out the components, routing the traces, and generating the Gerber files for manufacturing. The PCB design was meticulously crafted to accommodate the system's sensors, microcontroller, motor control circuit, and power supply connections. The resulting PCB design provides a compact and organized layout that simplifies the assembly process and enhances the system's overall reliability.
 \newline
 \newline
+\noindent The schematic and PCB were designed using free open-source software, KiCad. KiCad is a powerful EDA (Electronic Design Automation) tool that offers a comprehensive suite of features for designing schematics, laying out PCBs, and generating manufacturing files. The schematic design process involved creating symbols for each component, connecting the components with wires, and adding labels for easy identification. The schematic served as the foundation for the PCB layout, guiding the placement of components and the routing of traces. The PCB layout was carefully planned to ensure optimal component placement, signal integrity, and thermal management. By organizing the components in a logical and compact manner, the PCB design maximizes space utilization and minimizes signal interference, resulting in a clean and efficient layout.
+\newline
+\newline
+\noindent The PCB was milled in-house using an LPKF ProtoMat Circuit Board Plotter. The milling process involved loading a blank copper-clad board into the plotter, importing the Gerber files generated from KiCad, and executing the milling operation. The LPKF ProtoMat precisely etched the traces and cut out the board outline, resulting in a custom PCB ready for component assembly. The milled PCB was inspected for any defects or errors, and the components were soldered onto the board following the assembly guide. The completed PCB was then tested to verify its functionality and ensure that all components were properly connected. The material for the PCB was 1/2 oz FR4 copper-clad board, which provides excellent thermal conductivity and electrical insulation properties.
+\newline
+\newline
+\noindent The current carrying capacity of a printed circuit board (PCB) trace can be estimated using the formula from IPC 2221 \cite{ref_ipc_2221}, which is given by:
+\begin{equation}
+    I = k \cdot A^{0.44} \cdot (\Delta T)^{0.725}
+\end{equation}
+where:
+\begin{itemize}
+    \item \(I\) is the maximum current in Amperes (A) that the trace can safely carry.
+    \item \(A\) is the cross-sectional area of the trace in square millimeters (mm\(^2\)), which can be calculated as the product of the trace width and thickness.
+    \item \(\Delta T\) is the temperature rise above ambient in degrees Celsius (°C) that is considered acceptable for the application.
+    \item \(k\) is a constant that depends on the location of the trace on the PCB. It is 0.024 for internal traces or 0.048 for external traces.
+\end{itemize}
+
+\noindent According to the provided specifications, for a trace thickness of 18µm on an external layer, the required trace width calculated by the IPC 2221 formula to carry a current of 5A with a temperature rise of 10°C is approximately 211 mils. With this calculated, special trace widths were defined in KiCad to automatically make the 12V5A lines 215mil wide, the 5V lines 50mil wide, and the new default setting to 20mil width. This ensures that the PCB can safely carry the required current without overheating or causing damage to the components.
+\newline
+\newline
+\noindent Multiple through-hole screw terminal blocks were used for the sensors, motor, and power connections to facilitate easy assembly and maintenance. The screw terminals provide a secure and reliable connection for the wires, allowing for quick installation and removal of components. This also allows for distanced connections to the PCB which enables the LEDs, DHT sensors, water pump, and power supply to be placed in different locations. These terminal blocks were strategically placed on the PCB to ensure optimal wiring organization and accessibility. The PCB design was meticulously crafted to accommodate the system's components and facilitate easy assembly and maintenance. The resulting PCB layout (\ref{fig:PCB_DESIGN}) provides a compact and organized configuration that enhances the system's reliability and ease of use.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/PCB_Screenshot.png}
+    \caption{PCB Design in KiCad}
+    \label{fig:PCB_DESIGN}
+\end{figure}
+
+
+
+\subsection{Server Configuration}
+\noindent The central server is configured to house the web application and manage the data 
+from the hydroponics systems. The server runs on a Debian operating system. Debian is a popular and widely used Linux distribution known for its reliability and extensive package management system. Debian offers a wide range of software packages through its repositories. It is favored for server environments due to its reliability and security features, making it a suitable choice for hosting various web applications, services, and data management systems. The entire backend system sits in a 42U server rack. The server rack is equipped with a UPS (Uninterruptible Power Supply) to ensure continuous operation in the event of power outages or fluctuations. The server is connected to the internet via a high-speed gigabit ethernet connection, providing reliable connectivity for remote access and data transfer.
+\newline
+\newline
+\noindent Flask is a simple and flexible framework for building web applications using Python. It helps developers create websites by providing tools for handling web page requests, organizing URLs, and displaying content. In Flask, routes serve as mappings between specific URLs and Python functions, enabling the application to respond to different requests. You can define custom functions for each URL endpoint, allowing dynamic content generation based on user interactions. Using the \verb|@app.route()| decorator, you specify the URL pattern associated with a particular function. Dynamic URLs can include variable parts, passed as arguments to the associated function, facilitating personalized responses. Within these functions, you can implement logic to generate dynamic content, such as fetching data from databases or processing user inputs. This approach enables the creation of dynamic web applications where each URL endpoint serves specific functionalities, thus offering a tailored user experience.
+\newline
+\newline
+\noindent To enhance network reliability and accessibility for remote services, the deployment and configuration of the No-IP Dynamic Update Client (DUC) were undertaken on the Debian-based system. No-IP is a dynamic DNS service that allows internet users to provide a fixed domain name to their dynamically changing IP address, thereby ensuring that the connection to the server remains uninterrupted despite changes in the network configuration. This is particularly useful for hosting servers, remote access, and other network services that require constant accessibility over the internet. To integrate No-IP's DUC into the system's services for automatic startup and recovery, a systemd service unit file was meticulously crafted and deployed. This configuration specifies the execution of the No-IP DUC software as a background service, thereby enabling it to update DNS records automatically whenever the system's IP address changes. Through careful examination and troubleshooting of systemd service file settings, potential issues were identified and resolved, ensuring seamless operation. The implementation enhances the system's network reliability and facilitates uninterrupted remote access.
+\newline
+\newline
+\noindent The remote server has two ports exposed to the internet, one for the web application and one for SSH. To reduce the risk of unauthorized access, the SSH port was changed from the default port 22 to a non-standard port. This simple security measure significantly reduces the number of unauthorized login attempts and enhances the system's overall security. The web application port was also changed to a nonstandard port to further reduce the risk of unauthorized access. In addition to altering the default ports for SSH and the web application, two additional security measures were implemented on the remote server: fail2ban and ufw.
+\newline
+\newline
+\noindent Fail2ban is an intrusion prevention software framework that operates by monitoring log files for patterns indicating unsuccessful login attempts or other malicious activity. Upon detection of such patterns, fail2ban dynamically updates firewall rules to block the IP addresses associated with the detected activity. By effectively blocking malicious actors attempting unauthorized access, fail2ban enhances the server's security posture and mitigates the risk of successful brute-force attacks.
+\newline
+\newline
+\noindent UFW, or Uncomplicated Firewall, is a front-end for managing firewall rules in Linux-based systems. It provides a user-friendly interface for configuring firewall settings and managing network traffic. UFW simplifies the process of creating and maintaining firewall rules, enabling administrators to define access policies based on specific criteria such as IP addresses, ports, and protocols. By leveraging UFW to enforce firewall rules, administrators can restrict access to services running on the server, thereby reducing the attack surface and enhancing overall security.
+\newline
+\newline
+\noindent By combining the use of non-standard ports with fail2ban and UFW, the security posture of the remote server is significantly bolstered against unauthorized access attempts and potential malicious activity. These measures collectively contribute to mitigating the risks associated with operating services accessible over the internet, safeguarding the confidentiality, integrity, and availability of the hosted resources.
+\newline
+\newline
+\subsubsection{Flask Routes}
+\noindent The Flask application routes are defined to handle various URL endpoints and user interactions. Each route corresponds to a specific functionality within the web application, facilitating dynamic content generation and user engagement. The routes are structured to provide a seamless user experience, enabling users to interact with the hydroponics system, view sensor data, and access community-driven features. By defining custom routes, developers can create a tailored web application that meets the specific requirements of the hydroponics project.
+In simple terms, a route is a URL pattern associated with a specific function in the Flask application. When a user navigates to a particular URL, the corresponding function is executed, generating the content displayed on the web page.
+\newline
+\newline
+\noindent At the start, the routes were setup to only serve static HTMl pages, not templates. This was done to ensure that the basic functionality of the server was working. Once the basic functionality was confirmed, the routes were updated to serve templates. The templates were created using HTML, CSS, and Jinja2 templating engine. The Jinja2 templating engine allows for the dynamic generation of HTML content based on variables passed from the Flask application. This enables the creation of interactive web pages that can display real-time sensor data, user inputs, and other dynamic content.
+\newline
+\newline
+
 
 
 
@@ -248,6 +365,7 @@ Once the sensor output was adjusted to the correct voltage for a pH 7 solution, 
 % References
 \begin{thebibliography}{99}
     \bibitem{ref_ph_amazon} GAOHOU. (n.d.). PH0-14 Value Detect Sensor Module + PH Electrode Probe BNC For Arduino [Online]. Available: \url{https://www.amazon.com/dp/B0799BXMVJ?psc=1&ref=ppx_yo2ov_dt_b_product_details}
+    \bibitem{ref_ipc_2221} IPC, "IPC-2221C - Generic Standard on Printed Board Design," IPC International, Bannockburn, IL, Standard, Dec. 2023. [Online]. Available: \url{https://shop.ipc.org/2221-STD-0-D-0-EN-C}
     % Repeat for each reference
 \end{thebibliography}
 

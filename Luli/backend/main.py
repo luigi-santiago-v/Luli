@@ -125,7 +125,7 @@ def logout():
 @app.route('/plants')
 def plants():
     # Retrieve the document by its ID or another query
-    document_id = ObjectId('65fa4c38972991d86e690014')  # Update with your document's ObjectId
+    document_id = ObjectId('65fa4c38972991d86e690014')  
     sensor_data_document = users_data_collection.find_one({"_id": document_id})
     
     # Extract sensor data from the document
