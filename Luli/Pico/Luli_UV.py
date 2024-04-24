@@ -1,3 +1,4 @@
+# Adapted from  https://forums.pimoroni.com/t/ltr390-micropython-code/22314/2
 import utime
 from machine import Pin, I2C
 
