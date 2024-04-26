@@ -46,11 +46,23 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
             return None  # or handle as needed
         
     def validate_API_key(device_id):
-        # Device ID will look like:
-        #device_id = request.headers.get('X-Device-ID')
+        # Device ID will come from: request.headers.get('X-Device-ID')
         if device_id is None:
-            return False, None, jsonify({'message': 'Device ID is required'}), 400
-
+            return False, None, jsonify({'message': 'X-Device-ID is required'}), 400
+        else: 
+            # Check if the device ID is a string
+            if not isinstance(device_id, str):
+                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
+            
+            # Check if the length of the hardware ID is correct
+            if len(device_id) != 16:  # Assuming 16 characters for a 128-bit ID
+                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
+    
+            # Check if the hardware ID contains only hexadecimal characters
+            valid_chars = set("0123456789abcdefABCDEF")
+            if not all(char in valid_chars for char in device_id):
+                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
+    
         user = users_data_collection.find_one({"device_id": device_id})
         if user is None:
             return False, None, jsonify({'message': 'Unauthorized - Device not recognized'}), 401
@@ -241,10 +253,6 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
 
         return "All sensor data updated successfully."
     
-
-       
-
-
     @app.route('/api/test', methods=['GET'])
     def api_test():
         return "API is working."
