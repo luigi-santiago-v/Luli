@@ -38,21 +38,21 @@ class OLEDMenuDisplay:
         self.display.fill_rect(0, menu_highlight, 10, 20, 1)
         self.display.show()
 
-    def print_sensor_data(self, ph, temp, light, humidity, solution):
+    def print_sensor_data(self, ph, temp, light, humidity, tank):
         self.display.fill(0)
-        self.display.text('Tank: ' + str(solution), 6, 0, 1)
-        self.display.text('pH: ' + str(ph), 6, 16, 1)
-        self.display.text('Temp: ' + str(temp), 6, 27, 1)
-        self.display.text('Light: ' + str(light), 6, 39, 1)
-        self.display.text('Humidity: ' + str(humidity), 6, 51, 1)
+        self.display.text('Tank: ' + str(tank), 0, 0, 1)
+        self.display.text('pH: ' + str(ph), 0, 16, 1)
+        self.display.text('Temp: ' + str(temp), 0, 27, 1)
+        self.display.text('Light: ' + str(light), 0, 39, 1)
+        self.display.text('Humidity: ' + str(humidity), 0, 51, 1)
         self.display.show()
 
     def print_plant_menu(self, plant_name='Spinach', planted_date='5/5/24', harvest_date='9/3/24'):
         self.display.fill(0)
-        self.display.text('Plants', 6, 0, 1)
-        self.display.text(f'Plant: {plant_name}', 6, 16, 1)
-        self.display.text(f'Planted: {planted_date}', 6, 27, 1)
-        self.display.text(f'Harvest: {harvest_date}', 6, 39, 1)
+        self.display.text('Plants', 0, 0, 1)
+        self.display.text(f'Plant: {plant_name}', 0, 16, 1)
+        self.display.text(f'Planted: {planted_date}', 0, 27, 1)
+        self.display.text(f'Harvest: {harvest_date}', 0, 39, 1)
         self.display.show()
 
 def main():

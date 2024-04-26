@@ -1,19 +1,17 @@
 import machine
-import Luli_Motor
-import Luli_LED
+#import Luli.Pico.test.Luli_Motor as Luli_Motor
+#import Luli.Pico.test.Luli_LED as Luli_LED
 from Luli_UV import LTR390
 from Luli_Ultrasonic import WaterLevelSensor
 from Luli_pH import PHSensor
 from Luli_OLED import OLEDMenuDisplay
 from Luli_DHT import DHT22Handler
+from Luli_Networkhandler import NetworkHandler
+from Luli_MotorLEDControl import MotorAndLEDControl
+import Luli_CONFIG
 import utime
 
-
-# Motor and LED Control Circuit
-MOTOR_PIN = machine.Pin(21, machine.Pin.OUT)
-LED_PIN = machine.Pin(22, machine.Pin.OUT)
-MOTOR = Luli_Motor
-LEDS = Luli_LED()
+MOTOR_LED_CONTROL = MotorAndLEDControl()
 
 # Sensor Initialization
 PH_SENSOR = PHSensor()
@@ -21,9 +19,15 @@ UV_SENSOR = LTR390()
 TANK_SENSOR = WaterLevelSensor()
 DHTS = DHT22Handler()
 
+
 # External Hardware/Misc Initialization
 OLED = OLEDMenuDisplay()
-SOLUTION = 'Half'
+
+SSID = 'Liam'
+WIFI_PASSWORD = 'liampassword'
+BACKEND_BASE_URL = 'https://lulihydroponics.ddns.net/api/'
+
+NETWORK = NetworkHandler(SSID, WIFI_PASSWORD, BACKEND_BASE_URL)
 
 def sensor_uv_read():
     # Give the sensor some time to start
@@ -64,27 +68,18 @@ def sensor_humidity_read():
     return avg_hum
 
 def update_display(plant_name='Lettuce', planted_date='3/15/24', harvest_date='5/10/24'):
-    OLED.print_sensor_data(ph=PH_SENSOR.get_ph(), temp=sensor_temp_read(), light=sensor_uv_read(), humidity=sensor_humidity_read(), solution=SOLUTION)
-    utime.sleep(5)
+    OLED.print_sensor_data(ph=PH_SENSOR.get_ph(), temp=sensor_temp_read(), light=sensor_uv_read(), humidity=sensor_humidity_read(), tank=sensor_tank_read())
+    utime.sleep(Luli_CONFIG.DELAY_OLED)
     OLED.print_plant_menu(plant_name=plant_name, planted_date=planted_date, harvest_date=harvest_date)
-    utime.sleep(5)
+    utime.sleep(Luli_CONFIG.DELAY_OLED)
 
-def motor_on():
-    Luli_Motor.motor_on(MOTOR_PIN)
 
-def motor_off():
-    Luli_Motor.motor_off(MOTOR_PIN)
-
-def LEDS_on():
-    LEDS.on(LED_PIN)
-
-def LEDS_off():
-    LEDS.off(LED_PIN)
 
 
 if __name__ == '__main__':
-    motor_off()
-    LEDS_off()
+    #NETWORK.connect_wifi('Liam', 'liampassword', 'http://'
+    MOTOR_LED_CONTROL.motor_off()
+    MOTOR_LED_CONTROL.leds_off()
 
     utime.sleep(3) # 3 Second startup delay
 
