@@ -18,11 +18,13 @@ from functools import wraps
     - /api/get_uv_data              GET
     - /api/get_ph_data              GET
     - /api/get_temp_data            GET
+    - /api/get_tank_data            GET
     - /api/get_all_data             GET
     - /api/update_uv_data           POST
     - /api/update_ph_data           POST
     - /api/update_temp_data         POST
     - /api/update_humidity_data     POST
+    - /api/update_tank_data         POST
     - /api/update_all_sensors_data  POST
 '''
 
@@ -149,90 +151,119 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
 
     ## SENSOR READINGS - GET
 
-    @app.route('/api/get_uv_data', methods=['GET'])
+    @app.route('/api/get_light_data', methods=['GET'])
     @require_api_key
-    def api_get_uv_data(user_id):
+    def api_get_light_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            return "No data found for this user."
-        return user_data['uv_data']
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
+        return user_data['light']
 
     @app.route('/api/get_ph_data', methods=['GET'])
     @require_api_key
     def api_get_ph_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            return "No data found for this user."
-        return user_data['ph_data']
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
+        return user_data['ph']
 
     @app.route('/api/get_temp_data', methods=['GET'])
     @require_api_key
     def api_get_temp_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            return "No data found for this user."
-        return user_data['temp_data']
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
+        return user_data['temp']
 
     @app.route('/api/get_humidity_data', methods=['GET'])
     @require_api_key
     def api_get_humidity_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            return "No data found for this user."
-        return user_data['humidity_data']
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
+        return user_data['humidity']
+    
+    @require_api_key
+    def api_get_tank_data(user_id):
+        user_data = users_data_collection.find_one({'user_id': user_id})
+        if not user_data:
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
+        return user_data['tank']
 
     @app.route('/api/get_all_data', methods=['GET'])
     @require_api_key
     def api_get_all_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            return "No data found for this user."
+            #return "No data found for this user."
+            return jsonify({'message': 'No data found for this user'}), 404
         return user_data
 
     ## SENSOR READINGS - POST
-    @app.route('/api/update_uv_data', methods=['POST'])
+    @app.route('/api/update_light_data', methods=['POST'])
     @require_api_key
-    def api_update_UV_data(user_id):
+    def api_update_light_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'uv_data': request.json})
+            users_data_collection.insert_one({'user_id': user_id, 'light': request.json})
         else:
-            users_data_collection.update_one({'user_id': user_id}, {'$set': {'uv_data': request.json}})
-        return "UV Data updated successfully."
+            users_data_collection.update_one({'user_id': user_id}, {'$set': {'light': request.json}})
+        #return "Light Data updated successfully."
+        return jsonify({'message': 'Light Data updated successfully'}), 200
 
     @app.route('/api/update_ph_data', methods=['POST'])
     @require_api_key
     def api_update_pH_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'ph_data': request.json})
+            users_data_collection.insert_one({'user_id': user_id, 'ph': request.json})
         else:
-            users_data_collection.update_one({'user_id': user_id}, {'$set': {'ph_data': request.json}})
-        return "pH Data updated successfully."
+            users_data_collection.update_one({'user_id': user_id}, {'$set': {'ph': request.json}})
+        #return "pH Data updated successfully."
+        return jsonify({'message': 'pH Data updated successfully'}), 200
 
     @app.route('/api/update_temp_data', methods=['POST'])
     @require_api_key
     def api_update_temp_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'temp_data': request.json})
+            users_data_collection.insert_one({'user_id': user_id, 'temp': request.json})
         else:
-            users_data_collection.update_one({'user_id': user_id}, {'$set': {'temp_data': request.json}})
-        return "Temperature Data updated successfully."
+            users_data_collection.update_one({'user_id': user_id}, {'$set': {'temp': request.json}})
+        #return "Temperature Data updated successfully."
+        return jsonify({'message': 'Temperature Data updated successfully'}), 200
 
     @app.route('/api/update_humidity_data', methods=['POST'])
     @require_api_key
     def api_update_humidity_data(user_id):
         user_data = users_data_collection.find_one({'user_id': user_id})
         if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'humidity_data': request.json})
+            users_data_collection.insert_one({'user_id': user_id, 'humidity': request.json})
         else:
             users_data_collection.update_one({'user_id': user_id}, {'$set': {'humidity_data': request.json}})
-        return "Humidity Data updated successfully."
-    
+        #return "Humidity Data updated successfully."
+        return jsonify({'message': 'Humidity Data updated successfully'}), 200
+
+    @app.route('/api/update_tank_data', methods=['POST'])
+    @require_api_key
+    def api_update_tank_data(user_id):
+        user_data = users_data_collection.find_one({'user_id': user_id})
+        if not user_data:
+            users_data_collection.insert_one({'user_id': user_id, 'tank': request.json})
+        else:
+            users_data_collection.update_one({'user_id': user_id}, {'$set': {'tank': request.json}})
+        #return "Tank Data updated successfully."
+        return jsonify({'message': 'Tank Data updated successfully'}), 200
+
+
     @app.route('/api/update_all_sensor_data', methods=['POST'])
     @require_api_key
-    def update_all_sensors_data(user_id):
+    def update_all_sensor_data(user_id):
         sensor_data = request.get_json()
         if not sensor_data:
             return jsonify({'message': 'No sensor data provided'}), 400
@@ -251,7 +282,8 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
                 upsert=True
             )
 
-        return "All sensor data updated successfully."
+        #return "All sensor data updated successfully."
+        return jsonify({'message': 'All sensor data updated successfully'}), 200
     
     @app.route('/api/test', methods=['GET'])
     def api_test():

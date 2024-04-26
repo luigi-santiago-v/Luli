@@ -1,16 +1,17 @@
 from machine import Pin, SPI
 import ssd1306
 import time
+import Luli_CONFIG
 
 class OLEDMenuDisplay:
     def __init__(self):
         # SPI setup
         self.spi = SPI(1, baudrate=1000000, polarity=1, phase=1, bits=8, firstbit=SPI.MSB,
-                       sck=Pin(10), mosi=Pin(11))
+                       sck=Pin(Luli_CONFIG.PIN_OLED_SCK), mosi=Pin(Luli_CONFIG.PIN_OLED_MOSI))
         # Display setup
-        self.cs = Pin(13)   # Chip select
-        self.dc = Pin(15)   # Data/command
-        self.rst = Pin(14, Pin.OUT)   # Reset
+        self.cs = Pin(Luli_CONFIG.PIN_OLED_CS)   # Chip select
+        self.dc = Pin(Luli_CONFIG.PIN_OLED_DC)   # Data/command
+        self.rst = Pin(Luli_CONFIG.PIN_OLED_RST, Pin.OUT)   # Reset
         self.display = ssd1306.SSD1306_SPI(128, 64, self.spi, self.dc, self.rst, self.cs)
 
         self.display.poweron()

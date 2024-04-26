@@ -2,6 +2,7 @@ import network
 import urequests as requests
 import ujson
 import machine
+import Luli_CONFIG
 class NetworkHandler:
     def get_hardware_id(self):
         # Get the unique hardware ID
@@ -13,9 +14,9 @@ class NetworkHandler:
 
     
     def __init__(self, ssid, password, base_url):
-        self.ssid = ssid
-        self.password = password
-        self.base_url = base_url
+        self.ssid = Luli_CONFIG.WIFI_SSID
+        self.password = Luli_CONFIG.WIFI_PASSWORD
+        self.base_url = Luli_CONFIG.SERVER_URL
         self.wlan = network.WLAN(network.STA_IF)
         self.hardware_id = self.get_hardware_id()
 
@@ -42,8 +43,8 @@ class NetworkHandler:
 def main():
     ssid = 'YourSSID'
     password = 'YourPassword'
-    base_url = 'http://yourapi.com/api/'
-    endpoint = 'update_all_sensor_data'
+    base_url = 'http://yourapi.com'
+    endpoint = '/api/update_all_sensor_data'
     sensor_data = {
         "temp": 23.5,
         "humidity": 45,

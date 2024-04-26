@@ -1,8 +1,9 @@
 import machine
 import utime
+import Luli_CONFIG
 
 class WaterLevelSensor:
-    def __init__(self, trig_pin=17, echo_pin=9):
+    def __init__(self, trig_pin=Luli_CONFIG.PIN_ULTRASONIC_TRIG, echo_pin=Luli_CONFIG.PIN_ULTRASONIC_ECHO):
         self.trig = machine.Pin(trig_pin, machine.Pin.OUT)
         self.echo = machine.Pin(echo_pin, machine.Pin.IN)
         self.tank_full_distance = None
