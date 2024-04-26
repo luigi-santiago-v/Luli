@@ -44,7 +44,7 @@ class LTR390:
             return
         self.write_byte(self.MAIN_CTRL, 0x0A)  # UVS in Active Mode
         self.write_byte(self.MEAS_RATE, self.RESOLUTION_20BIT_utime400MS | self.RATE_2000MS)
-        self.write_byte(self.GAIN, self.GAIN_3)
+        self.write_byte(self.GAIN, self.GAIN_18)
 
     def read_byte(self, cmd):
         data = self.i2c.readfrom_mem(self.ADDR, cmd, 1)
@@ -59,16 +59,16 @@ class LTR390:
         data3 = self.read_byte(self.UVSDATA + 2)
         return (data3 << 16) | (data2 << 8) | data1
     
-    def get_uv_index(self):
+    def get_uv_intensity(self):
         raw_uvs = self.read_uvs()
         
-        uv_index = raw_uvs / Luli_CONFIG.UVS_CONVERSION_FACTOR  # Conversion factor from the datasheet
-        return uv_index
+        uv_intensity = (raw_uvs / Luli_CONFIG.UVS_CONVERSION_FACTOR) * 1000
+        return uv_intensity
     
     def get_uv_data(self):
         raw_uvs = self.read_uvs()
-        uv_index = raw_uvs / Luli_CONFIG.UVS_CONVERSION_FACTOR  # Conversion factor from the datasheet
-        return raw_uvs, uv_index
+        uv_intensity = (raw_uvs / Luli_CONFIG.UVS_CONVERSION_FACTOR) * 1000
+        return raw_uvs, uv_intensity
     
 
 
@@ -77,9 +77,12 @@ if __name__ == '__main__':
     utime.sleep(1)
     try:
         while True:
-            uvs = sensor.read_uvs()
-            print("UVS: %d" % uvs)
-            utime.sleep(0.5)
+            raw, uv_intensity = sensor.get_uv_data()
+            print("RAW: {}".format(raw))
+            print("UV intensity: {}".format(uv_intensity))
+            #return raw, uv_intensity
+            #return uv_intensity
     except KeyboardInterrupt:
         print("Interrupted by user")
         exit()
+

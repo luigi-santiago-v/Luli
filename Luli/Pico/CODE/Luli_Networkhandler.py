@@ -11,6 +11,7 @@ class NetworkHandler:
         hex_string = "".join("{:02x}".format(byte) for byte in unique_id)
         print("Unique Hardware ID:", hex_string)
         return unique_id
+    
 
     
     def __init__(self, ssid, password, base_url):
@@ -18,7 +19,7 @@ class NetworkHandler:
         self.password = Luli_CONFIG.WIFI_PASSWORD
         self.base_url = Luli_CONFIG.SERVER_URL
         self.wlan = network.WLAN(network.STA_IF)
-        self.hardware_id = self.get_hardware_id()
+        self.hardware_id = str(self.get_hardware_id())
 
     def connect_wifi(self):
         """Connects to WiFi using the SSID and password provided during initialization."""
@@ -33,14 +34,39 @@ class NetworkHandler:
     def send_data(self, endpoint, data):
         """Sends data to a specified API endpoint using HTTP POST."""
         headers = {'Content-Type': 'application/json', 'X-Device-ID': self.hardware_id}
-        response = requests.post(self.base_url + endpoint, data=ujson.dumps(data), headers=headers)
-        print(response.text)
-        # Free up memory once the request is complete
-        if 'response' in locals():
-            response.close()
-        return response
+        try:
+            response = requests.post(self.base_url + endpoint, data=ujson.dumps(data), headers=headers)
+            print(response.text)
+            # Free up memory once the request is complete
+            if 'response' in locals():
+                response.close()
+            return response
+        except Exception as e:
+            print("Failed to send data:", e)
+            return None
+        
+    
+    def get_manual_override(self):
+        """Checks for manual override commands from the server using device-specific endpoint."""
+        device_specific_endpoint = Luli_CONFIG.ENDPOINT_MANUAL_OVERRIDE + '/' + self.hardware_id
+        try:
+            response = requests.get(self.base_url + device_specific_endpoint)
+            if response.status_code == 200:
+                commands = response.json()
+                return commands
+            else:
+                print("Failed to get manual override, status code:", response.status_code)
+                return None
+        except Exception as e:
+            print("Failed to get manual override:", e)
+            return None
+        finally:
+            if 'response' in locals():
+                response.close()
 
-def main():
+    
+
+if __name__ == '__main__':
     ssid = 'YourSSID'
     password = 'YourPassword'
     base_url = 'http://yourapi.com'
@@ -57,5 +83,3 @@ def main():
     network_handler.connect_wifi()
     network_handler.send_data(endpoint, sensor_data)
 
-if __name__ == '__main__':
-    main()

@@ -121,12 +121,27 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/control_panel')
+def control_panel():
+    user_id = session.get('user_id')
+    if user_id:
+        user_data = users_collection.find_one({"_id": ObjectId(user_id)})
+        device_id = user_data.get('device_id') if user_data else None
+        if device_id:
+            return render_template('control_panel.html', device_id=device_id)
+        else:
+            return "Device ID not found", 404
+    else:
+        return "User not authenticated", 401
 
 @app.route('/plants')
 def plants():
     # Retrieve the document by its ID or another query
-    document_id = ObjectId('65fa4c38972991d86e690014')  
-    sensor_data_document = users_data_collection.find_one({"_id": document_id})
+    # Check session, get user id, retrieve sensor data
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+    sensor_data_document = users_data_collection.find_one({'user_id': ObjectId(user_id)})
     
     # Extract sensor data from the document
     sensor_data = sensor_data_document['sensor_data']

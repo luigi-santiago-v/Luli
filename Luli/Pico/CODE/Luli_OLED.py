@@ -58,7 +58,7 @@ class OLEDMenuDisplay:
 
 def main():
     display = OLEDMenuDisplay()
-    display.init_main_menu()
+    #display.init_main_menu()
     time.sleep(1)
 
     # Loop through menu printing functions as an example
@@ -70,3 +70,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

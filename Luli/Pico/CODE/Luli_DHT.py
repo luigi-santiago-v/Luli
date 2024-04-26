@@ -1,15 +1,16 @@
-import Luli.Pico.Luli_DHT as Luli_DHT
+import dht
 from machine import Pin
 import time
+import Luli_CONFIG
 
 class DHT22Handler:
     def __init__(self):
         # Initialize all DHT22 sensors on their respective pins
         self.sensors = [
-            Luli_DHT.DHT22(Pin(6, Pin.IN, Pin.PULL_DOWN)),
-            Luli_DHT.DHT22(Pin(7, Pin.IN, Pin.PULL_DOWN)),
-            Luli_DHT.DHT22(Pin(8, Pin.IN, Pin.PULL_DOWN)),
-            Luli_DHT.DHT22(Pin(9, Pin.IN, Pin.PULL_DOWN))
+            dht.DHT22(Pin(Luli_CONFIG.PIN_DHT0, Pin.IN, Pin.PULL_DOWN)),
+            dht.DHT22(Pin(Luli_CONFIG.PIN_DHT1, Pin.IN, Pin.PULL_DOWN)),
+            dht.DHT22(Pin(Luli_CONFIG.PIN_DHT2, Pin.IN, Pin.PULL_DOWN)),
+            dht.DHT22(Pin(Luli_CONFIG.PIN_DHT3, Pin.IN, Pin.PULL_DOWN))
         ]
 
     def measure_all(self):
@@ -41,7 +42,7 @@ class DHT22Handler:
         else:
             print("Failed to read humidity after several attempts.")
             return None
-
+        
 def main():
     dht_handler = DHT22Handler()
     while True:
@@ -55,3 +56,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

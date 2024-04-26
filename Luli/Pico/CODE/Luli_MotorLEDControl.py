@@ -34,6 +34,7 @@ if __name__ == "__main__":
 
     # Testing Motor Control
     control.motor_off()
+    control.leds_off()
     time.sleep(3)
     control.motor_on()
     time.sleep(45)
@@ -46,3 +47,4 @@ if __name__ == "__main__":
         time.sleep(1)
         control.led_off()
         time.sleep(1)
+

@@ -1,6 +1,4 @@
-import machine
-#import Luli.Pico.test.Luli_Motor as Luli_Motor
-#import Luli.Pico.test.Luli_LED as Luli_LED
+
 from Luli_UV import LTR390
 from Luli_Ultrasonic import WaterLevelSensor
 from Luli_pH import PHSensor
@@ -8,6 +6,7 @@ from Luli_OLED import OLEDMenuDisplay
 from Luli_DHT import DHT22Handler
 from Luli_Networkhandler import NetworkHandler
 from Luli_MotorLEDControl import MotorAndLEDControl
+import machine
 import Luli_CONFIG
 import utime
 
@@ -36,11 +35,11 @@ def log_error(e):
 def sensor_uv_read():
     # Give the sensor some time to start
     utime.sleep(Luli_CONFIG.DELAY_UV_STARTUP)
-    raw, uv_index = UV_SENSOR.get_uv_data()
+    raw, uv_intensity = UV_SENSOR.get_uv_data()
     print("RAW: {}".format(raw))
-    print("UV Index: {}".format(uv_index))
-    #return raw, uv_index
-    return uv_index
+    print("UV Intensity: {}µW/cm²".format(uv_intensity))
+    #return raw, uv_intensity
+    return uv_intensity
 
 def sensor_ph_read():
     ph_level = PH_SENSOR.get_ph()
@@ -60,17 +59,34 @@ def sensor_temp_read():
     total_temp = 0
     for i in range(4):
         # Average and convert to Fahrenheit
-        total_temp += ((DHTS.get_temperature(i) * 9/5) + 32)
-    avg_temp = total_temp / 4
+        temp = DHTS.get_temperature(i)
+        num_DHTs = 4
+        if temp is not None:
+            total_temp += ((temp * 9/5) + 32)
+        else:
+            total_temp += 0
+            num_DHTs = num_DHTs - 1
+    if num_DHTs <= 1:
+        num_DHTs = 1
+    avg_temp = total_temp / num_DHTs
     print("Average temperature:", avg_temp)
     return avg_temp
 
 def sensor_humidity_read():
     # Compute average humidity of sensors 0 to 3
     total_hum = 0
+    num_DHTs = 4
     for i in range(4):
-        total_hum += DHTS.get_humidity(i)
-    avg_hum = total_hum / 4
+        hum = DHTS.get_humidity(i)
+        if hum is not None:
+            total_hum += DHTS.get_humidity(i)
+            
+        else:
+            total_hum += 0
+            num_DHTs = num_DHTs - 1
+    if num_DHTs <= 1:
+        num_DHTs = 1
+    avg_hum = total_hum / num_DHTs
     print("Average humidity:", avg_hum)
     return avg_hum
 
@@ -101,25 +117,48 @@ def send_all_data(ph_param=None, temp_param=None, light_param=None, humidity_par
         "humidity": humidity,
         "tank": tank
     }
-
-    response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_ALL_SENSOR_DATA, data)
+    try:
+        response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_ALL_SENSOR_DATA, data)
+    except Exception as e:
+        print("Error sending all sensor data:", e)
+        #log_error(e)
     return response
 
 def send_data(data, data_label):
     response = None
-    match data_label:
-        case 'ph':
+    
+    if data_label == 'ph':
+        try:
             response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_PH_DATA, data)
-        case 'temp':
+        except Exception as e:
+            print("Error sending pH data:", e)
+            #log_error(e)
+    elif data_label == 'temp':
+        try:
             response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_TEMP_DATA, data)
-        case 'light':
+        except Exception as e:
+            print("Error sending temperature data:", e)
+            #log_error(e)
+    elif data_label == 'light':
+        try:
             response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_UV_DATA, data)
-        case 'humidity':
+        except Exception as e:
+            print("Error sending UV data:", e)
+            #log_error(e)
+    elif data_label == 'humidity':
+        try:
             response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_HUMIDITY_DATA, data)
-        case 'tank':
+        except Exception as e:
+            print("Error sending humidity data:", e)
+            #log_error(e)
+    elif data_label == 'tank':
+        try:
             response = NETWORK.send_data(Luli_CONFIG.ENDPOINT_UPDATE_TANK_DATA, data)
-        case _:
-            print("Invalid data label")
+        except Exception as e:
+            print("Error sending tank data:", e)
+            #log_error(e)
+    else:
+        print("Invalid data label")
 
     # if response was successful, return True
     if response.status_code == 200:
@@ -136,7 +175,6 @@ if __name__ == '__main__':
     # 3. Read Temperature and Humidity every 30 seconds
 
 
-    #NETWORK.connect_wifi('Liam', 'liampassword', 'http://'
     MOTOR_LED_CONTROL.motor_off()
     MOTOR_LED_CONTROL.leds_on()
 
@@ -147,6 +185,8 @@ if __name__ == '__main__':
         next_temp_humidity_time = start_time + Luli_CONFIG.TEMP_HUMIDITY_READ_INTERVAL
         next_motor_start_time = start_time # Start motor on startup
         next_motor_stop_time = start_time + Luli_CONFIG.DURATION_WATER_CYCLE
+        next_manual_override_check_time = utime.time() + Luli_CONFIG.MANUAL_OVERRIDE_CHECK_INTERVAL  # Setting up the next time to check for manual overrides
+
         
         temperature = None
         humidity = None
@@ -158,7 +198,80 @@ if __name__ == '__main__':
         TANK_SENSOR.calibrate_tank_full()
 
         while True:
+
             current_time = utime.time()
+            
+            
+            # Start Water Cycle that reads pH and tank level
+            if current_time >= next_motor_start_time:
+                tank_level_percent = sensor_tank_read()  # Get the current water level percentage
+                if tank_level_percent is not None and tank_level_percent > Luli_CONFIG.MINIMUM_WATER_LEVEL:
+                    MOTOR_LED_CONTROL.motor_on()
+                    next_motor_stop_time = current_time + Luli_CONFIG.DURATION_WATER_CYCLE  # Schedule to stop
+                    next_motor_start_time = next_motor_stop_time + Luli_CONFIG.NEXT_WATER_CYCLE
+                else:
+                    print("Water level too low to start pump")
+                    #next_motor_start_time = current_time + Luli_CONFIG.CHECK_WATER_LEVEL_INTERVAL  # Check again after some time
+                    
+            #print("CURRENT: ", current_time)
+            #print("SToP TIME: ", next_motor_stop_time)
+            if current_time >= next_motor_stop_time:
+                MOTOR_LED_CONTROL.motor_off()
+                print("MOTOR SHOULD BE OFF")
+                ph = sensor_ph_read()
+                tank = sensor_tank_read()  # Read again after pump off in case level has changed
+                update_display(ph_param=ph, tank_param=tank)
+                try:
+                    send_data(ph, 'ph')
+                    send_data(tank, 'tank')
+                except Exception as e:
+                    print("Error sending pH/tank data:", e)
+                next_motor_start_time = current_time + Luli_CONFIG.NEXT_WATER_CYCLE  # Schedule next cycle
+
+            # Check for manual override every 30 seconds
+            if current_time >= next_manual_override_check_time:
+                try:
+                    # Check for manual override
+                    override_commands = NETWORK.get_manual_override()
+                    if override_commands:
+                        print("Manual override commands received:", override_commands)
+                        if 'motor' in override_commands:
+                            if override_commands['motor'] == 'on':
+                                MOTOR_LED_CONTROL.motor_on()
+                            elif override_commands['motor'] == 'off':
+                                MOTOR_LED_CONTROL.motor_off()
+                        if 'leds' in override_commands:
+                            if override_commands['leds'] == 'on':
+                                MOTOR_LED_CONTROL.leds_on()
+                            elif override_commands['leds'] == 'off':
+                                MOTOR_LED_CONTROL.leds_off()
+                        if 'read_light' in override_commands:
+                            uv = sensor_uv_read()
+                            update_display()
+                            send_data(uv, 'light')
+                        if 'read_temp' in override_commands:
+                            temperature = sensor_temp_read()
+                            update_display()
+                            send_data(temperature, 'temp')
+                        if 'read_humidity' in override_commands:
+                            humidity = sensor_humidity_read()
+                            update_display()
+                            send_data(humidity, 'humidity')
+                        if 'read_ph' in override_commands:
+                            ph = sensor_ph_read()
+                            update_display(ph_param=ph)
+                            send_data(ph, 'ph')
+                        if 'read_tank' in override_commands:
+                            tank = sensor_tank_read()
+                            update_display(tank_param=tank)
+                            send_data(tank, 'tank')
+                except Exception as e:
+                    print("Error getting manual override:", e)
+                    #log_error(e)
+                
+                # Update the next check time for manual overrides
+                next_manual_override_check_time = current_time + Luli_CONFIG.MANUAL_OVERRIDE_CHECK_INTERVAL
+            
 
             # Read UV and update display every 120 seconds
             if current_time >= next_uv_time:
@@ -182,40 +295,21 @@ if __name__ == '__main__':
                     print("Error sending temp/humidity data:", e)
                 next_temp_humidity_time = current_time + Luli_CONFIG.TEMP_HUMIDITY_READ_INTERVAL # Schedule next run
 
-            # Start Water Cycle that reads pH and tank level
-            if current_time >= next_motor_start_time:
-                tank_level_percent = sensor_tank_read()  # Get the current water level percentage
-                if tank_level_percent is not None and tank_level_percent > Luli_CONFIG.MINIMUM_WATER_LEVEL:
-                    MOTOR_LED_CONTROL.motor_on()
-                    next_motor_stop_time = current_time + Luli_CONFIG.DURATION_WATER_CYCLE  # Schedule to stop in 10 minutes
-                else:
-                    print("Water level too low to start pump")
-                    #next_motor_start_time = current_time + Luli_CONFIG.CHECK_WATER_LEVEL_INTERVAL  # Check again after some time
-                    
-            if current_time >= next_motor_stop_time:
-                MOTOR_LED_CONTROL.motor_off()
-                ph = sensor_ph_read()
-                tank = sensor_tank_read()  # Read again after pump off in case level has changed
-                update_display(ph=ph, tank=tank)
-                try:
-                    send_data(ph, 'ph')
-                    send_data(tank, 'tank')
-                except Exception as e:
-                    print("Error sending pH/tank data:", e)
-                next_motor_start_time = current_time + Luli_CONFIG.NEXT_WATER_CYCLE  # Schedule next cycle
+            
             
 
             utime.sleep(0.1)  # Sleep for 100ms to reduce CPU usage
 
     except Exception as e:
+        # SHUTDOWN ERROR CODE
         # Log the error
         log_error(e)
         print("Error:", e)
         MOTOR_LED_CONTROL.motor_off()
-        for _ in range(10):
+        for _ in range(3):
             MOTOR_LED_CONTROL.leds_off()
             utime.sleep(0.5)
             MOTOR_LED_CONTROL.leds_on()
             utime.sleep(0.5)
         MOTOR_LED_CONTROL.leds_off()
-        machine.reset() # Reset the board if an error occurs
+        #machine.reset() # Reset the board if an error occurs

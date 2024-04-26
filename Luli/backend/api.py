@@ -26,6 +26,8 @@ from functools import wraps
     - /api/update_humidity_data     POST
     - /api/update_tank_data         POST
     - /api/update_all_sensors_data  POST
+    - /api/update_manual_override   POST
+    - /api/get_manual_override      GET
 '''
 
 # Do it all in a function here because we can pass it "app" which is the same "app" as main.py
@@ -34,6 +36,10 @@ from functools import wraps
 
 
 def register_api_routes(app, users_settings_collection, users_data_collection, users_collection):
+    # This dictionary will store the manual override commands for each device by its ID
+    device_override_commands = {}
+
+
     def ensure_object_id(obj_id):
         if isinstance(obj_id, str):
             try:
@@ -288,3 +294,18 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
     @app.route('/api/test', methods=['GET'])
     def api_test():
         return "API is working."
+    
+    @app.route('/api/update_manual_override/<device_id>', methods=['POST'])
+    def update_manual_override(device_id):
+        content = request.json
+        if device_id not in device_override_commands:
+            device_override_commands[device_id] = {}
+        device_override_commands[device_id].update(content)
+        return jsonify(success=True, commands=device_override_commands[device_id]), 200
+
+    @app.route('/api/get_manual_override/<device_id>', methods=['GET'])
+    def get_manual_override(device_id):
+        commands = device_override_commands.get(device_id, {})
+        # Clear the commands after they have been fetched
+        device_override_commands[device_id] = {}
+        return jsonify(commands), 200

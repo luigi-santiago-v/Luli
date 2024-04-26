@@ -1,0 +1,1 @@
+{"humidity": 51.9, "temperature": 23.575}
