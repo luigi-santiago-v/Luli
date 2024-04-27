@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="style.css" 
+      rel = "stylesheet">
+
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+     
+<article>
+      
+      <div id = "createAccount" class="createAccount">
+        <div class = "circleLogo">
+            <div class = "logoFrontPage">
+                <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 160 height= 160 style="float: center" >
+            </div>
+            <div></div>
+
+        </div>
+
+        <form id="createAccountForm" class = "createAccountForm" action = "/create_account"  method = "POST">
+
+            <div id = "welcomeMessage" class = "welcomeMessage">Welcome to Luli Hydroponics!</div>
+
+            <div class="formGroup">  
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="formGroup">
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="formGroup">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            </div>
+            <div class="formGroup">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class = "createAccountButton">Create Account</button>
+        </form>       
+
+        
+
+      </div>
+
+
+</article> 
+   
+   
+
+</body>
+
+
+
+</html>

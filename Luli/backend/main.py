@@ -23,6 +23,7 @@ mongodb_connection_string = 'mongodb://localhost:27017'
 client = MongoClient(mongodb_connection_string) 
 DATABASE = client['user_data']  
 users_collection = DATABASE.credentials
+users_messages_collection = DATABASE.messages
 users_settings_collection = DATABASE.settings
 users_data_collection = DATABASE.data
 
@@ -35,92 +36,102 @@ load_dotenv() # Load .env file data
 app.secret_key = os.getenv("luli_secret_key") # Load secret key into flask app
 os.environ.pop('luli_secret_key', None) # Delete secret key from environment variables
 
+
+app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS.
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent client-side JS from accessing the cookie.
+#app.config['PERMANENT_SESSION_LIFETIME'] = 600  # Session lifetime in seconds or use timedelta for more precision.
+
+
 # Import the function to register API routes after the app instance is created
 from api import register_api_routes
 
 # Call the register function with the app object to set up the api endpoints
 register_api_routes(app, users_data_collection=users_data_collection, users_settings_collection=users_settings_collection, users_collection=users_collection)
 
+#################
+#   HOMEPAGE    #
+#################
 @app.route('/')
 def serve_welcome_page():
     return app.send_static_file('Luli.html')
 
+
+#######################
+#   CREATE ACCOUNT    #
+#######################
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'POST':
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
         username = request.form['username']
         password = request.form['password']
         
         # Check if the username already exists in the database
         if users_collection.find_one({'username': username}):
-            #return flash('Username already exists. Choose a different one.', 'error')
             return "Username already exists. Choose a different one."
-            
         
         # Hash the password for security
         hashed_password = generate_password_hash(password)
-        
-        # Insert new user into the database
-        print(f"INSERTING: {username}::{hashed_password} into {users_collection}")
-        current_time = datetime.now()
-        users_collection.insert_one({'username': username, 'password': hashed_password, 'created':current_time})
-        
-        
-        #flash('Account created successfully!', 'success')
-        return redirect(url_for('login'))  
-        
-    return '''
-        <form method="post">
-            Username: <input type="text" name="username"><br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" value="Create Account">
-        </form>
-    '''
 
+        # Insert new user into the database
+        current_time = datetime.now()
+        result = users_collection.insert_one({
+            'first_name': first_name, 
+            'last_name': last_name,
+            'username': username, 
+            'password': hashed_password, 
+            'created': current_time
+        })
+        
+        # Retrieve the new user's ID
+        new_user_id = result.inserted_id
+        
+        # Initialize empty entries in other collections
+        users_settings_collection.insert_one({'user_id': new_user_id, 'settings': {}})
+        users_data_collection.insert_one({'user_id': new_user_id, 'data': {}})
+        users_messages_collection.insert_one({'user_id': new_user_id, 'messages': {}})
+        
+        return redirect(url_for('login'))
+    else:
+        # Serve the static HTML file for the account creation form
+        return app.send_static_file('CreateAccount.html')
+
+##############
+#   LOGIN    #
+##############
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Get the username and password from the submitted form
         username = request.form['username']
         password = request.form['password']
-        
-        # Query the database for the username
         user_document = users_collection.find_one({'username': username})
-        user_mongo_id = user_document['_id']
-            
 
-        if user_document:
-            # A document for the user exists, now check the password
-            stored_hash = user_document.get('password')
-            if check_password_hash(stored_hash, password):
-                # The hash matches the password provided
-                # Login is successful
-                flash('Login successful!', 'success')
-                session["logged_in"] = True
-                session["username"] = username
-                session["user_id"] = str(user_document['_id'])
-                users_collection.update_one({'_id': user_mongo_id}, {'$set': {'last_login': datetime.now()}})
-                return redirect(url_for('serve_welcome_page')) 
-            else:
-                # The hash does not match the password provided
-                # Don't tell the user the password was wrong, just say the credentials were incorrect
-                #   prevents account enumeration attacks
-                return flash("Incorrect credentials.", "error")
+        if user_document and check_password_hash(user_document.get('password'), password):
+            # Login successful
+            session["logged_in"] = True
+            session["username"] = username
+            session["user_id"] = str(user_document['_id'])
+            users_collection.update_one({'_id': user_document['_id']}, {'$set': {'last_login': datetime.now()}})
+            return redirect(url_for('serve_welcome_page'))
         else:
-            # No user document with that username exists
-            # Don't tell the user the username was wrong, just say the credentials were incorrect
-            #   prevents account enumeration attacks
-            return flash("Incorrect credentials.", "error")
-    # If it's a GET request, just render the login page
-    return app.send_static_file('Luli.html')
+            # Incorrect credentials, redirect with error message
+            return redirect(url_for('login', msg='Incorrect credentials.'))
+    else:
+        # Serve the login page
+        return app.send_static_file('Login.html')
 
-
+###############
+#   LOGOUT    #
+###############
 @app.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
-
+######################
+#   CONTROL PANEL    #
+######################
 @app.route('/control_panel')
 def control_panel():
     user_id = session.get('user_id')
@@ -134,6 +145,10 @@ def control_panel():
     else:
         return "User not authenticated", 401
 
+
+#########################
+#   PLANTS + SENSORS    #
+#########################
 @app.route('/plants')
 def plants():
     # Retrieve the document by its ID or another query
@@ -153,7 +168,13 @@ def plants():
     # Render the HTML page with the sensor data
     # The HTML file 'plants.html' should be in the 'templates' folder of your Flask application
     return render_template('Plants.html', sensor_data=latest_sensor_data)
-    
+   
+##############
+#   FORUM    #
+##############
+@app.route('/forum')
+def forum():
+    return app.send_static_file('Forum.html')
 
 
 

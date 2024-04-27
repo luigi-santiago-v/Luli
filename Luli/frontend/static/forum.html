@@ -18,7 +18,7 @@
       <div class = "corner_topRight"> </div>
    </header>
 
-     <nav class = "nav_list">
+   <nav class = "nav_list">
       
       <div class = "button" > 
          <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
@@ -44,26 +44,42 @@
      </nav>
      
      <article>
-      <form action="/login" method="POST">
-      <div class="module_login">
-            <div class = "user">
-            </div>
-            <div>
-            <label for="username" class="profile" > Username:</label>
-            <input type="text" id="username" name="username" style="margin-bottom: 15px;">
-            </div>
-            <div>
-            <label for="password" class="password" >Password:</label>
-            <input type="password" id="password" name="password" style="margin-bottom: 15px;">
-            </div>
-            <button type="submit">Login</button>
-            <a href = "/create_account"> <button type ="button">Create Account</button> </a>
-         </form>
-      </div>
-   </article> 
-   
-   
+      <div id = "forumContainer" class = "forumContainer" >
 
+         <div id = "forumPosts" class = "forumPosts"> 
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Luigi Villa</div>
+               <div class="message" style = "margin:15px">Just Harvested my spinach! check it out</div>
+            </div>
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Liam</div>
+               <div class="message" style = "margin:15px">Planted my new crop. Will be harvesting in 2 months</div>
+            </div>
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Eric</div>
+               <div class="message" style = "margin:15px"> I guess I did not set up my system correctly</div>
+            </div>
+
+
+         </div>
+
+
+         
+
+         <div id = "forumMenu" class = "forumMenu"> 
+         <button width = 80% height = 80% id = "forumButton" class = "forumButton" onclick="post()">
+            <img src = "images/plus.png" alt = "addpost" width = 50% height = 50%/>
+         </button>
+         </div>
+
+      </div>
+     </article> 
+   
+   
+     <script src="scripts/post.js"></script>
 </body>
 
 

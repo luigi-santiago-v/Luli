@@ -18,37 +18,108 @@
       <div class = "corner_topRight"> </div>
    </header>
 
-     <nav class = "nav_list">
+   <nav class = "nav_list">
       
       <div class = "button" > 
-         <a href="Luli.html" target=" _self"> <img src = "user.png" alt = "plant" height= 50 width 50> </a>
+         <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
          <label class="button_label"> Login </label> 
       </div>
       <div class = "button" > 
-         <a href="Plants.html" target=" _self"> <img src = "pot.png" alt = "plant" height= 50 width 50> </a>
+         <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
          <label class="button_label"> Plants </label> 
       </div>
       <div class = "button" > 
-         <a href="Friends.html" target=" _self"> <img src = "friends.png" alt = "plant" height= 50 width 50> </a>
+         <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
          <label class="button_label"> Friends </label> 
       </div>
       <div class = "button" > 
-         <a href="Messages.html" target=" _self"> <img src = "envelope.png" alt = "plant" height= 50 width 50> </a>
-         <label class="button_label"> Messages </label> 
+         <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
       </div>
       <div class = "button" > 
-         <a href="Settings.html" target=" _self"> <img src = "setting.png" alt = "plant" height= 50 width 50> </a>
+         <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
          <label class="button_label"> Settings </label> 
       </div>
          <div class = "corner_bottomLeft"> </div>
      </nav>
      
-     <article>
+   <article id = "friendList" class= "friendList">
       
-      Friends
-   </article> 
+
+         <div id = "friendModule" class="friendModule">
+            <div id = "userProfile" class = "userProfile">
+               <image src = "images/luigi.jpeg" alt = "profile pic"  class = "profileImage"/>
+               <div id = "userName" class = "userName" > papi   </div>
+            </div>
+            <div id = "userInfo" class = "userInfo">
+               <p id = "userAbout" class = "userAbout"> 
+                  My Spinach is going strong. Download my settings for nice leafy greens!
+               </p>
+               <div id = "userInteraction" class = "userInteraction">  
+                  <button type = "submit" id = "downloadSettings" class = "downloadSettings" onclick="handleDownloadSettings.call(this)">
+                     <img src = "images/download.png" alt = "download" width = 80%/>
+                  </button>
+               </div>
+            </div>
+         </div>
+
+         <div id = "friendModule" class="friendModule">
+            <div id = "userProfile" class = "userProfile">
+               <image src = "images/liam.jpg" alt = "profile pic"  class = "profileImage"/>
+               <div id = "userName" class = "userName" > GooseMaster419  </div>
+            </div>
+            <div id = "userInfo" class = "userInfo">
+               <p id = "userAbout" class = "userAbout"> 
+                  Im really getting the hang of growing basil. This is going to spruce up my vegan pizza.
+               </p>
+               <div id = "userInteraction" class = "userInteraction">  
+                  <button type = "submit" id = "downloadSettings" class = "downloadSettings" onclick="handleDownloadSettings.call(this)">
+                     <img src = "images/download.png" alt = "download" width = 80%/>
+                  </button>
+               </div>
+            </div>
+         </div>
+
+
+         <div id = "friendModule" class="friendModule">
+            <div id = "userProfile" class = "userProfile">
+               <image src = "images/abe.jpeg" alt = "profile pic"  class = "profileImage"/>
+               <div id = "userName" class = "userName" > fishMaster   </div>
+            </div>
+            <div id = "userInfo" class = "userInfo">
+               <p id = "userAbout" class = "userAbout"> 
+                  My calves needs nutrients, digging these radishes
+               </p>
+               <div id = "userInteraction" class = "userInteraction">  
+                  <button type = "submit" id = "downloadSettings" class = "downloadSettings" onclick="handleDownloadSettings.call(this)">
+                     <img src = "images/download.png" alt = "download" width = 80%/>
+                  </button>
+               </div>
+            </div>
+         </div>
+
+         <div id = "friendModule" class="friendModule">
+            <div id = "userProfile" class = "userProfile">
+               <image src = "images/eric.jpeg" alt = "profile pic"  class = "profileImage"/>
+               <div id = "userName" class = "userName" > noSkunk88   </div>
+            </div>
+            <div id = "userInfo" class = "userInfo">
+               <p id = "userAbout" class = "userAbout"> 
+                  I guess not
+               </p>
+               <div id = "userInteraction" class = "userInteraction">  
+                  <button type = "submit" id = "downloadSettings" class = "downloadSettings" onclick="handleDownloadSettings.call(this)">
+                     <img src = "images/download.png" alt = "download" width = 80%/>
+                  </button>
+               </div>
+            </div>
+         </div>
    
    
+   <script src="scripts/settingsDownload.js"></script>
+
+
+
 
 </body>
 
