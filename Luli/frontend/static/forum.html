@@ -33,8 +33,8 @@
          <label class="button_label"> Friends </label> 
       </div>
       <div class = "button" > 
-         <a href="Messages.html" target=" _self"> <img src = "envelope.png" alt = "plant" height= 50 width=50> </a>
-         <label class="button_label"> Messages </label> 
+         <a href="forum.html" target=" _self"> <img src = "discussion.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
       </div>
       <div class = "button" > 
          <a href="Settings.html" target=" _self"> <img src = "setting.png" alt = "plant" height= 50 width=50> </a>
@@ -44,12 +44,42 @@
      </nav>
      
      <article>
-      
-     Messages
-   </article> 
-   
-   
+      <div id = "forumContainer" class = "forumContainer" >
 
+         <div id = "forumPosts" class = "forumPosts"> 
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Luigi Villa</div>
+               <div class="message" style = "margin:15px">Just Harvested my spinach! check it out</div>
+            </div>
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Liam</div>
+               <div class="message" style = "margin:15px">Planted my new crop. Will be harvesting in 2 months</div>
+            </div>
+
+            <div class="post">
+               <div class="name" style = "margin:15px">Eric</div>
+               <div class="message" style = "margin:15px"> I guess I did not set up my system correctly</div>
+            </div>
+
+
+         </div>
+
+
+         
+
+         <div id = "forumMenu" class = "forumMenu"> 
+         <button width = 80% height = 80% id = "forumButton" class = "forumButton" onclick="post()">
+            <img src = "plus.png" alt = "addpost" width = 50% height = 50%/>
+         </button>
+         </div>
+
+      </div>
+     </article> 
+   
+   
+     <script src="post.js"></script>
 </body>
 
 
