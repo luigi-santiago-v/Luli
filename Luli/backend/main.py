@@ -9,12 +9,26 @@ import os
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from datetime import datetime
+import uuid
 
 
-relative_static_path = "../frontend/static"
-relative_templates_path = "../frontend/templates"
+# Get the absolute path to the directory where the script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+# Construct the absolute paths to 'static' and 'templates' folders
+absolute_static_path = os.path.join(BASE_DIR, '..', 'frontend', 'static')
+absolute_templates_path = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
+absolute_user_images_path = os.path.join(BASE_DIR, '..', 'frontend', 'static', 'USER_IMAGES')
+
+# Normalize the paths to remove any relative path components (like '..')
+absolute_static_path = os.path.normpath(absolute_static_path)
+absolute_templates_path = os.path.normpath(absolute_templates_path)
+absolute_user_images_path = os.path.normpath(absolute_user_images_path)
+
 
 # MongoDB connection setup
 mongodb_connection_string = 'mongodb://localhost:27017'
@@ -29,8 +43,8 @@ users_data_collection = DATABASE.data
 
 app = Flask(__name__,
             static_url_path='', 
-            static_folder=relative_static_path,
-            template_folder=relative_templates_path )
+            static_folder=absolute_static_path,
+            template_folder=absolute_templates_path )
 
 load_dotenv() # Load .env file data
 app.secret_key = os.getenv("luli_secret_key") # Load secret key into flask app
@@ -39,6 +53,11 @@ os.environ.pop('luli_secret_key', None) # Delete secret key from environment var
 
 app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS.
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent client-side JS from accessing the cookie.
+
+app.config['IMAGE_UPLOAD_FOLDER'] = absolute_user_images_path
+# Ensure the directory exists
+os.makedirs(app.config['IMAGE_UPLOAD_FOLDER'], exist_ok=True)
+
 #app.config['PERMANENT_SESSION_LIFETIME'] = 600  # Session lifetime in seconds or use timedelta for more precision.
 
 
@@ -113,7 +132,7 @@ def login():
             session["username"] = username
             session["user_id"] = str(user_document['_id'])
             users_collection.update_one({'_id': user_document['_id']}, {'$set': {'last_login': datetime.now()}})
-            return redirect(url_for('serve_welcome_page'))
+            return redirect(url_for('plants'))
         else:
             # Incorrect credentials, redirect with error message
             return redirect(url_for('login', msg='Incorrect credentials.'))
@@ -163,7 +182,7 @@ def plants():
 
     # Here we assume that 'sensor_data' is structured with the latest reading as the last entry
     # If it's structured differently, you will need to adjust the logic to get the latest or desired sensor reading
-    latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else {}
+    latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else []
 
     # Render the HTML page with the sensor data
     # The HTML file 'plants.html' should be in the 'templates' folder of your Flask application
@@ -174,8 +193,55 @@ def plants():
 ##############
 @app.route('/forum')
 def forum():
-    return app.send_static_file('Forum.html')
+    posts = list(users_messages_collection.find())
+    return render_template('Forum.html', posts=posts)
 
+@app.route('/add_post', methods=['POST'])
+@app.route('/add_post', methods=['POST'])
+def add_post():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+    user_document = users_collection.find_one({'_id': ObjectId(session['user_id'])})
+    if not user_document:
+        return "User not found", 404
+
+    message = request.form.get('message')
+    image = request.files.get('image')
+    
+    post = {'user_id': session['user_id'], 
+            'name': user_document.get('first_name'), 
+            'message': message, 
+            'created': datetime.now()}
+
+    if image and allowed_file(image.filename):
+        try:
+            # Generate a unique filename using UUID
+            unique_filename = str(uuid.uuid4())
+            file_extension = os.path.splitext(secure_filename(image.filename))[1]
+            filename = unique_filename + file_extension
+            # The relative path for use in HTML src attribute
+            relative_image_path = os.path.join('USER_IMAGES', filename)
+            # The absolute path to save the image file
+            absolute_image_path = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename)
+            # Save the image
+            image.save(absolute_image_path)
+            # Add image path to the post dictionary
+            post['image_path'] = relative_image_path  # Store the relative path, not absolute
+            print(f"Image saved with unique filename {filename}")
+        except Exception as e:
+            print(f"Failed to save image: {e}")
+            return "Failed to save image", 500
+
+    # Insert the post (with the image path if there's an image) into the database
+    users_messages_collection.insert_one(post)
+    return redirect(url_for('forum')) 
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    # Check if there is an extension in the filename and if the extension is allowed
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 

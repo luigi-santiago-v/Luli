@@ -44,42 +44,42 @@
      </nav>
      
      <article>
-      <div id = "forumContainer" class = "forumContainer" >
-
-         <div id = "forumPosts" class = "forumPosts"> 
-
-            <div class="post">
-               <div class="name" style = "margin:15px">Luigi Villa</div>
-               <div class="message" style = "margin:15px">Just Harvested my spinach! check it out</div>
-            </div>
-
-            <div class="post">
-               <div class="name" style = "margin:15px">Liam</div>
-               <div class="message" style = "margin:15px">Planted my new crop. Will be harvesting in 2 months</div>
-            </div>
-
-            <div class="post">
-               <div class="name" style = "margin:15px">Eric</div>
-               <div class="message" style = "margin:15px"> I guess I did not set up my system correctly</div>
-            </div>
-
-
+      <div id="forumContainer" class="forumContainer">
+         <div id="forumPosts" class="forumPosts"> 
+            <!-- Dynamic Post Rendering -->
+            {% for post in posts %}
+               <div class="post">
+                  <div class="name" style="margin:15px">{{ post.name }}</div>
+                  <!-- Add a new div for the date and time -->
+                  <div class="date" style="margin:15px">{{ post.created.strftime('%m/%d/%y %I:%M%p') }}</div>
+                  <div class="message" style="margin:15px">{{ post.message }}</div>
+                  {% if post.image_path %}
+                        <img src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="max-width: 500px;">
+                  {% endif %}
+               </div>
+            {% endfor %}
          </div>
-
-
-         
-
-         <div id = "forumMenu" class = "forumMenu"> 
-         <button width = 80% height = 80% id = "forumButton" class = "forumButton" onclick="post()">
-            <img src = "images/plus.png" alt = "addpost" width = 50% height = 50%/>
-         </button>
+         <div id="forumMenu" class="forumMenu">
+            <button id="addPostButton">Add Post</button>
          </div>
-
       </div>
-     </article> 
-   
-   
-     <script src="scripts/post.js"></script>
+
+      <!-- Modal for Adding a New Post -->
+      <div id="postModal" class="modal">
+         <div class="modal-content">
+             <span class="close">&times;</span>
+             <form action="/add_post" method="post" enctype="multipart/form-data">
+                 <label for="message">Message:</label>
+                 <textarea id="message" name="message" required></textarea><br>
+                 <label for="image">Image (optional):</label>
+                 <input type="file" id="image" name="image"><br>
+                 <button type="submit">Submit</button>
+             </form>
+         </div>
+     </div>
+   </article>
+
+   <script src="scripts/modal.js"></script>
 </body>
 
 
