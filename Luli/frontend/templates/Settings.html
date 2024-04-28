@@ -10,70 +10,68 @@ of refresh in units of second
 -->
 
 <title>LuLi Hydroponics</title>
-<link href="style.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 <script src="scripts/settingsSlide.js"></script>
 
 </head>
 <body>
 <header>
-    <img class="logo" src="images/hydroponic.png" alt="hydroPlant" width="50" height="50" style="float: left;">
-    <img src="images/luli_logo.png" alt="Luli Hydroponics" width="60" height="60" style="float: left;">
+    <img class="logo" src="{{ url_for('static', filename='images/hydroponic.png')}}" alt="hydroPlant" width="50" height="50" style="float: left;">
+    <img src="{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width="60" height="60" style="float: left;">
     <div class="corner_topRight"></div>
 </header>
 <nav class = "nav_list">
       
     <div class = "button" > 
-       <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+       <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
        <label class="button_label"> Login </label> 
     </div>
     <div class = "button" > 
-       <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+       <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
        <label class="button_label"> Plants </label> 
     </div>
     <div class = "button" > 
-       <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+       <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
        <label class="button_label"> Friends </label> 
     </div>
     <div class = "button" > 
-       <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+       <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
        <label class="button_label"> Forum </label> 
     </div>
     <div class = "button" > 
-       <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+       <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
        <label class="button_label"> Settings </label> 
     </div>
        <div class = "corner_bottomLeft"> </div>
    </nav>
 <article>
 
-    <div class="settingsContainer">
-        
-        <label for="waterCycle" id="slideLabelTop">Water Cycle</label>
-        <div id = "containerSlideValue" style = "width:100%">
-            <input type="range" id="waterCycle" name="waterCycle" min="0" max="100" value="50" width = "80%" onclick ="adjustSettingValue()">
-            <div id = waterCycleValue>50</div>
-        </div>
-
-         <label for="waterAmount" id="slideLabel">Water Amount</label>
-         <div id = "containerSlideValue" style = "width:100%">
-            <input type="range" id="waterAmount" name="waterAmount" min="0" max="100" value="50" onclick ="adjustSettingValue()">
-            <div id = waterAmountValue>50</div>
-         </div>
-
-        <label for="lightCycle" id="slideLabel">Light Cycle</label>
-        <div id = "containerSlideValue" style = "width:100%">
-            <input type="range" id="lightCycle" name="lightCycle" min="0" max="100" value="50" onclick ="adjustSettingValue()">
-            <div id = lightCycleValue>50</div>
-        </div>
-
-        <label for="lightDuration" id="slideLabelBottom">Light Duration</label>
-        <div id = "containerSlideValue" style = "width:100%">
-            <input type="range" id="lightDuration" name="lightDuration" min="0" max="100" value="50" onclick ="adjustSettingValue()">
-            <div id = lightDurationValue>50</div>
-        </div>
+    <form id="settingsForm" action="/save_settings" method="POST">
+        <div class="settingsContainer">
+            
+            <label for="water_interval" id="water_intervalLabel">Water plants every <span id="water_intervalValue">{{ settings.get('water_interval', 12) }} hours</span></label>
+            <div class="sliderContainer">
+                <input type="range" id="water_interval" name="water_interval" min="1" max="24" value="{{ settings.get('water_interval', 12) }}" oninput="document.getElementById('water_intervalValue').textContent = this.value + ' hours'">
+            </div>
     
-    </div>
+            
+            <label for="led_duration" id="led_durationLabel">Turn on LEDs for <span id="led_durationValue">{{ settings.led_duration if settings.led_duration else '12' }}</span> hours</label>
+            <div class="sliderContainer">
+                <input type="range" id="led_duration" name="led_duration" min="1" max="24" value="{{ settings.led_duration if settings.led_duration else '12' }}" oninput="document.getElementById('led_durationValue').textContent = this.value">
+            </div>
+    
+            <label for="pump_duration" id="pump_durationLabel">Water for <span id="pump_durationValue">{{ settings.pump_duration if settings.pump_duration else '5' }}</span> minutes per cycle</label>
 
+            <div class="sliderContainer">
+                <input type="range" id="pump_duration" name="pump_duration" min="1" max="15" value="{{ settings.pump_duration if settings.pump_duration else '5' }}" oninput="document.getElementById('pump_durationValue').textContent = this.value">
+            </div>
+    
+            <div class="settingsButton">
+                <button type="submit" id="saveSettingsButton">Save Settings</button>
+            </div>
+        </div>
+    </form>
+    
     <div class = "plantInfoSettingsContainer">
     
         <div id = "plantAmount" class = "plantAmount" >

@@ -54,25 +54,29 @@
 
         </div>
 
-        <form id="createAccountForm" class = "createAccountForm" action = "/create_account"  method = "POST">
+        <form id="createAccountForm" class = "createAccountForm" action = "/create_account"  method = "POST" enctype="multipart/form-data">
 
             <div id = "welcomeMessage" class = "welcomeMessage">Welcome to Luli Hydroponics!</div>
 
             <div class="formGroup">  
-            <label for="first-name">First Name:</label>
-            <input type="text" id="first-name" name="first-name" required>
+               <label for="first-name">First Name:</label>
+               <input type="text" id="first-name" name="first-name" required>
             </div>
             <div class="formGroup">
-            <label for="last-name">Last Name:</label>
-            <input type="text" id="last-name" name="last-name" required>
+               <label for="last-name">Last Name:</label>
+               <input type="text" id="last-name" name="last-name" required>
             </div>
             <div class="formGroup">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+               <label for="username">Username:</label>
+               <input type="text" id="username" name="username" required>
             </div>
             <div class="formGroup">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+               <label for="password">Password:</label>
+               <input type="password" id="password" name="password" required>
+            </div>
+            <div class="formGroup">  
+               <label for="profile_pic">Profile Picture:</label>
+               <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg, image/jpg">
             </div>
             <button type="submit" class = "createAccountButton">Create Account</button>
         </form>       

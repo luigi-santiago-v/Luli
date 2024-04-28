@@ -4,7 +4,7 @@
 <meta charset = "UTF-8">
 <title> LuLi Hydroponics </title>
 
-<link href="../static/style.css" 
+<link href="{{ url_for('static', filename='style.css')}}" 
       rel = "stylesheet">
 
 
@@ -13,31 +13,31 @@
 <body>
  
    <header>
-      <img class="logo" src = "../static/images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
-      <img src = "../static/images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
       <div class = "corner_topRight"> </div>
    </header>
 
    <nav class = "nav_list">
       
       <div class = "button" > 
-         <a href="/" target=" _self"><img src = "../static/images/user.png" alt = "login" height= 50 width = 50></a>
+         <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
          <label class="button_label"> Login </label> 
       </div>
       <div class = "button" > 
-         <a href="/plants" target=" _self"> <img src = "../static/images/pot.png" alt = "plant" height= 50 width = 50> </a>
+         <a href="/plants"><img src="{{ url_for('static', filename='images/pot.png')}}" alt="plant" height="50" width="50"></a>
          <label class="button_label"> Plants </label> 
       </div>
       <div class = "button" > 
-         <a href="/friends" target=" _self"> <img src = "../static/images/friends.png" alt = "plant" height= 50 width=50> </a>
+         <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
          <label class="button_label"> Friends </label> 
       </div>
       <div class = "button" > 
-         <a href="/forum" target=" _self"> <img src = "../static/images/discussion.png" alt = "plant" height= 50 width=50> </a>
+         <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
          <label class="button_label"> Forum </label> 
       </div>
       <div class = "button" > 
-         <a href="/settings" target=" _self"> <img src = "../static/images/setting.png" alt = "plant" height= 50 width=50> </a>
+         <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
          <label class="button_label"> Settings </label> 
       </div>
          <div class = "corner_bottomLeft"> </div>
@@ -107,7 +107,7 @@
      <div class = "plantInfo">
 
       <div>
-         <img src = "../static/images/plants/spinach.jpeg" alt = "spinach" height = 90% width = 90% class = "plantImages">
+         <img src = "{{ url_for('static', filename='images/plants/spinach.jpeg')}}" alt = "spinach" height = 90% width = 90% class = "plantImages">
       </div>
      
       <div> SPINACH</div>
@@ -126,7 +126,7 @@
      <div class = "plantInfo">
 
       <div>
-         <img src = "../static/images/plants/kale.jpeg" alt = "Kale" height = 90% width = 90% class = "plantImages">
+         <img src = "{{ url_for('static', filename='images/plants/kale.jpeg')}}" alt = "Kale" height = 90% width = 90% class = "plantImages">
       </div>
      
       <div> Kale</div>
@@ -145,7 +145,7 @@
      <div class = "plantInfo">
 
       <div>
-         <img src = "../static/images/plants/romaine.jpeg" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
+         <img src = "{{ url_for('static', filename='images/plants/romaine.jpeg')}}" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
       </div>
      
       <div> Lettuce</div>

@@ -4,7 +4,7 @@
 #########################################
 
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, jsonify
 import os
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from datetime import datetime
 import uuid
+
 
 
 # Get the absolute path to the directory where the script is located
@@ -53,10 +54,12 @@ os.environ.pop('luli_secret_key', None) # Delete secret key from environment var
 
 app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS.
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent client-side JS from accessing the cookie.
-
 app.config['IMAGE_UPLOAD_FOLDER'] = absolute_user_images_path
+app.config['PROFILE_PIC_FOLDER'] = os.path.join(absolute_static_path, 'PROFILE_PICS')
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max size
 # Ensure the directory exists
 os.makedirs(app.config['IMAGE_UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['PROFILE_PIC_FOLDER'], exist_ok=True)
 
 #app.config['PERMANENT_SESSION_LIFETIME'] = 600  # Session lifetime in seconds or use timedelta for more precision.
 
@@ -85,7 +88,7 @@ def create_account():
         last_name = request.form['last-name']
         username = request.form['username']
         password = request.form['password']
-        
+        profile_pic = request.files['profile_pic']
         # Check if the username already exists in the database
         if users_collection.find_one({'username': username}):
             return "Username already exists. Choose a different one."
@@ -100,12 +103,33 @@ def create_account():
             'last_name': last_name,
             'username': username, 
             'password': hashed_password, 
-            'created': current_time
+            'created': current_time,
+            'friends': []  # Initialize an empty list for friends
         })
         
         # Retrieve the new user's ID
         new_user_id = result.inserted_id
+
+        if profile_pic and allowed_file(profile_pic.filename):
+            filename = secure_filename(profile_pic.filename)
+            # Standardize the file extension
+            if filename.lower().endswith('.jpeg'):
+                filename = filename[:-5] + '.jpg'  # Change extension from .jpeg to .jpg
+
+            filename = username + '.jpg'  # Rename the file to username.jpg
+            profile_pic_path = os.path.join(app.config['PROFILE_PIC_FOLDER'], filename)
+            profile_pic.save(profile_pic_path)
         
+        # Retrieve all existing users to add to the new user's friend list, excluding the new user themselves
+        all_users = users_collection.find({'_id': {'$ne': new_user_id}}, {'_id': 1, 'username': 1})
+        friends_list = [{'username': user['username'], 'user_id': str(user['_id'])} for user in all_users]
+        
+        # Add existing users to the new user's friend list
+        users_collection.update_one({'_id': new_user_id}, {'$set': {'friends': friends_list}})
+        
+        # Also add this new user to existing users' friends lists
+        users_collection.update_many({'_id': {'$ne': new_user_id}}, {'$push': {'friends': {'username': username, 'user_id': str(new_user_id)}}})
+
         # Initialize empty entries in other collections
         users_settings_collection.insert_one({'user_id': new_user_id, 'settings': {}})
         users_data_collection.insert_one({'user_id': new_user_id, 'data': {}})
@@ -115,6 +139,9 @@ def create_account():
     else:
         # Serve the static HTML file for the account creation form
         return app.send_static_file('CreateAccount.html')
+    
+def allowed_profile_pic(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg'}
 
 ##############
 #   LOGIN    #
@@ -138,7 +165,7 @@ def login():
             return redirect(url_for('login', msg='Incorrect credentials.'))
     else:
         # Serve the login page
-        return app.send_static_file('Login.html')
+        return app.send_static_file('Luli.html')
 
 ###############
 #   LOGOUT    #
@@ -148,44 +175,31 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-######################
-#   CONTROL PANEL    #
-######################
-@app.route('/control_panel')
-def control_panel():
-    user_id = session.get('user_id')
-    if user_id:
-        user_data = users_collection.find_one({"_id": ObjectId(user_id)})
-        device_id = user_data.get('device_id') if user_data else None
-        if device_id:
-            return render_template('control_panel.html', device_id=device_id)
-        else:
-            return "Device ID not found", 404
-    else:
-        return "User not authenticated", 401
-
 
 #########################
 #   PLANTS + SENSORS    #
 #########################
 @app.route('/plants')
 def plants():
-    # Retrieve the document by its ID or another query
-    # Check session, get user id, retrieve sensor data
     user_id = session.get('user_id')
     if not user_id:
         return redirect(url_for('login'))
+
     sensor_data_document = users_data_collection.find_one({'user_id': ObjectId(user_id)})
-    
-    # Extract sensor data from the document
-    sensor_data = sensor_data_document['sensor_data']
 
-    # Here we assume that 'sensor_data' is structured with the latest reading as the last entry
-    # If it's structured differently, you will need to adjust the logic to get the latest or desired sensor reading
-    latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else []
+    if sensor_data_document and 'sensor_data' in sensor_data_document:
+        sensor_data = sensor_data_document['sensor_data']
+        latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else {}
+    else:
+        # Default empty data if there's no sensor data available
+        latest_sensor_data = {
+            'light': 'N/A',
+            'temp': 'N/A',
+            'humidity': 'N/A',
+            'ph': 'N/A',
+            'tank': 'N/A'
+        }
 
-    # Render the HTML page with the sensor data
-    # The HTML file 'plants.html' should be in the 'templates' folder of your Flask application
     return render_template('Plants.html', sensor_data=latest_sensor_data)
    
 ##############
@@ -196,7 +210,7 @@ def forum():
     posts = list(users_messages_collection.find())
     return render_template('Forum.html', posts=posts)
 
-@app.route('/add_post', methods=['POST'])
+
 @app.route('/add_post', methods=['POST'])
 def add_post():
     if 'user_id' not in session:
@@ -242,6 +256,112 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     # Check if there is an extension in the filename and if the extension is allowed
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+###############
+#   FRIENDS   #
+###############
+@app.route('/friends')
+def friends():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  # Ensure the user is logged in
+
+    user_id = session['user_id']
+    user_document = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    if 'friends' in user_document:
+        # Extract the user_id of each friend and convert to ObjectId
+        friend_ids = [ObjectId(friend['user_id']) for friend in user_document['friends']]
+        friends = users_collection.find({'_id': {'$in': friend_ids}})
+        friends_list = list(friends)  # Convert cursor to list for passing to template
+        return render_template('Friends.html', friends=friends_list)
+    else:
+        # Handle case where no friends are stored or the field is missing
+        return render_template('Friends.html', friends=[])
+
+
+
+
+#################
+#   SETTINGS    #
+#################
+@app.route('/save_settings', methods=['POST'])
+def save_settings():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    water_interval = request.form.get('water_interval')
+    led_duration = request.form.get('led_duration')
+    pump_duration = request.form.get('pump_duration')
+    # ... other settings values
+
+    users_settings_collection.update_one(
+        {'user_id': ObjectId(user_id)},
+        {'$set': {
+            'water_interval': water_interval,
+            'led_duration': led_duration,
+            'pump_duration': pump_duration
+            # ... other settings
+        }},
+        upsert=True
+    )
+    return redirect(url_for('settings_page'))
+
+
+@app.route('/settings')
+def settings_page():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    settings = users_settings_collection.find_one({'user_id': ObjectId(user_id)})
+    print("GOT SETTINGS: ", settings)
+    if settings is None:
+        # Set defaults if no settings are found
+        print("settings is None!")
+        settings = {
+            'water_interval': '12',
+            'led_duration': '12',
+            'pump_duration': '5',
+            # Include defaults for any other settings
+        }
+    else:
+        # If settings exist, remove MongoDB's _id before passing to template
+        settings.pop('_id', None)
+    
+    return render_template('settings.html', settings=settings)
+
+@app.route('/download_settings/<friend_id>')
+def download_settings(friend_id):
+    print("SAVING SETTINGS FROM FRIEND: ", friend_id)
+    settings = users_settings_collection.find_one({'user_id': ObjectId(friend_id)})
+    if settings:
+        del settings['_id']  # Remove the MongoDB ID before sending
+        return jsonify(settings)
+    # Now get current user's document
+    user_id = session['user_id']
+    user_settings = users_settings_collection.find_one({'user_id': ObjectId(user_id)})
+    # Now overwrite user_settings with settings from friend
+    # But don't overwrite the user_id
+    user_settings.update(settings)
+    return jsonify({'error': 'Settings not found'}), 404
+
+
+#################
+# CONTROL PANEL #
+#################
+@app.route('/control_panel')
+def control_panel():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+    user_data = users_collection.find_one({'_id': ObjectId(user_id)})
+    device_id = user_data.get('device_id') if user_data else None
+    if device_id:
+        return render_template('ControlPanel.html', device_id=device_id)
+    else:
+        return "Device ID not found", 404
 
 
 

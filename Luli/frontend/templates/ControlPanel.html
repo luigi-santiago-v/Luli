@@ -1,0 +1,62 @@
+<!-- control_panel.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Control Panel - LuLi Hydroponics</title>
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='scripts/controlPanel.js') }}"></script>
+</head>
+<body>
+<header>
+    <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+    <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+    <div class = "corner_topRight"> </div>
+</header>
+<nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+<article>
+    <div id="controls">
+        <button onclick="sendCommand('motor', 'on')">Turn Motor On</button>
+        <button onclick="sendCommand('motor', 'off')">Turn Motor Off</button>
+        <button onclick="sendCommand('leds', 'on')">Turn LEDs On</button>
+        <button onclick="sendCommand('leds', 'off')">Turn LEDs Off</button>
+    </div>
+</article>
+<script>
+    function sendCommand(device, action) {
+        const data = { [device]: action };
+        fetch(`/api/update_manual_override/{{ device_id }}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => console.log('Command sent:', data))
+        .catch(error => console.error('Error sending command:', error));
+    }
+</script>
+</body>
+</html>

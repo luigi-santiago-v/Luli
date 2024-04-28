@@ -9,6 +9,15 @@
 
 
 </head>
+<script>
+   window.onload = function() {
+       const params = new URLSearchParams(window.location.search);
+       const msg = params.get('msg');
+       if (msg) {
+           alert(msg);
+       }
+   };
+</script>
 
 <body>
  
