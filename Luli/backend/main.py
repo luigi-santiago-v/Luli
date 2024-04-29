@@ -14,6 +14,22 @@ from dotenv import load_dotenv
 from datetime import datetime
 import uuid
 
+"""
+ROUTES and METHODS
+- '/' : GET
+- '/create_account' : GET, POST
+- '/login' : GET, POST
+- '/logout' : GET
+- '/plants' : GET
+- '/forum' : GET
+- '/add_post' : POST
+- '/friends' : GET
+- '/save_settings' : POST
+- '/settings' : GET
+- '/download_settings/<friend_id>' : GET
+- '/control_panel' : GET
+
+"""
 
 
 # Get the absolute path to the directory where the script is located
@@ -250,6 +266,7 @@ def add_post():
     # Insert the post (with the image path if there's an image) into the database
     users_messages_collection.insert_one(post)
     return redirect(url_for('forum')) 
+
 
 
 def allowed_file(filename):

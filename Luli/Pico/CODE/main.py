@@ -166,6 +166,13 @@ def send_data(data, data_label):
     else:
         return False
 
+def update_config(new_settings):
+    #Luli_CONFIG.UV_READ_INTERVAL = int(new_settings.get('uv_read_interval', Luli_CONFIG.UV_READ_INTERVAL))
+    #Luli_CONFIG.TEMP_HUMIDITY_READ_INTERVAL = int(new_settings.get('temp_humidity_read_interval', Luli_CONFIG.TEMP_HUMIDITY_READ_INTERVAL))
+    Luli_CONFIG.DURATION_WATER_CYCLE = int(new_settings.get('pump_duration', Luli_CONFIG.DURATION_WATER_CYCLE)) or Luli_CONFIG.DURATION_WATER_CYCLE
+    Luli_CONFIG.NEXT_WATER_CYCLE = int(new_settings.get('water_internval', Luli_CONFIG.NEXT_WATER_CYCLE)) or Luli_CONFIG.NEXT_WATER_CYCLE
+    Luli_CONFIG.DURATION_LED_CYCLE = int(new_settings.get('led_duration', Luli_CONFIG.DURATION_LED_CYCLE)) or Luli_CONFIG.DURATION_LED_CYCLE
+    print("Updated settings from server")
 
 
 if __name__ == '__main__':
@@ -185,8 +192,8 @@ if __name__ == '__main__':
         next_temp_humidity_time = start_time + Luli_CONFIG.TEMP_HUMIDITY_READ_INTERVAL
         next_motor_start_time = start_time # Start motor on startup
         next_motor_stop_time = start_time + Luli_CONFIG.DURATION_WATER_CYCLE
-        next_manual_override_check_time = utime.time() + Luli_CONFIG.MANUAL_OVERRIDE_CHECK_INTERVAL  # Setting up the next time to check for manual overrides
-
+        next_manual_override_check_time = start_time + Luli_CONFIG.MANUAL_OVERRIDE_CHECK_INTERVAL  # Setting up the next time to check for manual overrides
+        next_settings_update_time = start_time + Luli_CONFIG.SETTINGS_UPDATE_INTERVAL
         
         temperature = None
         humidity = None
@@ -272,6 +279,16 @@ if __name__ == '__main__':
                 # Update the next check time for manual overrides
                 next_manual_override_check_time = current_time + Luli_CONFIG.MANUAL_OVERRIDE_CHECK_INTERVAL
             
+            # Check for settings update every 2 minutes
+            if current_time >= next_settings_update_time:
+                try:
+                    new_settings = NETWORK.fetch_and_update_settings()
+                    if new_settings:
+                        update_config(new_settings)
+                    next_settings_update_time = current_time + Luli_CONFIG.SETTINGS_UPDATE_INTERVAL
+                except Exception as e:
+                    print("Error fetching settings:", e)
+                    #log_error(e)
 
             # Read UV and update display every 120 seconds
             if current_time >= next_uv_time:
@@ -312,4 +329,4 @@ if __name__ == '__main__':
             MOTOR_LED_CONTROL.leds_on()
             utime.sleep(0.5)
         MOTOR_LED_CONTROL.leds_off()
-        #machine.reset() # Reset the board if an error occurs
+        machine.reset() # Reset the board if an error occurs

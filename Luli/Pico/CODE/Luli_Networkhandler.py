@@ -64,6 +64,22 @@ class NetworkHandler:
             if 'response' in locals():
                 response.close()
 
+    def fetch_and_update_settings(self):
+        headers = {'X-Device-ID': Luli_CONFIG.DEVICE_ID}
+        try:
+            response = requests.get(self.base_url + Luli_CONFIG.ENDPOINT_GET_SETTINGS, headers=headers)
+            if response.status_code == 200:
+                new_settings = response.json()
+                return new_settings
+            else:
+                print("Failed to fetch settings:", response.text)
+        except Exception as e:
+            print("Failed to fetch settings:", e)
+            return None
+        finally:
+            if 'response' in locals():
+                response.close()
+
     
 
 if __name__ == '__main__':

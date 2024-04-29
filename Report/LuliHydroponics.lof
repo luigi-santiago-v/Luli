@@ -1,4 +1,12 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Circuit Schematic Overview}}{6}{}%
-\contentsline {figure}{\numberline {2}{\ignorespaces PH4502C pH Sensor \cite {ref_ph_amazon}}}{11}{}%
-\contentsline {figure}{\numberline {3}{\ignorespaces PCB Design in KiCad}}{14}{}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Example Figure}}{17}{}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Circuit Schematic Overview\relax }}{6}{}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Circuit Schematic Designed with Terminal Blocks\relax }}{7}{}%
+\contentsline {figure}{\numberline {3}{\ignorespaces 60W Full Spectrum LEDs (left) vs. 10W UV EDs (right)\relax }}{15}{}%
+\contentsline {figure}{\numberline {4}{\ignorespaces PH4502C pH Sensor \cite {ref_ph_amazon}\relax }}{16}{}%
+\contentsline {figure}{\numberline {5}{\ignorespaces PH4502C pH Sensor Testing\relax }}{17}{}%
+\contentsline {figure}{\numberline {6}{\ignorespaces First Iteration PCB in KiCad\relax }}{19}{}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Second Iteration PCB in KiCad\relax }}{20}{}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Assembled High Current PCB\relax }}{21}{}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Physical Enclosure Design Blueprints\relax }}{22}{}%
+\contentsline {figure}{\numberline {10}{\ignorespaces 3D Renderings of the Physical Enclosure\relax }}{23}{}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Physical Enclosure Initial Construction\relax }}{23}{}%
+\contentsline {figure}{\numberline {12}{\ignorespaces 3D Renderings of the Physical Enclosure\relax }}{24}{}%
