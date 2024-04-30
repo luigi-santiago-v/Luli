@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!--
+may be useful for later use. content determines the period 
+of refresh in units of second
+<meta http-equiv="refresh" content="5">
+-->
+
+<title>LuLi Hydroponics</title>
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<script src="scripts/settingsSlide.js"></script>
+
+</head>
+<body>
+<header>
+    <img class="logo" src="{{ url_for('static', filename='images/hydroponic.png')}}" alt="hydroPlant" width="50" height="50" style="float: left;">
+    <img src="{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width="60" height="60" style="float: left;">
+    <div class="corner_topRight"></div>
+</header>
+<nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+<article>
+
+    <form id="settingsForm" action="/save_settings" method="POST">
+        <div class="settingsContainer">
+            
+            <label for="water_interval" id="water_intervalLabel">Water plants every <span id="water_intervalValue">{{ settings.get('water_interval', 12) }} hours</span></label>
+            <div class="sliderContainer">
+                <input type="range" id="water_interval" name="water_interval" min="1" max="24" value="{{ settings.get('water_interval', 12) }}" oninput="document.getElementById('water_intervalValue').textContent = this.value + ' hours'">
+            </div>
+    
+            
+            <label for="led_duration" id="led_durationLabel">Turn on LEDs for <span id="led_durationValue">{{ settings.led_duration if settings.led_duration else '12' }}</span> hours</label>
+            <div class="sliderContainer">
+                <input type="range" id="led_duration" name="led_duration" min="1" max="24" value="{{ settings.led_duration if settings.led_duration else '12' }}" oninput="document.getElementById('led_durationValue').textContent = this.value">
+            </div>
+    
+            <label for="pump_duration" id="pump_durationLabel">Water for <span id="pump_durationValue">{{ settings.pump_duration if settings.pump_duration else '5' }}</span> minutes per cycle</label>
+
+            <div class="sliderContainer">
+                <input type="range" id="pump_duration" name="pump_duration" min="1" max="15" value="{{ settings.pump_duration if settings.pump_duration else '5' }}" oninput="document.getElementById('pump_durationValue').textContent = this.value">
+            </div>
+    
+            <div class="settingsButton">
+                <button type="submit" id="saveSettingsButton">Save Settings</button>
+            </div>
+        </div>
+    </form>
+    
+    <div class = "plantInfoSettingsContainer">
+    
+        <div id = "plantAmount" class = "plantAmount" >
+            <label for="quantity">Number of Plants:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="6" class = "spinVisible" onchange = "updateSettingsCarousel()">
+        </div>
+
+        <!--
+            Plant Carousel will dynamically change if the user has more than 1 plant. Based off the plantinfo carousel
+            javascript populates the individual plant settings and needs back end to serve the info to the 
+            plant.html file to update the data stored on the 
+
+            +call the other carousel class = infoCarousel id = infoCarousel
+        -->
+
+        <div id = "plantCarousel" class = "plantCarousel">
+            <div id="indPlantSettings" class = "indPlantSettings" >
+
+                <div>
+                    <label for="plantType">Plant Type:</label>
+                    <select id="plantType" name="plantType">
+                            <option value="Spinach">Spinach</option>
+                            <option value="Romaine">Romaine</option>
+                            <option value="Basil">Basil</option>
+                            <option value="Cilantro">Cilantro</option>
+                            <option value="Green Onions">Green Onions</option>
+                            <option value="Kale">Kale</option>
+                            <option value="Mint">Mint</option>
+                            <option value="Oregano">Oregano</option>
+                            <option value="Parsley">Parsley</option>
+                            <option value="Radish">Radish</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label for="start">Date Planted:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" class="custom-calendar"/>
+                </div>
+                
+                <div>
+                    <label for="start">Date of Harvest:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" />
+                </div>
+            
+                <div>
+                    <label for="letters">Choose Container:</label>
+                    <select id="letters" name="letters">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                    </select>
+                </div>
+                
+            </div>
+
+
+        </div>
+
+    </div>
+
+</article>
+<script src="scripts/settingsSlide.js"  defer></script>
+<script src="scripts/dynamicSettingsCarousel.js"  defer></script>
+</body>
+</html>

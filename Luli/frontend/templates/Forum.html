@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="style.css" 
+      rel = "stylesheet">
+
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article>
+      <div id="forumContainer" class="forumContainer">
+         <div id="forumPosts" class="forumPosts"> 
+            {% for post in posts %}
+               <div class="post">
+                  <div class="name" style="margin:15px">{{ post.name }}</div>
+                  <!-- Check if 'created' exists before using it -->
+                  {% if post.get('created') %}
+                     <div class="date" style="margin:15px">{{ post.created.strftime('%m/%d/%y %I:%M%p') }}</div>
+                  {% else %}
+                     <div class="date" style="margin:15px">Date not available</div>
+                  {% endif %}
+                  <div class="message" style="margin:15px">{{ post.message }}</div>
+                  {% if post.image_path %}
+                     <img src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="max-width: 500px;">
+                  {% endif %}
+               </div>
+               {% endfor %}
+         </div>
+         <div id="forumMenu" class="forumMenu">
+            <button id="addPostButton">Add Post</button>
+         </div>
+      </div>
+    
+      <!-- Modal for Adding a New Post -->
+      <div id="postModal" class="modal">
+         <div class="modal-content">
+             <span class="close">&times;</span>
+             <form action="/add_post" method="post" enctype="multipart/form-data">
+                 <label for="message">Message:</label>
+                 <textarea id="message" name="message" required></textarea><br>
+                 <label for="image">Image (optional):</label>
+                 <input type="file" id="image" name="image"><br>
+                 <button type="submit">Submit</button>
+             </form>
+         </div>
+     </div>
+    </article>
+    
+    <script src="scripts/modal.js"></script>
+    
+</body>
+
+
+
+</html>

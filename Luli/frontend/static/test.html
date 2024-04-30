@@ -1,0 +1,26 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware ID</title>
+</head>
+<body>
+    <h1>Hardware ID:</h1>
+    <div id="hardware-id"></div>
+
+    <script>
+        // Fetch hardware ID from API endpoint
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                // Display hardware ID on the HTML page
+                document.getElementById('hardware-id').innerText = data.hardware_id;
+            })
+            .catch(error => {
+                console.error('Error fetching hardware ID:', error);
+            });
+    </script>
+</body>
+</html>

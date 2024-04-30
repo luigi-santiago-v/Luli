@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="{{ url_for('static', filename='style.css')}}" 
+      rel = "stylesheet">
+
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants"><img src="{{ url_for('static', filename='images/pot.png')}}" alt="plant" height="50" width="50"></a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article>
+      
+     <div class = "measurements">
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="  
+      height: 20%;
+      width: 35px;
+      background: gold; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: red; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: aqua; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: orange; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background:greenyellow; "> 
+      </div>
+      </div> 
+ 
+
+     <div class = "type"> {{sensor_data.light}} </div>
+     <div class = "type"> {{sensor_data.temp}}</div>
+     <div class = "type"> {{sensor_data.humidity}} </div>
+     <div class = "type"> {{sensor_data.ph}} </div>
+     <div class = "type"> {{sensor_data.tank}} </div>
+
+     <div class = "type"> LIGHT </div>
+     <div class = "type"> TEMP </div>
+     <div class = "type"> HUMIDITY </div>
+     <div class = "type"> pH </div>
+     <div class = "type"> TANK </div>
+
+     </div>
+
+    <div class = "plantSection">
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/spinach.jpeg')}}" alt = "spinach" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> SPINACH</div>
+
+      <div>Container: </div>
+      <div> A </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/kale.jpeg')}}" alt = "Kale" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> Kale</div>
+
+      <div>Container: </div>
+      <div> A </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/romaine.jpeg')}}" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> Lettuce</div>
+
+      <div>Container: </div>
+      <div> B </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+    </div>
+
+
+
+    </article> 
+   
+   
+
+</body>
+
+
+
+</html>

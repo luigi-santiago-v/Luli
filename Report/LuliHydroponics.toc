@@ -1,0 +1,63 @@
+\contentsline {section}{Contents}{1}{}%
+\contentsline {section}{List of Tables}{3}{}%
+\contentsline {section}{List of Figures}{4}{}%
+\contentsline {section}{Abstract}{5}{}%
+\contentsline {section}{Overview}{5}{}%
+\contentsline {section}{\numberline {1}Design, Methodology, and Implementation}{6}{}%
+\contentsline {subsection}{\numberline {1.1}Circuit Design}{6}{}%
+\contentsline {subsection}{\numberline {1.2}Component Selection}{8}{}%
+\contentsline {subsection}{\numberline {1.3}Circuit Power Supply Design}{9}{}%
+\contentsline {subsection}{\numberline {1.4}LED Control Circuit}{10}{}%
+\contentsline {subsection}{\numberline {1.5}Motor Control Circuit}{11}{}%
+\contentsline {subsection}{\numberline {1.6}Component Testing}{11}{}%
+\contentsline {subsubsection}{\numberline {1.6.1}BMOUO 12V AC-to-DC Power Supply}{11}{}%
+\contentsline {subsubsection}{\numberline {1.6.2}DORHEA C120503 12V to 5V DC Converter}{12}{}%
+\contentsline {subsubsection}{\numberline {1.6.3}FILSHU 10A 250V Power Socket Inlet Switch}{13}{}%
+\contentsline {subsubsection}{\numberline {1.6.4}Raspberry Pi Pico W}{13}{}%
+\contentsline {subsubsection}{\numberline {1.6.5}DHT22 Temperature and Humidity Sensor}{13}{}%
+\contentsline {subsubsection}{\numberline {1.6.6}LTR-390UV-01 ALS + UV Sensor}{16}{}%
+\contentsline {subsubsection}{\numberline {1.6.7}CrocSee 12VDC Diaphragm Pump}{16}{}%
+\contentsline {subsubsection}{\numberline {1.6.8}IRLZ34NPBF MOSFET}{17}{}%
+\contentsline {subsubsection}{\numberline {1.6.9}1N4001RLGOSCT-ND Flyback Diode}{18}{}%
+\contentsline {subsubsection}{\numberline {1.6.10}Ultra-Sonic Sensor HC-SR04}{18}{}%
+\contentsline {subsubsection}{\numberline {1.6.11}74LS151N 8:1 MUX}{20}{}%
+\contentsline {subsubsection}{\numberline {1.6.12}60W Full Spectrum Grow Lights}{21}{}%
+\contentsline {subsubsection}{\numberline {1.6.13}pH Sensor - PH4502C}{22}{}%
+\contentsline {subsubsection}{\numberline {1.6.14}OLED Screen}{24}{}%
+\contentsline {subsection}{\numberline {1.7}Printed Circuit Board Design}{25}{}%
+\contentsline {subsection}{\numberline {1.8}Physical Enclosure Construction}{29}{}%
+\contentsline {subsection}{\numberline {1.9}Frontend Design and Development}{36}{}%
+\contentsline {subsection}{\numberline {1.10}Server Configuration}{39}{}%
+\contentsline {subsubsection}{\numberline {1.10.1}Flask Routes - User Interface}{41}{}%
+\contentsline {subsubsection}{\numberline {1.10.2}Flask Routes - Application Programming Interface}{43}{}%
+\contentsline {subsubsection}{\numberline {1.10.3}MongoDB Database}{44}{}%
+\contentsline {section}{\numberline {2}Future Work}{46}{}%
+\contentsline {section}{\numberline {3}Conclusion}{46}{}%
+\contentsline {section}{\numberline {A}Software Appendix}{47}{}%
+\contentsline {subsection}{\numberline {A.1}Raspberry Pi Pico W MicroPython Code}{47}{}%
+\contentsline {subsubsection}{\numberline {A.1.1}Luli\_main.py}{47}{}%
+\contentsline {subsubsection}{\numberline {A.1.2}Luli\_CONFIG.py}{54}{}%
+\contentsline {subsubsection}{\numberline {A.1.3}Luli\_DHT.py}{56}{}%
+\contentsline {subsubsection}{\numberline {A.1.4}Luli\_MotorLEDControl.py}{58}{}%
+\contentsline {subsubsection}{\numberline {A.1.5}Luli\_Networkhandler.py}{59}{}%
+\contentsline {subsubsection}{\numberline {A.1.6}Luli\_OLED.py}{61}{}%
+\contentsline {subsubsection}{\numberline {A.1.7}Luli\_pH.py}{63}{}%
+\contentsline {subsubsection}{\numberline {A.1.8}Luli\_Ultrasonic.py}{64}{}%
+\contentsline {subsubsection}{\numberline {A.1.9}Luli\_UV.py}{66}{}%
+\contentsline {subsubsection}{\numberline {A.1.10}MUX\_Test\_Code.py}{68}{}%
+\contentsline {subsection}{\numberline {A.2}Flask Backend Python Code}{69}{}%
+\contentsline {subsubsection}{\numberline {A.2.1}main.py}{69}{}%
+\contentsline {subsubsection}{\numberline {A.2.2}api.py}{79}{}%
+\contentsline {subsubsection}{\numberline {A.2.3}messaging.py}{87}{}%
+\contentsline {subsubsection}{\numberline {A.2.4}test\_save\_sensor\_data.py}{91}{}%
+\contentsline {subsection}{\numberline {A.3}Frontend HTML/CSS/Javascript Code}{93}{}%
+\contentsline {section}{\numberline {B}Hardware Appendix}{127}{}%
+\contentsline {subsection}{\numberline {B.1}Datasheet: Raspberry Pi Pico W}{127}{}%
+\contentsline {subsection}{\numberline {B.2}Datasheet: PH4502C Analog pH Sensor}{156}{}%
+\contentsline {subsection}{\numberline {B.3}Datasheet: IRLZ34NPBF MOSFET}{163}{}%
+\contentsline {subsection}{\numberline {B.4}Datasheet: 1N4001RLG Diode}{174}{}%
+\contentsline {subsection}{\numberline {B.5}Datasheet: 16ZLH220MEFCT16.3X11 Capacitor}{182}{}%
+\contentsline {subsection}{\numberline {B.6}Datasheet: SN74LS151N Multiplexer}{186}{}%
+\contentsline {subsection}{\numberline {B.7}Datasheet: LTR-390UV-01}{210}{}%
+\contentsline {subsection}{\numberline {B.8}Datasheet: DHT22}{245}{}%
+\contentsline {section}{References}{260}{}%

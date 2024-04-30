@@ -1,0 +1,4 @@
+Sensor: d3
+Temperature: 25.4 °C
+Humidity: 51.6 % RH
+
