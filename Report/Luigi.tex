@@ -1,0 +1,1996 @@
+\documentclass[12pt]{article} % Set font size to 12pt
+\usepackage[T1]{fontenc} % For setting T1 encoding instead of OT1, typewriter style quotation marks
+\usepackage{graphicx} % For including images
+\usepackage{float} % For figure placement
+\usepackage{titlesec} % For customizing section titles
+
+\usepackage{tocbibind} % For adding the table of contents to the table of contents
+\usepackage[toc,page]{appendix} % For adding appendices
+\usepackage{url} % For adding URLs in the bibliography
+\usepackage{amsmath} % For IPC 2221 Formula
+\usepackage{pdfpages} % To include PDFs
+\usepackage{listings} % For code formatting
+\usepackage{geometry} % For setting page margins
+\geometry{a4paper, margin=1in} % Set page margins to 1 inch
+\usepackage{parskip}
+\usepackage{siunitx}
+\usepackage{subcaption} % For subfigures
+\usepackage{pdfpages}
+
+
+\usepackage{listings} % For code formatting
+\lstnewenvironment{pythoncode}[1][]
+{
+    \lstset{
+        language=Python,
+        basicstyle=\small\ttfamily,
+        keywordstyle=\color{blue},
+        stringstyle=\color{orange},
+        commentstyle=\color{gray},
+        numbers=left,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        showstringspaces=false,
+        breaklines=true,
+        frame=single,
+        captionpos=b,
+        #1
+    }
+}
+{} % This empty {} has to be there otherwise there's an error
+
+\usepackage{listings} % For code formatting
+\lstnewenvironment{htmlcode}[1][]
+{
+    \lstset{
+        language=HTML,
+        basicstyle=\small\ttfamily,
+        keywordstyle=\color{blue},
+        stringstyle=\color{red}, % Changed to red for HTML attributes
+        commentstyle=\color{green}, % Changed to green for HTML comments
+        numbers=left,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        showstringspaces=false,
+        breaklines=true,
+        frame=single,
+        captionpos=b,
+        #1
+    }
+}
+{} % This empty {} has to be there otherwise there's an error
+
+
+\begin{document}
+
+\widowpenalty=10000
+\clubpenalty=10000
+
+\title{Luli Smart Cultivation:A Socially-Connect IoT Hydroponics Solution}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\stretch{1}}
+    {\Large\bfseries SENIOR DESIGN PROJECT\par}
+    \vspace{1.5cm}
+    {\Large ECE 186B\par}
+    \vspace{1.5cm}
+    {\Large\bfseries Luli Smart Cultivation: A Socially-Connect IoT Hydroponics Solution\par}
+    \vspace{3cm}
+    {\large California State University, Fresno\par}
+    {\large Lyles College of Engineering\par}
+    {\large Electrical and Computer Engineering Department\par}
+    \vspace{2cm}
+    {\large Dr. Gregory Kriehn\par}
+    {\large Professor Roger Moore\par}
+    \vspace{2cm}
+    {\large BY\par}
+    \vspace{1cm}
+    {\large Liam Goss\par}
+    {\large Luigi Santiago-Villa\par}
+    \vspace{\stretch{2}}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% List of Figures
+\listoffigures
+\newpage
+
+\begin{abstract}
+The issue of scaling global agricultural techniques is an ever-evolving problem as we consider notable concerns, such as renewable energy, global food security, loss of natural habitats, and soil degradation. The Luli Hydroponic System provides an automated IoT solution that leverages the ubiquitous nature of social networks to create a community of horticulturalists supported by a democratized collection of data. Furthermore, the system provides the urban agriculturalist with a user friendly and data rich experience that aims to alleviate the barriers to entry, most notably, the high learning curve and initial investment. To accomplish this task, the project incorporates a Raspberry Pi Pico W to serve as the central processing unit of the system. Although small and limited with onboard memory, the Pico is a cost effective component that specializes in optimized software and generous I/O port interfaces that can leverage cloud computing technology. The hydroponic device is compact and equipped with sensors that gather data critical for healthy plant growth. The design of the hydroponic system discreetly houses four DHT-22 temperature and humidity sensors that give an accurate description of the environment. Furthermore, a light sensor, which is nestled closely to the growing trays, will give the user a real time measurement of the 12V 60 watt grow lights attached to the roof. The project is constructed within a \textdollar 500 budget under a 9 month time frame. 
+\end{abstract}
+
+\section*{Overview}
+The Luli system is an automated hydroponic setup that employs ebb and flow techniques and integrates IoT-capable components to deliver a user-friendly growing experience. The physical design of the device is compact standing at just 31in with a base measuring 24 x 24 in. The structure is lightweight due to the use of oriented strand board and the roof is supported with 1/4 in PVC pipes. The PVC supports allowed us to discreetly route wires to the array of LED growing lights attached to the roof, as well as the sensors located adjacent to the growing containers. The system takes UV, humidity, temperature, and pH measurements to provide a real time account of the environment in which the plants are growing. An ultrasonic sensor in the reservoir tank, which is located under the growing container, will provide an accurate measurement of the solution level. The data collected will be displayed onto a 2.4in OLED screen attached to the front of the system.
+
+In addition, the user can sign into their Luli Hydroponic account to track the device’s data output through the use of the Luli web portal. The sensors send data to the MangoDB database, and the Flask oriented back-end serves a dynamic front-end to the user. From the HTML based front-end, users can adjust the settings of their device and connect with other users to build a network of urban horticulturalists. Furthermore, users are able to share setting profiles and communicate with one another to create a democratized collection of horticulture techniques. Communications are facilitated through a forum page that gives users a space to share updates on the state of their plants and share images of their progress. The online platform is designed to be engaging and functional, whilst maintaining a user friendly environment. 
+
+\pagebreak
+
+The hydroponic system was developed and constructed over the span of 9 months. The initial project budget was set at \textdollar 500. At the point of completion the budget spent was just under budget \textdollar 426. The goal of the project is to bring attention to the prevalence of the food deserts. By building a community of open-source devices, we believe in time that the device will bring nutritional options to those who live in urban environments where nutritional needs are not always met.
+
+\section {Circuit Design and Testing}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{Schematic.jpg}
+  \caption{Circuit Design}
+  \label{fig:Schematic}
+\end{figure}
+
+The heart of the circuit is the Raspberry Pi Pico W. This microcontroller is a relatively inexpensive unit that gives the user 40 general-purpose input/output pins. At the bottom left of the schematic we can see the array of 60W growing light LEDs. The LED strips require 12V and 3A to operate correctly. This is far above what the Pico can provide and a 12V AC-to-DC power supply unit was added to the design to provide power to the LED arrays and water pump. The rest of the sensors only require a max of 5V and at the center of Figure \ref{fig:Schematic}, we can see a 12V to 5V buck converter. The buck converter provides the bucked down voltage to the sensors of the hydroponics system such as the DHT-22 humidity and temperature sensor, HCSR04 ultrasonic sensor, LTR-390UV-01 light sensor, and PH-4502C analog pH sensor. 
+
+\subsection{Power Supply Testing}
+
+The system has two voltage requirements that the power supply provides. The Raspberry Pi Pico W and sensors can only handle up to 5V. The water pump and LEDs required a higher voltage of 12V. To provide both voltages from a single outlet, a BMOUO 12V AC-to-DC power supply and DORHEA C120503 12V to 5V DC converter are used. Further more, a FILSHU 10A 250V Power Socket Inlet Switch with a Detachable 3-Prong Power Cord connects the power supply to the 120V wall outlet. As shown in Figure \ref{fig:PSU test Circuit}, the smaller buck converter was attached to the power supply. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.40\textwidth]{psuTestCircuit.jpg}
+  \caption{Power Supply Test Circuit}
+  \label{fig:PSU test Circuit}
+\end{figure}
+
+With the components all wired, the power cord was plugged into a power outlet, and the 12V power supply was turned on. A green light on the power supply turned on indicating that the unit has not experienced a short or failure. When we measured the output voltage, we got a reading of 12V. This confirmed the operation of the power supply. The multi-meter was then used on the Buck Converter and a steady measurement of 4.9V was observed. This final measurement showed that the entire power supply circuit was functional and the other components were ready to be powered. 
+
+\subsection{DHT Sensor Testing}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.40\textwidth]{DHT22.jpg}
+  \caption{DHT-22 Test Circuit}
+  \label{fig:DHT-22 Test Circuit}
+\end{figure}
+
+The Luli Hydroponic System is a host to 5 seamlessly integrated sensors. Each sensor plays a critical role in successful hydroponics, and after acquisition of the components, their functionality and accuracy was tested. The DHT-11 sensor was chosen due to its dual utility as a humidity and temperature sensor. This reduces the number of GIO pins needed from the Pico microcontroller. According to the datasheet provided by Mouser electronics \cite{ref_dht}, the DHT-11 sensor can measure temperatures within an accuracy of $\pm 2^\circ\text{C}$. Similarly, humidity measurements have an accuracy within $\pm 5 \%$. In order to test functionality, the sensor’s VDD pin is connected to the VBUS of the microcontroller. The sensor’s data prong is linked to the Pico’s GIO 1 pin, in conjunction with a $5 k\Omega$ pull-up resistor. As shown in Figure \ref{fig:DHT-22 Test Circuit}, the test circuit is completed by connecting the sensor and the microcontroller’s ground together. In order to program the microcontroller, the coding IDE Thonny was used and the software was developed in microPython. The test first defines the data pins connected to the DHT-11 sensors. A while loop is used to continuously poll the sensors until a successful measurement is conducted and the output is printed. A short delay of 3 seconds is provided inline with the sensor’s minimum measurement rate.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{DHTfailure.png}
+  \caption{DHT-11 Failed Test}
+  \label{fig:DHT-22 Accuracy test}
+\end{figure}
+
+The First round of testing on the DHT-11 proved unsuccessful, and as shown in Figure \ref{fig:DHT-22 Accuracy test}, a Timeout error was encountered when attempting to gather measurements. To determine the source of the fault, it was important to test the remaining supply of DHT-11 sensors with the test circuit before any modifications to the code or circuit were made. After swapping each DHT-11 sensor, it was discovered that each behaved in the same manner and the timeout error was not resolved. The timeout error is typically caused when a sensor fails to respond with data within an expected period of time. Therefore, the delay within the test code was reduced to the minimum delay of 1s, which is specified in the DHT-11 datasheet, and then adjusted far longer than needed. Neither change produced a successful result and therefore attention was returned again to the hardware. 
+
+In an attempt to further pinpoint the cause of the issue, it was then assumed that the sensors used could in fact be malfunctioning. To test this theory, an alteration to the test circuit was made by replacing the sensor with its more reliable version, the DHT-22. After swapping the sensors in the test circuit, the code was run in Thonny and an attempt to gather environmental measurements was attempted. The exchange in sensors proved to be successful and a temperature reading was returned. Depicted in Figure \ref{fig:DHT-22 Succesful test}, the DHT-22 sensors returned humidity and temperature data after a series of readings and it was therefore decided to alter the original design of the system to include DHT-22 sensors instead of the DHT-11 sensors. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{DHTsuccess.png}
+  \caption{DHT-22 Successful Readings}
+  \label{fig:DHT-22 Succesful test}
+\end{figure}
+
+\subsection{OLED Screen}
+
+The screen chosen for our design is the 2.42in OLED LCD display produced by DWEII Electronics. In order to test this screen, we first wired the component to the Raspberry Pi Pico W. The VCC pin on the OLED display was connected to the VBUS of the microcontroller and draws a voltage of 3.3v. When choosing pins on the Raspberry Pi Pico, it was important to note which protocols were supported, and for this test, pins 10-15 were chosen since they support SPI communication. GIO pin 10 was defined as the system clock output and set to a baud rate of 1MHz. The screen communicates with the Pico using SPI communication and the screen acts as the slave unit. To interface the communication between devices pin 11 on the Pico was used as the MOSI port. The reset pin of the screen was connected to GIO pin 14, and pin 13 was connected to the CS pin of the screen. The test circuit was completed by connecting the ground of the screen to the Pico’s ground pin. To drive the circuit, the code, shown in appendix , was written to display a simple “Successful” message to the screen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{oledTest.jpg}
+  \caption{OLED Display Test Circuit}
+  \label{fig:OLED Test}
+\end{figure}
+
+The first attempt to drive the screen was unsuccessful. When the code was run, the screen flickered for a brief moment before it turned off and remained black. Since we observed a change in the screen, it was likely that a wire was incorrectly placed or a component was not fully driven into the breadboard. First we ensured that the connections between the components were secured and correct. After checking connections, the board yet again failed to remain on. Next we checked the headers that were soldered onto the OLED screen. Under closer examination, it was discovered that a pin was not fully soldered. The joint had formed a cold joint, and when moved, we observed that there was space between the cold joint and the VCC pin of the screen. Careful attention was given to each header pin to ensure that no other pins were loose, and the headers were re-soldered on with better connections. Once that error was fixed, the program was run, and on the third attempt, the screen turned on and the success message was displayed. Figure \ref{fig:OLED Success} shows the Pico printing the message to the screen and confirms that the unit is functional. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{oledSuccess.jpg}
+  \caption{Successful OlED Screen Test}
+  \label{fig:OLED Success}
+\end{figure}
+
+
+\subsection{Water Pump}
+
+The water pump chosen for the Luli Hydroponic System was the Gikfun Mini 12v Diaphragm Pump. According to the pump's listing, the unit can take anywhere from 6-12V depending on the speed and power desired from the pump. To test this, the pump was first connected to the output of the 12V power supply. Two water cups were used to provide the pump with a small amount of water from which to draw from. Since the pump will need to pump water up to the grow baskets, the water cups were placed below the pumps to test whether the pump was strong enough to draw water vertically. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{pumpfail.jpg}
+  \caption{Failed Pump Test}
+  \label{fig:Pump Fail}
+\end{figure}
+
+\pagebreak
+
+When the power was turned on, the pump immediately whirled into operation. Unfortunately, there was a critical error in manner in which the pump was tested. The team did not anticipate the unit moving when turned on. The moment the pump begin to pump water, it twisted due to the rotating components in the pump and fell into one of the cups of water. This caused irreparable damage to the pump. After letting the pump dry over the course of a few days, it was retested and its operation was damaged. The strong flow we initially saw slowed down to a small trickle, and the unit struggled to pull water. In this damaged state the pump would not supply the power necessary to flood three growing trays. Therefore the unit was replaced with a CrocSee 12V DC Diaphragm Pump. During the test of the replacement pump, the pump was taped down to the table to ensure that the same mistake was not repeated. This unit can only be powered with 12V \cite{ref_crocsee} and it was placed into the test circuit. This replacement pump worked exactly as expected and was capable of filling a growing basket. Therefore, the CrocSee diaphragm pump served as our water pumping device for the 3 growing baskets. Vinyl tubing was attached to the intake and outtake ports on the pump. These tubes lead to a cross junction that splits the flow into three vinyl tubes. When the unit was tested with complete vinyl tubing system, it was discovered that the flow of water tended to favor the middle tub. To remedy this issue, the middle tube was replaced with a smaller diameter tube. This corrected the pressure and the three tubes received equal flows of water.   
+
+\subsection{Ultra-Sonic Sensor HC-SR04}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{sonicTest.jpg}
+  \caption{Luli Hydroponic System Housing}
+  \label{fig:HCSR04 Test Circuit}
+\end{figure}
+
+\pagebreak
+
+The HC-SR04 ultrasonic sensor was placed on top of the reservoir tank and takes measurements of the solution’s level. The sensor is accurate within 3mm and has a practical range between 2cm and 80cm \cite{ref_hcsr04}. Two tests were conducted on this sensor. First the unit was tested for functionality. In order to accomplish this, the ultrasonic sensor was interfaced to the Pico by first connecting the VCC pin to the VBUS output of the Raspberry Pi Pico. This provides the unit with the 5V necessary to drive it. The trigger pin was connected to GIO pin 5 and the echo pin was interfaced with GIO pin 6. The microPython program activates the trig pin for 10 microseconds and the echo pin receives the returning ultrasonic pulse, which is transmitted to the Pico for analysis and conversion. Once the data from the ultrasonic pulse is received by the microcontroller, the data must be converted.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{usDistanceTest.jpg}
+  \caption{HRSR04 Accuracy Testing}
+  \label{fig:accuracy test}
+\end{figure}
+
+In order to confirm that the sensor is reading data correctly, a function was written that first sends a logical 1 value to the trigger pin, and if successful, the transmitter will emit an ultrasonic pulse that the receiver will detect. The echo pin will go high at the end of the transmission and remain high until an ultrasonic pulse is detected by the receiver. Once the function detects the low signal from the echo pin, the difference between the signalOn and signalOff is calculated to determine the period, which is measured in \si{\micro\second}, that the sonic signal took to travel between two points. This time period is then converted by multiplying by the distance sound travels in a micro second:
+\begin{equation}
+\text{Distance} = \frac{\text{Time Duration} \times 0.0343}{2}
+\end{equation}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{usMeasurements.png}
+  \caption{HCSR04 Measurement Results}
+  \label{fig:HCSR04 Accuracy Test}
+\end{figure}
+
+\pagebreak
+
+When the test code was run, the unit appeared to be operational and a series of measurements were output to the terminal. This confirms that the unit is at least functional, and sends a signal when triggered. In order to test that the data printed was accurate, an object was placed 5.0cm apart from the sensor. A measurement within 3mm would be considered accurate and within the manufacturer specifications \cite{ref_hcsr04}. After running the test code a second time, it was determined that the measurements were sufficiently accurate with a small spike in inaccuracy in the initial rounds of the measurement loop. Overall all the measurements, shown in Figure \ref{fig:HCSR04 Accuracy Test}, were within 3-5mm of the sensor. This is more than acceptable when we consider that the distance of 5.0cm was measured from the front of the receiver’s housing and the actual hardware that detects the echo pulse recedes an unknown distance within the housing. 
+
+\subsection{LED Strips}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{LEDarray.jpg}
+  \caption{Arrangment of LEDs}
+  \label{fig:LEDarray}
+\end{figure}
+
+For growing plants, a set of 60W 12V full spectrum growing LED lights were purchased. Before testing the lights, they were first prepared to be applied to the roof of the enclosure. The LED strips were cut into 12in long strips and 18 gauge wires were soldered on to each to connected them to the power supply. The LED strips have an adhesive back and were attached to the OSB roof panel in the configuration shown in Figure \ref{fig:LEDarray}. A series of eight strips were used with four backup strips applied in case of failure during testing. First a single strip was tested by attaching the LEDs to a power supply device and left on for 10 minutes. Once the functionality of the LEDs was confirmed, the second test was conducted to test the LEDs wired in parallel and the terminal blocks purchased for parallel power supply. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{LEDcompare.JPG}
+  \caption{Operation of Growing Lights Compared To Decorative LEDs}
+  \label{fig:Comparison}
+\end{figure}
+
+After turning on the power supply, no issues were observed. The lights were bright and intense. They gave a soft warmth but did not heat up considerably over the period of 10 minutes. This gave the team confidence that, over a long period, the LEDs will not overheat and loosen the adhesive gluing them to the roof. In Figure \ref{fig:Comparison}, we see a comparison of grow lights to a set of decorative LEDs. In the image, we can see the difference in intensity. With the confirmation of the single strip of LEDs, the final test was conducted on a fully wired array of eight LEDs. The terminal blocks were supplied with 12V and the array immediately lit up. No dead lights were observed, and after a period of ten minutes, it was concluded that the arrays were ready to add to the project. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{LEDarrayOn.JPG}
+  \caption{Successful Parallel Wiring of LED Array}
+  \label{fig:Light Array On}
+\end{figure}
+
+
+
+\section{Physical Enclosure Design and Implementation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{EnclosureSchematic.png}
+  \caption{Luli Hydroponic System Enclosure Schematic}
+  \label{fig: housing schematic}
+\end{figure}
+
+The housing of the Luli Hydroponic System is designed to be compact with LEDs and environmental sensors housed in the roof of the enclosure. The body of the system is constructed using an engineered wood material called oriented strand board. This material is often used in large scale constructions for its load bearing properties, due to the lack of internal voids and various orientations of the compressed wood strips. The material is nearly water tight, and the outermost layer requires the application of a water sealant. After cutting the boards to size, three layers of polycrylic sealer were applied to prevent moisture from warping the wood. The housing is split into three individual parts. The design of the bottom enclosure is split into two sections. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{bottomHouse.jpg}
+  \caption{Buttom Section with Seperate Compartments}
+  \label{fig:bottom compartment}
+\end{figure}
+
+
+The largest of the two sections will hold the reservoir, diaphragm pump, HC-SR04 ultrasonic sensor, and pH pump. The reservoir chosen for this design is the 2 gallon Chaplin International Replacement tank. This tank can hold a substantial amount of fertilizer solutions in a low profile body that is 21.6 x 6 x 8.5in. The reservoir is typically used to mix industrial strength agricultural fertilizers, and this re-purposing would fit within the specifications of its original design. This guarantees that the tank can hold fertilizer materials without degrading due to the pH of the growing solutions. Next to the tank will sit the diaphragm pump with its wires running to the driver board located in the adjoining compartment.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{topHouse.jpg}
+  \caption{Middle Growing Compartement Before Drilling and Adding Growing Trays}
+  \label{fig:mid Housing}
+\end{figure}
+
+The second compartment of the bottom enclosure is considerably more compact with a width of 6 inches. This is where the core of electronics will be housed. Most notably the power supply and Raspberry Pi Pico W. Special care was taken to ensure that the components would fit. For example, it was discovered that the power supply was too long to fit alongside the breadboard and printed circuit board. In order to save on horizontal space, it was concluded that the unit would need to be installed vertically. With this in consideration, the electronic hardware all fit within this section with the wire control from the various components serving as the final cause of concern.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{wireHouse.jpg}
+  \caption{Wiring of The Enclosure with Bulkhead Ports Complete}
+  \label{fig:top housing}
+\end{figure}
+
+The base was constructed with four 24x10in boards and a 24x24in floor. The OSB does not handle drilling very well and tends to fray when drilled into. Therefore, before any screw was driven into the board, an appropriate pilot hole was drilled. The edges of the boards are too small to drill into. As shown in Figure \ref{fig:bottom compartment}, a series of 2x2in furring strips were used to give the walls a surface to drill the separate panels together. This technique of drilling pilot holes proved to be very successful and no cracks were developed when connecting the sides together. To further ensure that a failure of the plumping or pump would not flood the electronic components, a ring of caulking was applied to the corners of all surfaces. The construction of the base was simple and no complications were encountered. 
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{growingTrays.jpg}
+        \caption{Growing Tubs with 4in Grow Baskets}
+        \label{fig:tubGrowbaskets}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{growingTraysBulk.JPG}
+        \caption{Growing Tubs with Bulkhead Fittings}
+        \label{fig:tubBulk}
+    \end{subfigure}
+    \caption{Growing Tubs}
+    \label{fig:renderings}
+\end{figure}
+
+
+Just above the base, is the growing bed that contains the plant trays, base of the PVC roof supports, and ports for plumbing and electric wires. The growing bed was constructed using 5x24in OSB panels and 24x24in OSB floor. Four furring strips were used to give the panels a foundation to which the panels and floor can be attached to make a square growing tray. Once constructed, a series of holes were drilled into the middle compartment. The first of which were the 3/4in holes for routing piping from the bulkheads of the growing trays back to the solution reservoir. The three growing trays themselves are 6Qt 18x5x8in plastic tubs with a 3/4in hole drilled into the bottom. A PVC bulkhead was attached here to allow for draining of the hydroponics solutions. A pair of 4in holes, depicted in Figure \ref{fig:tubGrowbaskets}, were drilled to the top to hold the growing baskets. The baskets along with their piping system were installed with no issue. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{growingCompartment.JPG}
+  \caption{Growing Compartment Completed with Wiring, Plumbing, and Roof Support}
+  \label{fig:growingCompartment}
+\end{figure}
+
+\pagebreak
+
+There are seven external components that require wiring back to the Pico and power supply. The LED array and DHT-22 sensors are placed the furthest and would need 18 gauge wires measuring at least 2-3ft. To freely allow these wires to run from the Raspberry Pi Pico W to the sensors, a 1/2in hole was drilled into the floor of the middle housing section and into the PVC leg cap. The wiring for the roof electronics was carefully feed through the middle compartment port and up the leg cap of the PVC pipe. A steel wire was used to grip the end of the electrical wires and pull it through sections of PVC. The DHT-22 sensors were placed at the corners of the roof and the three wires required for the sensor were pulled to each of the four corners. The power and ground wires were colored coded to a traditional black/red, whilst a blue wire was used to indicate a data line. The power wires for the sensors were attached together with zip ties and the data lines were managed in a similar fashion. A small 3/4in hole was drilled into a horizontal PVC pipe of the roof support to supply the LED array with power. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{completedProject.JPG}
+  \caption{Completed Enclosure}
+  \label{fig:Completed Project}
+\end{figure}
+
+\pagebreak
+
+Placing all the electronic components within the enclosure was difficult work that required constant testing after each component was added to the Enclosure. The power supply was first added to the housing, with the 12V DC power supply screwed in vertically to save on space in the circuit section of the bottom enclosure. Furthermore, the PCB and bread board containing the Raspberry Pi Pico W and terminal connections were placed at the forefront of the circuit housing. The wires routed through the PVC pipes were connected to the appropriate terminals on the breadboard. After each collection of sensors were connected, their operations were tested to ensure that they were wired correctly before adding more components. A triangular enclosure was specifically built for the OLED LCD Screen. As shown in Figure \ref{fig:Completed Project} the LCD screen was attached to the front of the Luli System with the use of this enclosure. Before placing the reservoir into the larger compartment of the base, a series of holes were drilled into the top of the reservoir. The pH probe was placed in the deepest portion of the reservoir to ensure constant contact with the solution. The other holes were drilled to place the HCSR04 ultrasonic sensor on top of the tank. With these electronics in place, the reservoir was placed into the housing. The wires from these sensors where connected to the bread board and PCB concluding the housing construction and implementation. 
+
+
+\section{Front-End Design And Development}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{lulisketch.png}
+  \caption{Initial Sketch of The Web Portal}
+  \label{fig: Portal Sketch}
+\end{figure}
+
+\pagebreak
+
+When the Luli Hydroponic system is powered and connected to the internet, the user will interact with the device through the use of the Luli Web Portal. The notable hurdles to horticulturalists new to hydroponics is the high learning curve and constant monitoring of the plants. With this in mind, the design philosophy of the web application places emphasis on user friendly design with a minimalist layout. As shown in Figure \ref{fig: Portal Sketch}, the original sketch of the website gives the user a minimal navigation panel. The user would need to first sign in order to see the real time measurements in the bottom right corner of the sketch. The colors scheme was chosen to give the portal a retro appearance mixed with earthy colors.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{luliCreateAccount.png}
+  \caption{Create Account Portal}
+  \label{fig: create account}
+\end{figure}
+
+The front-end was developed using HTML, CSS, and JavaScript, which adds dynamic elements to the static pages. The implementation of the portal is depicted in Figure \ref{fig: create account}, and some key changes were made to the original design. Users now have the option to view their friend's list, post to the cite forum, and adjust their system's settings. Most notably, the measurements were moved from the bottom right corner onto their own separate page. As shown in \ref{fig: plant page}, the plant page is neatly organized with the data presented clear and in a manner that is intuitive. The left panel presents the user with real time measurements served by the Flask supported back-end server. The container left of the measurements is a plant info panel that gives the user information about which plants are currently in the enclosure, important dates, and a field indicating which container holds the plant. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{luliPlants.png}
+  \caption{Plant Information Page}
+  \label{fig: plant page}
+\end{figure}
+
+The settings page gives the user the ability to modify the default settings of their hydroponic system. From settings, the user can choose how often their plants get watered, the amount of water the plants receive, and the duration of the light cycles. Furthermore, users can adjust the plant info panel from this page to better reflect the plants present in their grow trays.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{settings.png}
+  \caption{Settings Control Panel}
+  \label{fig: friends page}
+\end{figure}
+
+The social component of the Luli Hydroponic System is demonstrated in Figure \ref{fig: friends page}, where users can give updates about their plant through their about section. The Down arrow is a button where users can download each other settings, which is then applied to their system. Each time the settings page is updated, these friend settings are overwritten. The Luli website establishes a platform where users are able to freely connect, share growing techniques, and building communities with open access to nutritious choices. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{luliFriends.png}
+  \caption{Luli Website Friends Page}
+  \label{fig: friends page}
+\end{figure}
+
+\section{Conclusion}
+
+The Luli Hydroponic System provides a socially connected IoT device that excels in user accessibility. The system contains a network of sensors that give accurate readings of the plant's environment. Additionally, users have access to the Luli web portal where they can connect with other users to form a network of urban horticulturalists. The configuration of the Luli System can be edited from the settings page. From this portal, users can further share their system's settings to create a democratized center of hydroponic data. The system was constructed within a time frame of 9 months and remained well within the budget of \textdollar500. Over the course of this project, the team improved upon valuable skills critical in the engineering field. Through careful time management and task allocation, the project was completed by the projected timeline. The solving of complex problems was facilitated through communicative teamwork. 
+
+\pagebreak
+
+\appendix
+
+\section{Software Appendix}
+
+\begin{pythoncode}[caption={HCSR04 Ultrasonic Sensor Python Test Code}]
+import machine
+import utime
+# Pin assignments
+trig = machine.Pin(5, machine.Pin.OUT)
+echo = machine.Pin(6, machine.Pin.IN)
+def read_distance():
+    # Ensure the trigger pin is low for a short time
+    timeout = 10000  # timeout in microseconds
+    trig.low()
+    utime.sleep_us(5)
+
+    # Send a 10us pulse to start the measurement
+    trig.high()
+    utime.sleep_us(10)
+    trig.low()
+    # Measure the length of the echo signal
+    start_time = utime.ticks_us()
+    while echo.value() == 0:
+        if (utime.ticks_diff(utime.ticks_us(), start_time) > timeout):
+            return None  # return None if no signal detected within the timeout
+    signal_off = utime.ticks_us()
+    start_time = utime.ticks_us()
+    while echo.value() == 1:
+        if (utime.ticks_diff(utime.ticks_us(), start_time) > timeout):
+            return None  # return None if signal doesn't end within the timeout
+    signal_on = utime.ticks_us()
+    # Calculate the duration of the echo pulse
+    time_passed = utime.ticks_diff(signal_on, signal_off)
+
+    # Calculate distance in centimeters
+    distance = (time_passed * 0.0343) / 2
+    return distance
+while True:
+    distance = read_distance()
+    if distance is not None and distance > 2:  # Check if distance is plausible
+        print("Distance:", distance, "cm")
+    else:
+        print("Out of range or too close")
+    utime.sleep(1)
+\end{pythoncode}
+\pagebreak
+\begin{pythoncode}[caption={DHT-22 Sensor Test Code}]
+import dht
+from machine import Pin
+import machine
+import time
+
+print("Starting DHT11.")
+d0 = dht.DHT11(machine.Pin(16,Pin.IN,Pin.PULL_DOWN))
+
+
+while True:
+    print("Measuring.")
+    
+    retry = 0
+    while retry < 3:
+        try:
+            d0.measure()
+            break
+        except:
+            retry = retry + 1
+            print(".", end = "")
+   
+    if retry < 3:
+        print("Temperature: %3.1f °C" % d0.temperature())
+        print("   Humidity: %3.1f %% RH" % d0.humidity())
+    time.sleep(3)
+
+\end{pythoncode}
+
+\pagebreak
+
+\begin{pythoncode}[caption={Main MicroPython Code}]
+from machine import Pin, SPI
+import ssd1306
+import time
+spiInit = SPI(1,baudrate=1000000,polarity=1,phase=1,bits=8,firstbit=machine.SPI.MSB,sck=machine.Pin(10),mosi=machine.Pin(11))
+
+cs = Pin(13)   # chip select, some modules do not have a pin for this
+dc = Pin(15)    # data/command
+rst = Pin(14,Pin.OUT)   # reset
+
+display = ssd1306.SSD1306_SPI(128, 64, spiInit, dc, rst, cs)
+dataTest = 123
+    
+def printSenorData(ph,temp,light,humidity,solution):
+    display.fill(0)
+    display.hline(7,11,120,1)
+    display.fill_rect(0,0,2,64,1)
+    #display.text('Environment',6,0,1)
+    display.text('pH: '       + str(ph) ,6,16,1)
+    display.text('Temp: '     + str(temp),6,27,1)
+    display.text('Light: '    + str(light),6,39,1)
+    display.text('Humidity: ' + str(humidity),6,51,1)
+    display.text('Tank: ' +  str(solution),6,0,1)    
+    display.show()
+
+def printPlantMenu():
+    display.fill(0)
+    display.hline(7,11,120,1)
+    display.fill_rect(0,0,2,64,1)
+    display.text('Plants',6,0,1)
+    display.text('Plant: Spinach',6,16,1)
+    display.text('Planted: 5/5/24',6,27,1)
+    display.text('Harvest: 9/3/24',6,39,1)
+    display.show()
+menuSelect = 0;
+prevHighlight = 0
+display.poweron()
+display.show()
+
+while(True):
+    printSenorData(dataTest,dataTest,dataTest,dataTest,dataTest)
+    time.sleep(6)
+    printPlantMenu()
+    time.sleep(6)
+
+\end{pythoncode}
+
+\pagebreak
+\begin{htmlcode}[caption={Control Panel Html}]
+
+<!-- control_panel.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Control Panel - LuLi Hydroponics</title>
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='scripts/controlPanel.js') }}"></script>
+</head>
+<body>
+<header>
+    <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+    <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+    <div class = "corner_topRight"> </div>
+</header>
+<nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+<article>
+    <div id="controls">
+        <button onclick="sendCommand('motor', 'on')">Turn Motor On</button>
+        <button onclick="sendCommand('motor', 'off')">Turn Motor Off</button>
+        <button onclick="sendCommand('leds', 'on')">Turn LEDs On</button>
+        <button onclick="sendCommand('leds', 'off')">Turn LEDs Off</button>
+    </div>
+</article>
+<script>
+    function sendCommand(device, action) {
+        const data = { [device]: action };
+        fetch(`/api/update_manual_override/{{ device_id }}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => console.log('Command sent:', data))
+        .catch(error => console.error('Error sending command:', error));
+    }
+</script>
+</body>
+</html>
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={Create Account HTML}]
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="style.css" 
+      rel = "stylesheet">
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+     
+<article>
+      
+      <div id = "createAccount" class="createAccount">
+        <div class = "circleLogo">
+            <div class = "logoFrontPage">
+                <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 160 height= 160 style="float: center" >
+            </div>
+            <div></div>
+
+        </div>
+
+        <form id="createAccountForm" class = "createAccountForm" action = "/create_account"  method = "POST" enctype="multipart/form-data">
+
+            <div id = "welcomeMessage" class = "welcomeMessage">Welcome to Luli Hydroponics!</div>
+
+            <div class="formGroup">  
+               <label for="first-name">First Name:</label>
+               <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="formGroup">
+               <label for="last-name">Last Name:</label>
+               <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="formGroup">
+               <label for="username">Username:</label>
+               <input type="text" id="username" name="username" required>
+            </div>
+            <div class="formGroup">
+               <label for="password">Password:</label>
+               <input type="password" id="password" name="password" required>
+            </div>
+            <div class="formGroup">  
+               <label for="profile_pic">Profile Picture:</label>
+               <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg, image/jpg">
+            </div>
+            <button type="submit" class = "createAccountButton">Create Account</button>
+        </form>       
+
+      </div>
+</article> 
+   
+</body>
+</html>
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={Forum HTML}]
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="style.css" 
+      rel = "stylesheet">
+
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article>
+      <div id="forumContainer" class="forumContainer">
+         <div id="forumPosts" class="forumPosts"> 
+            {% for post in posts %}
+               <div class="post">
+                  <div class="name" style="margin:15px">{{ post.name }}</div>
+                  <!-- Check if 'created' exists before using it -->
+                  {% if post.get('created') %}
+                     <div class="date" style="margin:15px">{{ post.created.strftime('%m/%d/%y %I:%M%p') }}</div>
+                  {% else %}
+                     <div class="date" style="margin:15px">Date not available</div>
+                  {% endif %}
+                  <div class="message" style="margin:15px">{{ post.message }}</div>
+                  {% if post.image_path %}
+                     <img src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="max-width: 500px;">
+                  {% endif %}
+               </div>
+               {% endfor %}
+         </div>
+         <div id="forumMenu" class="forumMenu">
+            <button id="addPostButton">Add Post</button>
+         </div>
+      </div>
+    
+      <!-- Modal for Adding a New Post -->
+      <div id="postModal" class="modal">
+         <div class="modal-content">
+             <span class="close">&times;</span>
+             <form action="/add_post" method="post" enctype="multipart/form-data">
+                 <label for="message">Message:</label>
+                 <textarea id="message" name="message" required></textarea><br>
+                 <label for="image">Image (optional):</label>
+                 <input type="file" id="image" name="image"><br>
+                 <button type="submit">Submit</button>
+             </form>
+         </div>
+     </div>
+    </article>
+    
+    <script src="scripts/modal.js"></script>
+    
+</body>
+
+
+
+</html>
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={Friends Page HTML}]
+
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article id="friendList" class="friendList">
+      {% for friend in friends %}
+      <div class="friendModule">
+          <div class="userProfile">
+            <img src="{{ url_for('static', filename='PROFILE_PICS/' + friend.username + '.jpg') }}" alt="profile pic" class="profileImage"/>
+              <div class="userName">{{ friend.username }}</div>
+          </div>
+          <div class="userInfo">
+              <p class="userAbout">Download my settings to your Luli Hydroponics system!</p>
+              <div class="userInteraction">
+                  <button type="button" class="downloadSettings" onclick="handleDownloadSettings(this)" data-friend-id="{{ friend.user_id }}">
+                      <img src="{{ url_for('static', filename='images/download.png')}}" alt="download" width="80%"/>
+                  </button>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </article>
+
+   <script src="scripts/settingsDownload.js"></script>
+
+</body>
+</html>
+
+\end{htmlcode}
+
+
+
+
+\pagebreak
+
+
+
+\begin{htmlcode}[caption={Login Page HTML}]
+
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="style.css" 
+      rel = "stylesheet">
+
+
+</head>
+<script>
+   window.onload = function() {
+       const params = new URLSearchParams(window.location.search);
+       const msg = params.get('msg');
+       if (msg) {
+           alert(msg);
+       }
+   };
+</script>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+     <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article>
+      <form action="/login" method="POST">
+      <div class="module_login">
+            <div class = "user">
+            </div>
+            <div>
+            <label for="username" class="profile" > Username:</label>
+            <input type="text" id="username" name="username" style="margin-bottom: 15px;">
+            </div>
+            <div>
+            <label for="password" class="password" >Password:</label>
+            <input type="password" id="password" name="password" style="margin-bottom: 15px;">
+            </div>
+            <button type="submit">Login</button>
+            <a href = "/create_account"> <button type ="button">Create Account</button> </a>
+         </form>
+      </div>
+   </article> 
+   
+   
+
+</body>
+
+
+
+</html>
+
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={Plant Page HTML}]
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset = "UTF-8">
+<title> LuLi Hydroponics </title>
+
+<link href="{{ url_for('static', filename='style.css')}}" 
+      rel = "stylesheet">
+
+
+</head>
+
+<body>
+ 
+   <header>
+      <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+      <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+      <div class = "corner_topRight"> </div>
+   </header>
+
+   <nav class = "nav_list">
+      
+      <div class = "button" > 
+         <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+         <label class="button_label"> Login </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/plants"><img src="{{ url_for('static', filename='images/pot.png')}}" alt="plant" height="50" width="50"></a>
+         <label class="button_label"> Plants </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Friends </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Forum </label> 
+      </div>
+      <div class = "button" > 
+         <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+         <label class="button_label"> Settings </label> 
+      </div>
+         <div class = "corner_bottomLeft"> </div>
+     </nav>
+     
+     <article>
+      
+     <div class = "measurements">
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="  
+      height: 20%;
+      width: 35px;
+      background: gold; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: red; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: aqua; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background: orange; "> 
+      </div>
+      </div> 
+
+     <div class = "measurementBar"> 
+      <div class = "barProgress" style="   
+      height: 20%;
+      width: 35px;
+      background:greenyellow; "> 
+      </div>
+      </div> 
+ 
+
+     <div class = "type"> {{sensor_data.light}} </div>
+     <div class = "type"> {{sensor_data.temp}}</div>
+     <div class = "type"> {{sensor_data.humidity}} </div>
+     <div class = "type"> {{sensor_data.ph}} </div>
+     <div class = "type"> {{sensor_data.tank}} </div>
+
+     <div class = "type"> LIGHT </div>
+     <div class = "type"> TEMP </div>
+     <div class = "type"> HUMIDITY </div>
+     <div class = "type"> pH </div>
+     <div class = "type"> TANK </div>
+
+     </div>
+
+    <div class = "plantSection">
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/spinach.jpeg')}}" alt = "spinach" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> SPINACH</div>
+
+      <div>Container: </div>
+      <div> A </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/kale.jpeg')}}" alt = "Kale" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> Kale</div>
+
+      <div>Container: </div>
+      <div> A </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/romaine.jpeg')}}" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> Lettuce</div>
+
+      <div>Container: </div>
+      <div> B </div>
+
+      <div>Planted: </div>
+      <div>5/25/24 </div>
+
+      <div>Harvest: </div>
+      <div>6/7/24 </div>
+
+     </div>
+
+    </div>
+    </article> 
+
+</body>
+</html>
+
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={Settings Page HTML}]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>LuLi Hydroponics</title>
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<script src="scripts/settingsSlide.js"></script>
+
+</head>
+<body>
+<header>
+    <img class="logo" src="{{ url_for('static', filename='images/hydroponic.png')}}" alt="hydroPlant" width="50" height="50" style="float: left;">
+    <img src="{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width="60" height="60" style="float: left;">
+    <div class="corner_topRight"></div>
+</header>
+<nav class = "nav_list">
+      
+    <div class = "button" > 
+       <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+       <label class="button_label"> Login </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+       <label class="button_label"> Plants </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Friends </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Forum </label> 
+    </div>
+    <div class = "button" > 
+       <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+       <label class="button_label"> Settings </label> 
+    </div>
+       <div class = "corner_bottomLeft"> </div>
+   </nav>
+<article>
+
+    <form id="settingsForm" action="/save_settings" method="POST">
+        <div class="settingsContainer">
+            
+            <label for="water_interval" id="water_intervalLabel">Water plants every <span id="water_intervalValue">{{ settings.get('water_interval', 12) }} hours</span></label>
+            <div class="sliderContainer">
+                <input type="range" id="water_interval" name="water_interval" min="1" max="24" value="{{ settings.get('water_interval', 12) }}" oninput="document.getElementById('water_intervalValue').textContent = this.value + ' hours'">
+            </div>
+    
+            
+            <label for="led_duration" id="led_durationLabel">Turn on LEDs for <span id="led_durationValue">{{ settings.led_duration if settings.led_duration else '12' }}</span> hours</label>
+            <div class="sliderContainer">
+                <input type="range" id="led_duration" name="led_duration" min="1" max="24" value="{{ settings.led_duration if settings.led_duration else '12' }}" oninput="document.getElementById('led_durationValue').textContent = this.value">
+            </div>
+    
+            <label for="pump_duration" id="pump_durationLabel">Water for <span id="pump_durationValue">{{ settings.pump_duration if settings.pump_duration else '5' }}</span> minutes per cycle</label>
+
+            <div class="sliderContainer">
+                <input type="range" id="pump_duration" name="pump_duration" min="1" max="15" value="{{ settings.pump_duration if settings.pump_duration else '5' }}" oninput="document.getElementById('pump_durationValue').textContent = this.value">
+            </div>
+    
+            <div class="settingsButton">
+                <button type="submit" id="saveSettingsButton">Save Settings</button>
+            </div>
+        </div>
+    </form>
+    
+    <div class = "plantInfoSettingsContainer">
+    
+        <div id = "plantAmount" class = "plantAmount" >
+            <label for="quantity">Number of Plants:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="6" class = "spinVisible" onchange = "updateSettingsCarousel()">
+        </div>
+
+        <div id = "plantCarousel" class = "plantCarousel">
+            <div id="indPlantSettings" class = "indPlantSettings" >
+
+                <div>
+                    <label for="plantType">Plant Type:</label>
+                    <select id="plantType" name="plantType">
+                            <option value="Spinach">Spinach</option>
+                            <option value="Romaine">Romaine</option>
+                            <option value="Basil">Basil</option>
+                            <option value="Cilantro">Cilantro</option>
+                            <option value="Green Onions">Green Onions</option>
+                            <option value="Kale">Kale</option>
+                            <option value="Mint">Mint</option>
+                            <option value="Oregano">Oregano</option>
+                            <option value="Parsley">Parsley</option>
+                            <option value="Radish">Radish</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label for="start">Date Planted:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" class="custom-calendar"/>
+                </div>
+                
+                <div>
+                    <label for="start">Date of Harvest:</label>
+                    <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" />
+                </div>
+            
+                <div>
+                    <label for="letters">Choose Container:</label>
+                    <select id="letters" name="letters">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</article>
+<script src="scripts/settingsSlide.js"  defer></script>
+<script src="scripts/dynamicSettingsCarousel.js"  defer></script>
+</body>
+</html>
+
+\end{htmlcode}
+
+\pagebreak
+
+\begin{htmlcode}[caption={CSS Stlye Sheet}]
+
+.nav_list
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    
+    
+    
+.button
+{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 10px 10px ;
+   border: 3px solid black;
+   width: 70px; 
+   height: 70px; 
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border-radius: 15px 15px;
+   margin-top: auto;
+}
+    
+.user 
+{
+   display: inline-block;
+   width: 150px;
+   height: 150px;
+   border-radius: 15px 15px 15px 15px;
+   margin-top: 40px;
+   margin-bottom: 60px;
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-size: cover;
+   background-image: url('hydroponic.png');
+}
+    
+.profile
+{
+   margin-right: 04px;
+}
+    
+.password
+{
+   margin-right: 4px;
+}
+
+
+.createAccount
+{
+   display:grid;
+   grid-template-columns: 40% 60%;
+   width: 80%;
+   height: 80%;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+   justify-content: center;
+   align-items: center;
+
+}
+
+.welcomeMessage
+{
+   display:flex;
+   background-color:rgb(237 176 102); 
+   width: 100%;
+   height: 25%;
+   border-radius: 0px 11px 0px 0px;
+   justify-content: center;
+   align-items: center;
+   margin-top: -41px;
+   
+}
+
+.createAccountForm
+{
+   display: flex;
+   flex-direction: column;
+   gap: 40px;
+   height: 100%;
+   width: 100%;
+   justify-content: center;
+   align-items: center;
+
+}
+
+.createAcountButton 
+{
+width: 100px;
+}
+
+
+
+.circleLogo
+{
+   display: flex;
+   flex-direction: column;
+   background-color: rgb(126 198 204);
+   border-radius: 12px 0px 0px 12px;
+   width: 100%;
+   height: 100%;
+   justify-content: center;
+   align-items: center;
+   gap: 20px;
+}
+    
+
+.logoFrontPage
+{
+   background-color: rgb(132 158 214);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 50%;
+   padding: 30px;
+}
+
+
+.module_login
+{
+   font-size: 23px;
+   display: flex;
+   gap:15px;
+   flex-direction:column;
+   align-items: center;
+   width: 400px;
+   height: 500px;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+}
+    
+.module_login div 
+{
+   display: flex;
+   flex-direction: row;       
+}
+    
+ .button_label
+{
+   font-size: 18px;
+}
+    
+.button:hover
+{
+   background: gainsboro;
+   transform: scale(1.05, 1.05);
+}
+    
+body
+{
+  
+   background: rgba(206, 249, 173, 0.578);
+   display: grid;
+   grid-template-columns: 130px 1fr;
+   grid-template-rows:auto 670px;
+   grid-template-areas: 
+   "header header "
+   "nav art ";
+   font-size: 2em;
+   text-align: center;
+   border-radius:15px;
+   box-shadow: 4px 4px 4px black;
+   min-width: 700px;
+   font-family: monospace;
+}
+    
+    
+header 
+{
+   grid-area:header;
+   background: rgb(126 198 204);
+   line-height: 100%;
+   border-radius:15px 15px 0px 0px;
+   margin-bottom: 2px;
+   border: 4px solid black;
+}
+    
+.corner_topRight
+{
+   background: rgb(206 249 173);
+   line-height: 100%;
+   width: 10%;
+   height: 100%;
+   border-left: 4px solid black;
+   border-radius: 0px 11px 0px 0px;
+   float:right;
+}
+    
+.corner_bottomLeft
+{
+   background: rgb(206 249 173);
+   width:100%;
+   height:20%;
+   border-top: 4px solid black;
+   border-radius: 0px 0px 0px 10px;
+   margin-top: auto;       
+}
+    
+nav 
+{
+   grid-area:nav;
+   background: rgb(132 158 214);
+   border: 4px solid black;
+   border-radius: 0px 0px 0px 15px;
+   margin-top: -4px;
+   margin-right: -4px;    
+}
+     
+article
+{
+   grid-area: art;
+   display: flex;
+   background: rgb(237 176 102);
+   border-radius: 0px 0px 15px 0px;
+   width: auto;
+   border: 4px solid black;
+   margin-top: -4px;
+   justify-content: center;
+   align-items: center;
+    
+}
+
+
+.measurements
+{
+   font-size: 23px;
+   display: grid;
+   grid-template-columns: 20% 20% 20% 20% 20% ;
+   grid-template-rows: 85% 7.5% 7.5%;
+   width: 500px;
+   height: 500px;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+   place-items: center;
+   margin: auto 2% auto 2%
+
+}
+
+.plantSection
+{
+   font-size: 23px;
+   display: flex;
+   scroll-snap-type: x mandatory;
+   background-color: rgb(206 249 173);
+   overflow-x: auto;
+   width: 450px;
+   height: 500px;
+   border-radius: 15px 15px 15px 15px;
+   place-items: center;
+   max-width: 350;
+   position: relative;
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   overflow: auto;
+}
+
+
+
+.plantInfo
+{
+   font-size: 23px;
+   display: grid;
+   flex-shrink: 0;
+   scroll-snap-align: start;
+   scroll-behavior: smooth;
+   scroll-snap-type:proximity;
+   grid-template-columns: 50% 50% ;
+   grid-template-rows: 30% 17.5% 17.5% 17.5% 17.5%;
+   width: 450px;
+   height: 100%;
+   background: rgb(206 249 173);
+   place-items: center;
+   scroll-snap-align: center;
+ 
+
+}
+
+.plantImages
+{
+margin: 15px auto auto 15px;
+border-radius:15px;
+height: 50%;
+box-shadow: 2px 2px 2px black;
+}
+
+/* width */
+::-webkit-scrollbar {
+   width: 2px;
+   height: 20px;
+   border-radius: 15px;
+ }
+ 
+ /* Track */
+ ::-webkit-scrollbar-track {
+   background: rgb(132 158 214);
+   border: 4px 0px 0px 0px solid black;
+   border-radius: 0px 0px 10px 10px  ;
+ }
+ 
+ /* Handle */
+ ::-webkit-scrollbar-thumb {
+   background: rgb(126 198 204);
+   border-radius: 15px;
+}
+ 
+ /* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+   background: rgb(237 176 102);
+ }
+
+.measurementBar
+{
+   position: relative;
+   height: 380px;
+   width : 35px;
+   border-radius: 15px 15px 15px 15px;
+   border: 4px solid black;
+   background: white;
+   margin: auto auto auto auto;
+}
+
+.barProgress {
+   position: absolute; 
+   bottom: 0; 
+   border-radius: 0px 0px 11px 11px; 
+   margin: auto; 
+}
+
+
+.forumContainer
+{
+   display:grid;
+   grid-template-columns: 80% 20%;
+   grid-area: 
+   "forumPost" "forumMenu" ;
+   overflow: auto;
+   width: 100%;
+   height: 100%;
+   place-items: center;
+   justify-content: center;
+   overflow: auto;
+}
+
+.forumPosts
+{
+   display: flex;
+   flex-direction: column;
+   gap:15px;
+   height: 100%;
+   width: 90%;
+  
+}
+
+.post
+{
+
+   width: 100%;
+   height: 400px;
+   border: 4px solid black;
+   box-shadow:  2px 2px 2px black;
+   background-color: rgb(132 158 214);
+   text-align: left;
+}
+
+.forumMenu
+{ 
+   position: fixed;
+   bottom: 100px; /* Adjust as needed */
+   right: 40px; /* Adjust as needed */
+   display: flex;
+   flex-direction: column;
+   height: 200px;
+   width : 200px;
+   justify-content:end;
+
+
+}
+
+.forumButton
+{
+   width:40% ;
+   height:30%;
+   background-color: rgb(206 249 173);
+   border-radius: 15px;
+   border: 4px solid black;
+   box-shadow:  2px 2px 2px black;
+}
+
+.forumButton:hover
+{
+   transform: scale(1.1);
+}
+
+
+.settingsContainer
+{
+   font-size: 23px;
+   display: grid;
+   background-color: rgb(132 158 214) ;
+   grid-template-columns: 20% 80%;
+   grid-template-rows: 25% 25% 25% 25% ;
+   grid-area: 
+   "waterCycle" "waterCycle"
+   "waterAmount" "waterAmount"
+   "Lightcycle" "Lightcycle"
+   "LightDuration" "LightDuration";
+   place-items: center;
+   width: 45%;
+   height: 80%;
+   border-radius: 15px 15px 15px 15px;
+   border: 4px solid black;
+   box-shadow:  2px 2px 2px black;
+   margin: auto;
+}
+
+.plantInfoSettingsContainer
+{
+   font-size: 23px;
+   display: grid;
+   background-color: rgb(206 249 173) ;
+   grid-template-rows: 20% 80%;
+   place-items: center;
+   width: 30%;
+   height: 80%;
+   border-radius: 15px 15px 15px 15px;
+   border: 4px solid black;
+   box-shadow:  2px 2px 2px black;
+   margin: auto;
+}
+
+.plantAmount
+{
+   display: flex;
+   width: 100%;
+   height:100%;
+   background-color: rgb(132 158 214);
+   border-radius: 12px 12px 0px 0px;
+   flex-direction: row;
+   gap: 10px;
+   place-items: center;
+   justify-content: center;
+}
+
+.indPlantSettings
+{
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   width:100%;
+   height:100%;
+   flex-shrink: 0;
+   scroll-snap-align: start;
+   scroll-behavior: smooth;
+   scroll-snap-type:proximity;
+   scroll-snap-align: center;
+   place-items: center;
+   justify-content: center;
+
+}
+
+.plantCarousel
+{
+   display: flex;
+   flex-direction: row;
+   height:100%;
+   width:100%;
+   font-size: 23px;
+   scroll-snap-align: start;
+   scroll-behavior: smooth;
+   scroll-snap-type:proximity;
+   scroll-snap-align: center;
+   overflow: auto;
+   scroll-snap-type: x mandatory;
+   
+}
+.friendList {
+   display: flex;
+   flex-direction: row;
+   scroll-snap-align: start;
+   scroll-behavior: smooth;
+   scroll-snap-type: x mandatory;
+   overflow: auto;
+   justify-content:start;
+}
+
+.friendModule
+{
+   font-size: 23px;
+   display: grid;
+   grid-template-rows: 50% 50%;
+   grid-template-columns: 100%;
+   width: 500px;
+   height: 500px;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+   flex-shrink: 0;
+   justify-content: start;
+   margin: 10px;
+}
+
+.userProfile
+{
+   display: grid;
+   grid-template-columns: 50% 50%;
+   justify-content: center;
+   align-items: center;
+   background-color: rgb(132 158 214);
+   width: 100%;
+   height: 100%;
+   border-radius: 11px 11px 0px 0px;
+
+}
+
+.profileImage
+{
+      width: 100%;
+      height: 80%;
+      border-radius: 15px;
+      background-color: #ccc;
+      background-size: cover;
+      background-position: center;
+      margin:10px;
+      box-shadow: 4px 4px 4px black;
+      border: 2px solid black;
+}
+
+.userInfo
+{
+   display:grid;
+   grid-template-columns: 80% 20%;
+   height: 100%;
+   width: 100%;
+
+}
+
+.userAbout
+{
+   text-align: left;
+   margin:10px
+}
+
+
+.userInteraction
+{
+   background-color: rgb(126 198 204);
+   width: 100%;
+   height: 100%;
+   border-radius: 0px 0px 11px 0px;
+}
+
+
+.downloadSettings{
+   background-color: rgb(237 176 102);
+   width: 80%;
+   height: 30%;
+   border-radius: 15px;
+   box-shadow: 4px 4px 4px black;
+   border: 2px solid black;
+   margin: 10px;
+   cursor: pointer;
+   transition: transform 0.2s; 
+}
+
+.downloadSettings:hover {
+   transform: scale(1.1);
+}
+
+
+.spinVisible::-webkit-outer-spin-button,
+.spinVisible::-webkit-inner-spin-button 
+{
+    opacity: 1;
+}
+
+/* width */
+input[type="range"] {
+   width: 85%;
+   height: 5px;
+   -webkit-appearance:none;
+   appearance: none;
+   border: 3px solid rgb(206 249 173);
+   background-color: rgb(206 249 173);
+   box-shadow: 3px 3px 3px black;
+   /* Add rounded corners */
+   border-radius: 20px;
+ }
+
+ input[type="range"]::-webkit-slider-thumb 
+ {
+   width: 20px;
+   height: 30px;
+   background: rgb(237 176 102);
+   border-radius: 25%;
+   border: 2px solid black;
+   box-shadow: 1px 1px 1px black;
+   -webkit-appearance: none;
+
+ }
+
+ .settingsContainer input[type="range"]:active::-webkit-slider-thumb {
+   transform: scale(1.3);
+}
+
+.settingInput
+{
+   width: auto;
+   height: auto;
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+}
+
+#slideLabel
+{
+   display:block;
+   width: 100%;
+   height: 100%;
+   background-color: rgb(126 198 204);
+   border-radius: 0px 0px 0px 0px;
+   align-content: center;
+  
+   margin-left:auto;
+   font-size: 20px;
+}
+
+#slideLabelTop
+{
+   display:block;
+   width: 100%;
+   height: 100%;
+   background-color: rgb(126 198 204);
+   border-radius: 12px 0px 0px 0px;
+   align-content: center;
+   margin-left:auto;
+   font-size: 20px;
+}
+#containerSlideValue
+{
+  
+   display: flex;
+   flex-direction: row;
+   gap: 15px;
+   margin-left: 5px;
+}
+
+#slideValue
+{
+   font-size: 18px;
+   margin: auto;
+}
+
+
+
+#slideLabelBottom
+{
+   display:block;
+   width: 100%;
+   height: 100%;
+   background-color: rgb(126 198 204);
+   border-radius: 0px 0px 0px 12px;
+   align-content: center;
+   margin-left:auto;
+   font-size: 20px;
+}
+
+.type
+{
+   font-size: 20px;
+   font-family: monospace;
+   margin: auto auto 80% auto;
+}
+
+aside 
+{
+   background: goldenrod;
+   line-height: 180px;
+}
+    
+section 
+{
+   background: lightsteelblue;
+   line-height: 90px;
+}
+    
+footer 
+{
+   background: lemonchiffon;
+   line-height: 40px;
+}
+    
+.logo
+{
+   margin-top: 5px;
+   margin-left: 10px;
+   margin-right: 10px;
+}
+    
+\end{htmlcode}
+
+\pagebreak
+
+\begin{thebibliography}{99}
+
+    \bibitem{ref_dht} "DHT22 Datasheet," Mouser Electronics. [Online]. Available: \url{https://www.mouser.com/datasheet/2/737/dht-932870.pdf}.
+
+    \bibitem{ref_hcsr04} SparkFun Electronics, "HC-SR04 Ultrasonic Sensor Datasheet," SparkFun Electronics. [Online]. Available: \url{https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf}. [Accessed: April 29, 2024].
+
+    
+    \bibitem{ref_ph_amazon} GAOHOU. (n.d.). PH0-14 Value Detect Sensor Module + PH Electrode Probe BNC For Arduino [Online]. Available: \url{https://www.amazon.com/dp/B0799BXMVJ?psc=1&ref=ppx_yo2ov_dt_b_product_details}
+    
+    \bibitem{ref_ipc_2221} IPC, "IPC-2221C - Generic Standard on Printed Board Design," IPC International, Bannockburn, IL, Standard, Dec. 2023. [Online]. Available: \url{https://shop.ipc.org/2221-STD-0-D-0-EN-C}
+    \bibitem{ref_boveda} Boveda. "Boveda Size 60 (4 Pack) 69\% RH for Cigar." Boveda, [online] Available: \url{https://store.bovedainc.com/collections/for-cigars/products/boveda-size-60-4-pack-69-rh-for-cigar} 
+    \bibitem{ref_uvforum} T. Tonygo2, "LTR390 Micropython Code," Pimoroni Community Forum, 04-Dec-2021. [Online]. Available: \url{https://forums.pimoroni.com/t/ltr390-micropython-code/22314/2}.
+    \bibitem{ref_crocsee} "CrocSee DC 12V Mini Food Grade Self Priming Diaphragm Fresh Water Transfer Pump 1.3LPM, Replacement Pump for Ice Maker, Coffee Machine, Water Dispenser," Amazon. [Online]. Available: \url{https://www.amazon.com/CrocSee-Diaphragm-Transfer-Replacement-Dispenser/dp/B09XH1GYYQ}. 
+    \bibitem{ref_gikfun} "Gikfun 12V DC Dosing Pump Peristaltic Dosing Head with Connector for Arduino Aquarium Lab Analytic DIY AE1207," Gikfun Store. [Online]. Available: \url{https://www.amazon.com/Gikfun-Peristaltic-Connector-Aquarium-Analytic/dp/B01IUVHB8E}. 
+    \bibitem{ref_growled} "Plant Grow LED Light, OUEVA 16.4ft/5M 5050 SMD Waterproof Full Spectrum Red Blue 5:1 Growing Lamp for Aquarium Greenhouse Hydroponic Plant, Garden Flowers Veg Grow Light," OUEVA Store, [Online]. Available: \url{https://www.amazon.com/Plant-OUEVA-16-4ft-Waterproof-Spectrum/dp/B06XCJG4M6}.
+    \bibitem{ref_oldled} "USB Black Light Strip, 6.6ft 10W UV LED Blacklight String Lights, 395-400nm, DC 5V, 120 Lamp Beads, Glow in the Dark for Halloween, Birthday, Party, Fluorescent Poster, Room, Bedroom Decoration," GREENIC Store, [Online]. Available: \url{https://www.amazon.com/Blacklight-395-400nm-Halloween-Fluorescent-Decoration/dp/B0B99L22B8}.
+    \bibitem{ref_ltr390} Lite-On Inc., "LTR-390UV Final Datasheet." [Online]. Available: \url{https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-390UV_Final_%20DS_V1%201.pdf}.
+    \bibitem{ref_mosfet} Infineon Technologies AG, "IRLZ34NPBF Datasheet." [Online]. Available: \url{https://www.infineon.com/dgdl/irlz34npbf.pdf?fileId=5546d462533600a40153567206892720}.
+    \bibitem{ref_capacitor} Rubycon Corporation, "ZLH Series Aluminum Electrolytic Capacitors." [Online]. Available: \url{https://www.rubycon.co.jp/wp-content/uploads/catalog-aluminum/ZLH.pdf}.
+    \bibitem{ref_diode} ON Semiconductor, "1N4001, 1N4002, 1N4003, 1N4004, 1N4005, 1N4006, 1N4007 Axial-Lead Glass Passivated Standard Recovery Rectifiers Datasheet." [Online]. Available: \url{https://www.onsemi.com/pdf/datasheet/1n4001-d.pdf}.
+    \bibitem{ref_phsensor} "PH Sensor PH-4502C Datasheet." [Online]. Available: \url{https://cdn.awsli.com.br/969/969921/arquivos/ph-sensor-ph-4502c.pdf}.
+    \bibitem{ref_pico_w} Raspberry Pi Foundation, "Raspberry Pi Pico W Datasheet." [Online]. Available: \url{https://datasheets.raspberrypi.com/picow/pico-w-datasheet.pdf}.
+    \bibitem{ref_mux} Texas Instruments, "SN54S151 Data Selector/Multiplexer Datasheet." [Online]. Available: \url{https://www.ti.com/lit/ds/symlink/sn54s151.pdf?ts=1714290231547}.
+
+    % Repeat for each reference
+\end{thebibliography}
+
+\end{document}

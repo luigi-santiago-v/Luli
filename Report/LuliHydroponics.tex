@@ -39,6 +39,25 @@
     }
 }
 {} % This empty {} has to be there otherwise there's an error
+\lstnewenvironment{htmlcode}[1][]
+{
+    \lstset{
+        language=HTML,
+        basicstyle=\small\ttfamily,
+        keywordstyle=\color{blue},
+        stringstyle=\color{red}, % Changed to red for HTML attributes
+        commentstyle=\color{green}, % Changed to green for HTML comments
+        numbers=left,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        showstringspaces=false,
+        breaklines=true,
+        frame=single,
+        captionpos=b,
+        #1
+    }
+}
+{}
 
 
 
@@ -55,7 +74,7 @@
     {\Large ECE 186B\par}
     \vspace{1.5cm}
     {\Large\bfseries LuLi Smart Cultivation: A Socially-Connected IoT Hydroponics Solution\par}
-    \vspace{3cm}
+    \vspace{2cm}
     {\large California State University, Fresno\par}
     {\large Lyles College of Engineering\par}
     {\large Electrical and Computer Engineering Department\par}
@@ -66,7 +85,18 @@
     {\large BY\par}
     \vspace{1cm}
     {\large Liam Goss\par}
-    %{\large Luigi Santiago-Villa\par} % Uncomment in group report
+    {\large Luigi Santiago-Villa\par}
+    \vspace{2cm} % You may adjust this space to fit your layout needs
+    \begin{tabular}{p{0.3\textwidth} p{0.7\textwidth}}
+        \textbf{Instructor:} & \hrulefill \\
+        & \small Name \hfill Signature \hfill Date \\
+    \end{tabular}
+    \newline
+    \vspace{1cm} % Space between entries
+    \begin{tabular}{p{0.3\textwidth} p{0.7\textwidth}}
+        \textbf{Technical Advisor:} & \hrulefill \\
+        & \small Name \hfill Signature \hfill Date \\
+    \end{tabular}
     \vspace{\stretch{2}}
 \end{titlepage}
 \pagebreak
@@ -90,7 +120,7 @@
 % Overview
 \section*{Overview}
 \addcontentsline{toc}{section}{Overview}
-The hydroponics system has been successfully developed centered around user-friendliness, comprehensive data analytics, and internet connectivity. Functioning seamlessly as a household appliance, the initiative effectively addresses the crucial need for access to nutritious food in areas identified as food deserts. The automated system comprises multiple sensors for monitoring temperature, humidity, light intensity, and water pH, alongside a UV lighting system, water reservoir, water pump, and a microcontroller. These integrated components provide end-users with real-time insights into plant health and nutrient metrics.
+\noindent The hydroponics system has been successfully developed centered around user-friendliness, comprehensive data analytics, and internet connectivity. Functioning seamlessly as a household appliance, the initiative effectively addresses the crucial need for access to nutritious food in areas identified as food deserts. The automated system comprises multiple sensors for monitoring temperature, humidity, light intensity, and water pH, alongside a UV lighting system, water reservoir, water pump, and a microcontroller. These integrated components provide end-users with real-time insights into plant health and nutrient metrics.
 \newline
 \newline
 \noindent Additionally, a web application has been developed to facilitate user interaction, enabling the sharing of insights, posing queries, and exchanging settings presets. Serving as the central nexus for accessing sensor data and engaging with community-driven inputs, this platform significantly enhances user experience. Notably, the solution stands out from existing market offerings because of its meticulous design tailored to address the unique challenges of food deserts and foster reliance on local communities through social networking.
@@ -137,7 +167,8 @@ The hydroponics system has been successfully developed centered around user-frie
 \noindent The hydroponics system's circuit design was specially crafted to ensure the seamless integration of its diverse components. These include multiple sensors, a microcontroller, a water pump, and a UV lighting system, each fulfilling a distinct role within the automated hydroponic framework. The design facilitates real-time monitoring of environmental conditions, nutrient levels, and plant health metrics, empowering users to optimize growth conditions and ensure robust crop development.
 \newline
 \newline
-\noindent Comprehensive sensor integration encompasses temperature, humidity, light intensity, and water pH, enabling thorough data collection crucial for plant growth assessment. The microcontroller acts as the system's core, gathering sensor data, managing component operations, and supporting user interaction through a web interface. Essential components like the water pump and UV lighting system play vital roles in sustaining optimal growth conditions by ensuring adequate hydration and nutrient distribution.
+
+\pagebreak\noindent Comprehensive sensor integration encompasses temperature, humidity, light intensity, and water pH, enabling thorough data collection crucial for plant growth assessment. The microcontroller acts as the system's core, gathering sensor data, managing component operations, and supporting user interaction through a web interface. Essential components like the water pump and UV lighting system play vital roles in sustaining optimal growth conditions by ensuring adequate hydration and nutrient distribution.
 \newline
 \newline
 \noindent The circuit design was meticulously planned to accommodate diverse power demands, establish effective communication protocols between sensors and the microcontroller, and enable seamless data exchange for real-time monitoring and control. This systematic approach resulted in a fully operational automated growing environment. The resulting circuit configuration forms a sturdy foundation for monitoring and managing key parameters essential for successful plant cultivation, allowing users to foster healthy crops with minimal manual intervention.
@@ -149,7 +180,7 @@ The hydroponics system has been successfully developed centered around user-frie
 \end{figure}
 \noindent In the final month of the project's development, a PCB was designed to house the system's components, providing a compact and organized layout that enhances reliability and ease of maintenance. In order to connect the sensors placed at various distances around the housing, terminal blocks were used to extend the connections. The KiCad PCB designer required that the schematic include these screw terminals to ensure that all nets and wires were connected correctly. The updated schematic (\ref{fig:Schem_TerminalBlocks}) was then used to generate the Gerber files for manufacturing the PCB.
 
-
+\pagebreak
 \subsection{Component Selection}
 \noindent 1. \textbf{Microcontroller}
 \begin{itemize}
@@ -201,6 +232,7 @@ The hydroponics system has been successfully developed centered around user-frie
 \newline
 \noindent The inclusion of a 220uF capacitor \cite{ref_capacitor} in the circuit plays a critical role in maintaining the stability and integrity of the power supply, particularly given the dynamic nature of the loads present. This capacitor acts primarily as a decoupling device, providing voltage smoothing to mitigate fluctuations attributable to transient changes in the load, such as those occurring during the activation or deactivation of the motor, or the variable current demands of the LED array. It serves to absorb and release electrical energy, thereby ensuring a consistent voltage supply despite abrupt variations. Furthermore, the capacitor contributes to noise reduction by filtering out electrical interference generated by the motor and the pulsating operation of the LEDs, preserving other sensitive components from potential disruptions. Notably, the buck converter, which is susceptible to input voltage irregularities, benefits from the presence of the capacitor that acts as a buffer against voltage spikes. Moreover, the capacitor enhances the power supply's transient response, promptly supplying current during sudden demand surges, allowing the power supply to adapt effectively to the changing load requirements. This preventive measure ensures both the longevity and performance of the circuit components are optimized, and the risk of malfunctions is minimized.
 
+\pagebreak
 \subsection{LED Control Circuit}
 \noindent In the development of the LED control system, a low-side switching configuration was implemented using the IRLZ34N N-channel MOSFET. This configuration effectively allows the modulation of a 12V LED strip via signals originating from a Raspberry Pi Pico W microcontroller. The circuit is designed such that the source terminal of the IRLZ34N MOSFET is connected directly to the ground. The drain terminal is connected to the ground terminal of the LED strip, facilitating the control of the negative power line of the strip. The gate terminal of the MOSFET is interfaced with GPIO22 on the Raspberry Pi Pico W, enabling digital control of the LED strip’s operational state. The positive terminal of the LED strip is connected to a 12V power supply, ensuring the provision of the necessary driving voltage for the LEDs.
 \newline
@@ -211,10 +243,10 @@ The hydroponics system has been successfully developed centered around user-frie
 \noindent The effectiveness of this setup is derived from the MOSFET's ability to act as a switch controlled by the gate voltage. With no voltage on the gate, the channel remains non-conductive; hence, the circuit is open and no current flows through the LED strip. Application of a sufficient voltage (approximately 3.3V from the Pico W GPIO) to the gate allows for the formation of the conductive channel, thus closing the circuit and enabling current flow.
 \newline
 \newline
-The circuit's functionality was verified through a series of tests where the GPIO22 output was alternated between high and low states, corresponding to turning the LED strip on and off, respectively. These tests confirmed that the circuit performed as expected, with the MOSFET effectively controlling the connection between the LED strip and ground based on the GPIO signal. During testing, it was observed that the immediate activation of the LEDs upon application of the 12V supply was mitigated by ensuring correct MOSFET wiring and operation as described. Measurements of voltage levels at the gate, source, and drain were consistent with theoretical expectations, affirming the accuracy of the circuit design and the reliability of the components used.
+\noindent The circuit's functionality was verified through a series of tests where the GPIO22 output was alternated between high and low states, corresponding to turning the LED strip on and off, respectively. These tests confirmed that the circuit performed as expected, with the MOSFET effectively controlling the connection between the LED strip and ground based on the GPIO signal. During testing, it was observed that the immediate activation of the LEDs upon application of the 12V supply was mitigated by ensuring correct MOSFET wiring and operation as described. Measurements of voltage levels at the gate, source, and drain were consistent with theoretical expectations, affirming the accuracy of the circuit design and the reliability of the components used.
 \newline
 \newline
-The implemented design effectively demonstrates the utility of using an N-channel MOSFET for controlling high-power devices like LED strips with low-voltage digital signals from microcontrollers. This configuration not only provides efficient switching capabilities but also simplifies the interfacing between high and low-voltage systems in embedded applications. Further optimization of the circuit could involve the integration of additional control features such as dimming and flashing, which could be achieved by implementing PWM (Pulse Width Modulation) techniques through the Raspberry Pi Pico W.
+\noindent The implemented design effectively demonstrates the utility of using an N-channel MOSFET for controlling high-power devices like LED strips with low-voltage digital signals from microcontrollers. This configuration not only provides efficient switching capabilities but also simplifies the interfacing between high and low-voltage systems in embedded applications. Further optimization of the circuit could involve the integration of additional control features such as dimming and flashing, which could be achieved by implementing PWM (Pulse Width Modulation) techniques through the Raspberry Pi Pico W.
 
 \subsection{Motor Control Circuit}
 \noindent The motor control circuit is similar to the LED control circuit, with the primary difference being the use of a CrocSee 12VDC diaphragm pump as the load. The CrocSee pump is a high-quality diaphragm pump designed for hydroponic systems, aquariums, and other applications requiring water circulation. The pump operates on a 12V DC power supply and is controlled by a Raspberry Pi Pico W microcontroller through an IRLZ34N N-channel MOSFET. The circuit configuration is based on a low-side switching design, allowing the microcontroller to modulate the pump's operational state by controlling the negative power line.
@@ -231,8 +263,20 @@ The implemented design effectively demonstrates the utility of using an N-channe
 \subsection{Component Testing}
 \subsubsection{BMOUO 12V AC-to-DC Power Supply}
 \noindent The 12V30A power supply unit (PSU) was tested to verify its output voltage and current ratings. The PSU was connected to a digital multimeter to measure the output voltage and current under various load conditions. The voltage and current readings were compared to the manufacturer's specifications to ensure that the PSU was operating within the specified range. The test results confirmed that the PSU was delivering the required 12V voltage, making it suitable for powering the hydroponics system. The PSU's stable output voltage and current ratings ensure reliable operation of the system's components, providing the necessary power for optimal performance.
+\noindent The system has two voltage requirements that the power supply provides. The Raspberry Pi Pico W and sensors can only handle up to 5V. The water pump and LEDs required a higher voltage of 12V. To provide both voltages from a single outlet, a BMOUO 12V AC-to-DC power supply and DORHEA C120503 12V to 5V DC converter are used. Further more, a FILSHU 10A 250V Power Socket Inlet Switch with a Detachable 3-Prong Power Cord connects the power supply to the 120V wall outlet. As shown in Figure \ref{fig:PSU test Circuit}, the smaller buck converter was attached to the power supply. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.40\textwidth]{images/psuTestCircuit.jpg}
+  \caption{Power Supply Test Circuit}
+  \label{fig:PSU test Circuit}
+\end{figure}
+
+\noindent With the components all wired, the power cord was plugged into a power outlet, and the 12V power supply was turned on. A green light on the power supply turned on indicating that the unit has not experienced a short or failure. When we measured the output voltage, we got a reading of 12V. This confirmed the operation of the power supply. The multi-meter was then used on the Buck Converter and a steady measurement of 4.9V was observed. This final measurement showed that the entire power supply circuit was functional and the other components were ready to be powered. 
 \subsubsection{DORHEA C120503 12V to 5V DC Converter}
 \noindent The DORHEA C120503 12V to 5V DC converter was tested to verify its voltage conversion capabilities and efficiency. The converter was connected to a 12V power supply and a digital multimeter to measure the output voltage and current. The voltage and current readings were compared to the manufacturer's specifications to ensure that the converter was operating within the specified range. The test results confirmed that the converter was converting the 12V input voltage to 5V, making it suitable for powering the Raspberry Pi Pico W microcontroller and other 5V sensors. The converter's efficient voltage conversion and stable output ensure reliable operation of the microcontroller and other components, facilitating seamless integration into the hydroponics system. The test was repeated twice: first with the lab DC power supply and then with the PSU to ensure that the converter was functioning correctly under different load conditions.
+
+\pagebreak
 \subsubsection{FILSHU 10A 250V Power Socket Inlet Switch}
 \noindent The FILSHU 10A 250V power socket inlet switch was tested to verify its functionality and safety features. The switch was connected to the 12V30A power supply and a digital multimeter was connected to the power supply. The switch was then toggled on and off to verify that it could control the power supply's output. The test results confirmed that the switch was functioning correctly, allowing for easy power management and control of the hydroponics system. The switch's safety features and robust construction ensure reliable operation and user-friendly control of the system's power supply. It was found that it takes roughly 10 seconds from switching the inlet switch off until the power fully dissipated from the PSU.
 \subsubsection{Raspberry Pi Pico W}
@@ -241,34 +285,120 @@ The implemented design effectively demonstrates the utility of using an N-channe
 \newline
 \noindent The I2C and UART communication protocols were tested using the Pico's GPIO pins. The I2C protocol was tested by connecting the Pico to an OLED display and running a MicroPython script to display text on the screen. The UART protocol was tested by connecting the Pico to a computer via USB and running a script to send and receive data over the serial connection. The tests confirmed that the Pico's communication protocols were functioning correctly, enabling seamless data exchange between the microcontroller and external devices. The Pico's versatile communication capabilities make it well-suited for interfacing with a wide range of sensors and peripherals, enhancing the system's functionality and flexibility.
 \subsubsection{DHT22 Temperature and Humidity Sensor}
-\noindent The DHT22 temperature and humidity sensor was tested to verify its accuracy and reliability in measuring environmental conditions. The sensor was connected to the Raspberry Pi Pico W microcontroller, and a MicroPython script was run to read the temperature and humidity values. The sensor was placed in various environments with known temperature and humidity levels to compare the readings and assess the sensor's performance. Boveda humidity control packets \cite{ref_boveda} were used to verify the humidity readings when in an enclosed space with controlled humidity. The test results confirmed that the DHT22 sensor was accurate and reliable in measuring temperature and humidity, providing valuable data for monitoring the hydroponics system's growing environment. The sensor's stable performance and consistent readings ensure precise monitoring of environmental conditions, enabling users to optimize growth conditions and ensure healthy plant development.
+\noindent The DHT22 sensor was tested to verify its accuracy and reliability in measuring environmental conditions. The sensor was connected to the Raspberry Pi Pico W microcontroller, and a MicroPython script was run to read the temperature and humidity values. The sensor was placed in various environments with known temperature and humidity levels to compare the readings and assess the sensor's performance. Boveda humidity control packets \cite{ref_boveda} were used to verify the humidity readings when in an enclosed space with controlled humidity. The test results confirmed that the DHT22 sensor was accurate and reliable in measuring temperature and humidity, providing valuable data for monitoring the hydroponics system's growing environment. The sensor's stable performance and consistent readings ensure precise monitoring of environmental conditions, enabling users to optimize growth conditions and ensure healthy plant development.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.40\textwidth]{images/DHT22.jpg}
+  \caption{DHT-22 Test Circuit}
+  \label{fig:DHT-22 Test Circuit}
+\end{figure}
+
+\noindent The Luli Hydroponic System is a host to 5 seamlessly integrated sensors. Each sensor plays a critical role in successful hydroponics, and after acquisition of the components, their functionality and accuracy was tested. The DHT-11 sensor was chosen due to its dual utility as a humidity and temperature sensor. This reduces the number of GIO pins needed from the Pico microcontroller. According to the datasheet provided by Mouser electronics \cite{ref_dht}, the DHT-11 sensor can measure temperatures within an accuracy of $\pm 2^\circ\text{C}$. Similarly, humidity measurements have an accuracy within $\pm 5 \%$. In order to test functionality, the sensor’s VDD pin is connected to the VBUS of the microcontroller. The sensor’s data prong is linked to the Pico’s GIO 1 pin, in conjunction with a $5 k\Omega$ pull-up resistor. As shown in Figure \ref{fig:DHT-22 Test Circuit}, the test circuit is completed by connecting the sensor and the microcontroller’s ground together. In order to program the microcontroller, the coding IDE Thonny was used and the software was developed in microPython. The test first defines the data pins connected to the DHT-11 sensors. A while loop is used to continuously poll the sensors until a successful measurement is conducted and the output is printed. A short delay of 3 seconds is provided inline with the sensor’s minimum measurement rate.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{images/DHTfailure.png}
+  \caption{DHT-11 Failed Test}
+  \label{fig:DHT-22 Accuracy test}
+\end{figure}
+
+\noindent The first round of testing on the DHT-11 proved unsuccessful, and as shown in Figure \ref{fig:DHT-22 Accuracy test}, a Timeout error was encountered when attempting to gather measurements. To determine the source of the fault, it was important to test the remaining supply of DHT-11 sensors with the test circuit before any modifications to the code or circuit were made. After swapping each DHT-11 sensor, it was discovered that each behaved in the same manner and the timeout error was not resolved. The timeout error is typically caused when a sensor fails to respond with data within an expected period of time. Therefore, the delay within the test code was reduced to the minimum delay of 1s, which is specified in the DHT-11 datasheet, and then adjusted far longer than needed. Neither change produced a successful result and therefore attention was returned again to the hardware. 
+\newline
+\newline
+\noindent In an attempt to further pinpoint the cause of the issue, it was then assumed that the sensors used could in fact be malfunctioning. To test this theory, an alteration to the test circuit was made by replacing the sensor with its more reliable version, the DHT-22. After swapping the sensors in the test circuit, the code was run in Thonny and an attempt to gather environmental measurements was attempted. The exchange in sensors proved to be successful and a temperature reading was returned. Depicted in Figure \ref{fig:DHT-22 Succesful test}, the DHT-22 sensors returned humidity and temperature data after a series of readings and it was therefore decided to alter the original design of the system to include DHT-22 sensors instead of the DHT-11 sensors. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{images/DHTsuccess.png}
+  \caption{DHT-22 Successful Readings}
+  \label{fig:DHT-22 Succesful test}
+\end{figure}
 \subsubsection{LTR-390UV-01 ALS + UV Sensor}
 \noindent The LTR-390UV-01 UV \cite{ref_ltr390} sensor was tested to verify its accuracy and reliability in measuring UV light intensity. The sensor was connected to the Raspberry Pi Pico W microcontroller, and a MicroPython script \cite{ref_uvforum} was run to read the raw UV light intensity values. The sensor was placed in ambient room lighting and then under dedicated UV LEDs to compare the readings and assess the sensor's performance. The sensor was not sensitive enough to detect any UV light from a source more than a few inches away, but after increasing the gain to the maximum value it supported (\ref{appendix:ltr390}) the sensor was able to detect the UV light from the LEDs. The test results confirmed that the LTR-390UV-01 sensor was accurate and reliable in measuring UV light intensity, providing valuable data for monitoring the hydroponics system's UV lighting system. The sensor's stable performance and consistent readings ensure precise monitoring of UV light levels, enabling users to optimize growth conditions and ensure healthy plant development.
 \subsubsection{CrocSee 12VDC Diaphragm Pump}
-\noindent The CrocSee 12VDC diaphragm pump \cite{ref_crocsee} was not the original pump selection for this sytem. The original water pump, a Gikfun 12V DC dosing pump with peristaltic dosing head \cite{ref_gikfun} was used. This original pump, however, sustained water damage and would no longer function. When it was functional, the flow rate was not sufficient for the hydroponics system. The CrocSee pump was selected as a replacement due to its higher flow rate and compatibility with the system's 12V power supply. The pump was tested to verify its flow rate and operational performance in circulating water within the hydroponics system. The pump was first connected directly to the 12V power supply when both inlet/outlet tubes were submerged in a container of water. Upon powering the pump, the flow rate was observed and deemed sufficient. The pump was then connected to the Raspberry Pi Pico W microcontroller through an IRLZ34N MOSFET to enable digital control of the pump's operational state. The pump was tested with a MicroPython script to turn it on and off, verifying that the pump could be controlled effectively using the microcontroller. The test results confirmed that the CrocSee pump was suitable for circulating water within the hydroponics system, providing the necessary flow rate and operational reliability for optimal plant growth. This test also served as the basis for the IRLZ34N MOSFET test, which was successful in controlling the pump's operational state.
+\noindent The CrocSee 12VDC diaphragm pump \cite{ref_crocsee} was not the original pump selection for this system. The original water pump, a Gikfun 12V DC dosing pump with peristaltic dosing head \cite{ref_gikfun} was used. This original pump, however, sustained water damage \ref{fig:Pump Fail} and longer functions. The CrocSee pump was selected as a replacement due to its higher flow rate and compatibility with the system's 12V power supply. The pump was tested to verify its flow rate and operational performance in circulating water within the hydroponics system. The pump was first connected directly to the 12V power supply when both inlet/outlet tubes were submerged in a container of water. The pump was then connected to the Raspberry Pi Pico W microcontroller through an IRLZ34N MOSFET to enable digital control of the pump's operational state. The pump was tested with a MicroPython script to turn it on and off, verifying that the pump could be controlled effectively using the microcontroller. The test results confirmed that the CrocSee pump was suitable for circulating water within the hydroponics system, providing the necessary flow rate and operational reliability for optimal plant growth. This test also served as the basis for the IRLZ34N MOSFET test, which was successful in controlling the pump's operational state.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/pumpfail.jpg}
+    \caption{Failed Pump Test}
+    \label{fig:Pump Fail}
+\end{figure}
 \subsubsection{IRLZ34NPBF MOSFET}
 \noindent The IRLZ34NPBF MOSFET was selected due to its high drain-to-source voltage rating at 55V and low on-resistance (\ref{appendix:mosfet}). The MOSFET was tested to verify its switching capabilities and operational performance in controlling high-power devices like the CrocSee 12VDC diaphragm pump. The MOSFET was connected to the Raspberry Pi Pico W microcontroller through a 220µF capacitor and a 1N4001RLGOSCT flyback diode to protect the MOSFET from voltage spikes generated by the pump's inductive load. The MOSFET was then tested with a MicroPython script to turn the pump on and off, verifying that the MOSFET could control the pump's operational state effectively. The test results confirmed that the IRLZ34NPBF MOSFET was suitable for controlling high-power devices like the CrocSee pump, providing reliable switching capabilities and robust performance in the hydroponics system. The MOSFET's low on-resistance and high voltage rating ensure efficient operation and safe control of the pump, enabling precise water circulation within the system. Each MOSFET would be used as a low-side switch to control the pump's and LED's respective operational states, allowing for digital control of the loads' power connections.
 \newline
 \newline
 \noindent Low-side switching using an IRLZ34N MOSFET involves connecting the source terminal to ground and the drain terminal to the load, with the other side of the load linked to a power supply's positive terminal. This configuration allows for straightforward control of the MOSFET by applying a voltage to the gate relative to its source. When a sufficient gate-to-source voltage is provided—typically around 2V for the IRLZ34N—the MOSFET conducts, allowing current to flow from the power supply through the load and into the drain, activating the load. Deactivation occurs when the voltage is removed from the gate, stopping current flow and thus powering down the load. This method is favored for its simplicity and cost-effectiveness, requiring fewer components and less complex drive circuitry compared to high-side switching. However, it is crucial to address potential ground reference issues and manage voltage spikes from inductive loads with protective components like flyback diodes to ensure robust operation.
+
+\pagebreak
 \subsubsection{1N4001RLGOSCT-ND Flyback Diode}
 \noindent The 1N4001RLGOSCT-ND \cite{ref_diode} diode was intended to be placed in reverse-bias across the CrocSee pump to protect the IRLZ34N MOSFET from voltage spikes generated by the pump's inductive load. The first attempt at testing the diode revealed that it was accidentally placed in forward-bias, causing the diode to burn out. A new, identical diode was then correctly placed in reverse-bias across the pump, and the test was repeated. The test results confirmed that the diode was functioning correctly, providing a path for the voltage spike generated by the pump's inductive load to dissipate harmlessly. The diode's reverse-bias configuration ensures that it remains non-conductive during normal operation, allowing current to flow through the pump. When the pump is turned off, the diode becomes forward-biased, providing a path for the voltage spike to dissipate safely, protecting the MOSFET, and ensuring the circuit's longevity. The diode's protective function safeguards the MOSFET from potential damage due to voltage spikes, ensuring reliable operation and robust performance of the hydroponics system.
+
+\subsubsection{Ultra-Sonic Sensor HC-SR04}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/sonicTest.jpg}
+  \caption{Luli Hydroponic System Housing}
+  \label{fig:HCSR04 Test Circuit}
+\end{figure}
+
+\pagebreak
+
+\noindent The HC-SR04 ultrasonic sensor was placed on top of the reservoir tank and takes measurements of the solution’s level. The sensor is accurate within 3mm and has a practical range between 2cm and 80cm \cite{ref_hcsr04}. Two tests were conducted on this sensor. First the unit was tested for functionality. In order to accomplish this, the ultrasonic sensor was interfaced to the Pico by first connecting the VCC pin to the VBUS output of the Raspberry Pi Pico. This provides the unit with the 5V necessary to drive it. The trigger pin was connected to GIO pin 5 and the echo pin was interfaced with GIO pin 6. The microPython program activates the trig pin for 10 microseconds and the echo pin receives the returning ultrasonic pulse, which is transmitted to the Pico for analysis and conversion. Once the data from the ultrasonic pulse is received by the microcontroller, the data must be converted.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/usDistanceTest.jpg}
+  \caption{HRSR04 Accuracy Testing}
+  \label{fig:accuracy test}
+\end{figure}
+
+\noindent In order to confirm that the sensor is reading data correctly, a function was written that first sends a logical 1 value to the trigger pin, and if successful, the transmitter will emit an ultrasonic pulse that the receiver will detect. The echo pin will go high at the end of the transmission and remain high until an ultrasonic pulse is detected by the receiver. Once the function detects the low signal from the echo pin, the difference between the signalOn and signalOff is calculated to determine the period, which is measured in microseconds, that the sonic signal took to travel between two points. This time period is then converted by multiplying by the distance sound travels in a micro second:
+\begin{equation}
+\text{Distance} = \frac{\text{Time Duration} \times 0.0343}{2}
+\end{equation}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{images/usMeasurements.png}
+  \caption{HCSR04 Measurement Results}
+  \label{fig:HCSR04 Accuracy Test}
+\end{figure}
+
+\noindent When the test code was run, the unit appeared to be operational and a series of measurements were output to the terminal. This confirms that the unit is at least functional, and sends a signal when triggered. In order to test that the data printed was accurate, an object was placed 5.0cm apart from the sensor. A measurement within 3mm would be considered accurate and within the manufacturer specifications \cite{ref_hcsr04}. After running the test code a second time, it was determined that the measurements were sufficiently accurate with a small spike in inaccuracy in the initial rounds of the measurement loop. Overall all the measurements, shown in Figure \ref{fig:HCSR04 Accuracy Test}, were within 3-5mm of the sensor. This is more than acceptable when we consider that the distance of 5.0cm was measured from the front of the receiver’s housing and the actual hardware that detects the echo pulse recedes an unknown distance within the housing. 
+
 \subsubsection{74LS151N 8:1 MUX}
 \noindent The multiplexer \cite{ref_mux} was tested by connecting it to the ADC0 pin on the Raspberry Pi Pico W and using the GND, 3.3V, and 5V outputs from the Pico as known input voltages. The multiplexer was then used to switch between these inputs and output the selected voltage to the ADC0 pin. The output was then read using a MicroPython script (\ref{appendix:muxTest}) to verify that the multiplexer was functioning correctly. The test results confirmed that the 74LS151N 8:1 MUX was operating as expected, allowing for the selection of different input voltages and outputting the desired voltage to the ADC0 pin.
 \newline
 \newline
 \noindent Unfortunately, during the final few weeks before the culmination of the project, the D0 and VCC pins on the MUX broke off, rendering the multiplexer unusable. This issue was identified during the final integration phase, and the decision was made to proceed without the multiplexer. This freed up GPIO pins that were originally used for select, enable, and the data line which were now replaced with the data lines of the sensors directly. 
+
+\pagebreak
 \subsubsection{60W Full Spectrum Grow Lights}
 \noindent The 60W full spectrum grow light LED strips \cite{ref_growled} are rated for 12V5A producing 60 Watts of power. This is a significant upgrade from the originally purchased LED strips \cite{ref_oldled} that were only rated for 5V2A. The purchasing of the original LEDs was an oversight because the power supply was rated for 12V, and the LEDs were rated for 5V. The new LEDs were tested by connecting them directly to a DC power supply and observing the light output and current usage. The test results confirmed that the LEDs were functioning correctly, providing the necessary full spectrum light for plant growth. The LEDs were then connected to the Raspberry Pi Pico W microcontroller through an IRLZ34N MOSFET to enable digital control of the LED strip's operational state. The LEDs were tested with a MicroPython script to turn them on and off, verifying that the MOSFET could control the LED strip's operational state effectively. The test results confirmed that the 60W full spectrum grow lights were suitable for providing the necessary light intensity for plant growth, enabling optimal photosynthesis and healthy plant development. The LEDs' high power output and full spectrum light coverage ensure robust growth conditions and promote healthy plant development within the hydroponics system. The difference in output is noticeable when comparing the two LED strips (\ref{fig:LED_Compare}).
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/led_compare.JPG}
-    \caption{60W Full Spectrum LEDs (left) vs. 10W UV EDs (right)}
-    \label{fig:LED_Compare}
-\end{figure}
+    \begin{subfigure}[b]{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/led_compare.JPG}
+      \caption{60W Full Spectrum LEDs (left) vs. 10W UV LEDs (right)}
+      \label{fig:LED_Compare}
+    \end{subfigure}
+    \hfill % Optional: add some horizontal separation between the subfigures
+    \begin{subfigure}[b]{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/LEDarrayOn.JPG}
+      \caption{Successful Parallel Wiring of LED Array}
+      \label{fig:Light Array On}
+    \end{subfigure}
+    \caption{Comparative LED illumination and array configuration}
+    \label{fig:LED_Illumination_and_Array}
+  \end{figure}
+
+\pagebreak
 \subsubsection{pH Sensor - PH4502C}
 \begin{table}[H]
     \centering
+    \renewcommand{\arraystretch}{1.25} % Adjust the cell padding
     \begin{tabular}{|c|c|}
         \hline
         \textbf{pH} & \textbf{Voltage [V]} \\
@@ -285,14 +415,15 @@ The implemented design effectively demonstrates the utility of using an N-channe
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/ph_from_amazon.jpg}
+    \includegraphics[width=0.6\textwidth]{images/ph_from_amazon.jpg}
     \caption{PH4502C pH Sensor \cite{ref_ph_amazon}}
     \label{fig:PH4502C}
 \end{figure}
+
 \noindent The PH4502C \cite{ref_phsensor} is designed to output the following voltages shown in Table \ref{tab:PH4502C}.
 This data was provided by the manufacturer and was used to calibrate the pH sensor. An extensive calibration process was conducted for the PH4502C sensor module to ensure accurate pH readings. The sensor, equipped with two potentiometers for offset and slope adjustments, was designed to output a voltage correlating to the detected pH level, with a specified range of 0-5V.
-\newline
-\newline
+
+\pagebreak
 \noindent Initially, difficulties were encountered in the calibration process due to output voltage readings exceeding the safe input range of the Raspberry Pi Pico’s analog-to-digital converter (ADC). A voltage divider was implemented to attenuate the sensor's voltage output. Subsequent readings from the sensor module were consistently registering maximum ADC values, indicative of an over-voltage condition. It was concluded that the direct output from the sensor was unsuitable for direct interfacing with the Pico’s ADC.
 Following the integration of a voltage divider into the circuit, the output was reduced to acceptable levels within the Pico's ADC range of 0-3.3V (\ref{fig:ph_voltage}). However, the initial calibration attempt, while using the voltage divider, produced a reading that did not align with the standard pH buffer solution. Consequently, the calibration process was refined by removing the voltage divider and reading the output directly from the sensor module (\ref{fig:ph_test_full}), which resulted in a more stable and accurate voltage reading.
 \newline
@@ -324,13 +455,37 @@ Following the integration of a voltage divider into the circuit, the output was 
     \label{fig:phTestingComposite}
 \end{figure}
 
+\pagebreak
 \noindent An observation was made during the calibration that a red LED indicator on the sensor module was activated when the voltage dropped below 4V. It was inferred that this LED served as an indicator for out-of-range voltage conditions. The sensor was adjusted to maintain the output voltage above this threshold to prevent the activation of the LED indicator.
 Once the sensor output was adjusted to the correct voltage for a pH 7 solution, the calibration was deemed successful. The calibration state was documented as stable, and the expectation was set that, barring any significant handling or environmental changes, recalibration would not be necessary before each use. 
+
+\subsubsection{OLED Screen}
+
+\noindent The screen chosen for our design is the 2.42in OLED LCD display produced by DWEII Electronics. In order to test this screen, we first wired the component to the Raspberry Pi Pico W. The VCC pin on the OLED display was connected to the VBUS of the microcontroller and draws a voltage of 3.3v. When choosing pins on the Raspberry Pi Pico, it was important to note which protocols were supported, and for this test, pins 10-15 were chosen since they support SPI communication. GIO pin 10 was defined as the system clock output and set to a baud rate of 1MHz. The screen communicates with the Pico using SPI communication and the screen acts as the slave unit. To interface the communication between devices pin 11 on the Pico was used as the MOSI port. The reset pin of the screen was connected to GIO pin 14, and pin 13 was connected to the CS pin of the screen. The test circuit was completed by connecting the ground of the screen to the Pico’s ground pin. To drive the circuit, the code, shown in appendix , was written to display a simple “Successful” message to the screen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/oledTest.jpg}
+  \caption{OLED Display Test Circuit}
+  \label{fig:OLED Test}
+\end{figure}
+
+\pagebreak
+\noindent The first attempt to drive the screen was unsuccessful. When the code was run, the screen flickered for a brief moment before it turned off and remained black. Since we observed a change in the screen, it was likely that a wire was incorrectly placed or a component was not fully driven into the breadboard. First we ensured that the connections between the components were secured and correct. After checking connections, the board yet again failed to remain on. Next we checked the headers that were soldered onto the OLED screen. Under closer examination, it was discovered that a pin was not fully soldered. The joint had formed a cold joint, and when moved, we observed that there was space between the cold joint and the VCC pin of the screen. Careful attention was given to each header pin to ensure that no other pins were loose, and the headers were re-soldered on with better connections. Once that error was fixed, the program was run, and on the third attempt, the screen turned on and the success message was displayed. Figure \ref{fig:OLED Success} shows the Pico printing the message to the screen and confirms that the unit is functional. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/oledSuccess.jpg}
+  \caption{Successful OlED Screen Test}
+  \label{fig:OLED Success}
+\end{figure}
 
 \subsection{Printed Circuit Board Design}
 \noindent The hydroponics system is powered by a 12V30A power supply with a maximum current draw of 5A. Temporary prototyping solutions such as a solderless breadboard were used to test the system's functionality. However, to ensure long-term reliability and ease of maintenance, a custom-designed printed circuit board (PCB) was developed to house the system's components. The PCB design process involved creating a schematic diagram, laying out the components, routing the traces, and generating the Gerber files for manufacturing. The PCB design was meticulously crafted to accommodate the system's sensors, microcontroller, motor control circuit, and power supply connections. The resulting PCB design provides a compact and organized layout that simplifies the assembly process and enhances the system's overall reliability.
 \newline
 \newline
+
+\pagebreak
 \noindent The schematic and PCB were designed using free open-source software, KiCad. KiCad is a powerful EDA (Electronic Design Automation) tool that offers a comprehensive suite of features for designing schematics, laying out PCBs, and generating manufacturing files. The schematic design process involved creating symbols for each component, connecting the components with wires, and adding labels for easy identification. The schematic served as the foundation for the PCB layout, guiding the placement of components and the routing of traces. The PCB layout was carefully planned to ensure optimal component placement, signal integrity, and thermal management. By organizing the components in a logical and compact manner, the PCB design maximizes space utilization and minimizes signal interference, resulting in a clean and efficient layout.
 \newline
 \newline
@@ -355,28 +510,29 @@ where:
 \noindent Multiple through-hole screw terminal blocks were used for the sensors, motor, and power connections to facilitate easy assembly and maintenance. The screw terminals provide a secure and reliable connection for the wires, allowing for quick installation and removal of components. This also allows for distanced connections to the PCB which enables the LEDs, DHT sensors, water pump, and power supply to be placed in different locations. These terminal blocks were strategically placed on the PCB to ensure optimal wiring organization and accessibility. The PCB design was meticulously crafted to accommodate the system's components and facilitate easy assembly and maintenance. The resulting PCB layout (\ref{fig:PCB_DESIGN}) provides a compact and organized configuration that enhances the system's reliability and ease of use.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/PCB_Screenshot.png}
+    \includegraphics[width=0.6\textwidth]{images/PCB_Screenshot.png}
     \caption{First Iteration PCB in KiCad}
     \label{fig:PCB_DESIGN}
 \end{figure}
 \noindent After successfully milling the PCB in-house, the components were soldered onto the board following the assembly guide. At this stage, a fatal design flaw was discovered in the PCB layout that prevented several components from being soldered correctly. Several terminal blocks had pads on both layers of the PCB, meaning that it would be nearly impossible to solder the components with such minimal clearance. Additionally, the LPKF ProtoMat Circuit Board Plotter could not make plated through holes, which would have allowed for the components to be soldered on both sides of the board. As such, vias were essentially useless in this design without manually filling them with solder.
-\newline
-\newline
-\noindent These design flaws were identified during the assembly process and were rectified by redesigning the PCB layout (\ref{fig:PCB_DESIGN_V2}) to ensure that all components could be soldered correctly. Unfortunately, this setback meant that a compromise had to be made such that only the high-current components were soldered onto the now single-layer PCB. The remaining components were placed on a breadboard and connected to the PCB using jumper wires to ensure that the system could still be tested and demonstrated. The revised PCB layout was milled, and the high-current components were successfully soldered onto the board (\ref{fig:Assembled_PCB}). The system was then tested to verify its functionality and ensure that all components were properly connected. The revised PCB design successfully accommodated the system's components and facilitated easy assembly and maintenance, despite the initial design flaw. The secondary iteration of the PCB layout was meticulously crafted to ensure optimal wiring organization and accessibility, enhancing the system's reliability and ease of use.
+
+\pagebreak
+\noindent These design flaws were identified during the assembly process and were rectified by redesigning the PCB layout (\ref{fig:PCB_DESIGN_V2}) to ensure that all components could be soldered correctly. Unfortunately, this setback meant that a compromise had to be made such that only the high-current components were soldered onto the now single-layer PCB. The remaining components were placed on a breadboard and connected to the PCB using jumper wires to ensure that the system could still be tested and demonstrated. The revised PCB layout was milled, and the high-current components were successfully soldered onto the board (\ref{fig:Assembled_PCB}). The system was then tested to verify its functionality and ensure that all components were properly connected. The revised PCB design successfully accommodated the system's components and facilitated easy assembly and maintenance, despite the initial design flaw. The second iteration of the PCB layout was meticulously crafted to ensure optimal wiring organization and accessibility, enhancing the system's reliability and ease of use.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/PCB_V2_KiCad.png}
+    \includegraphics[width=0.4\textwidth]{images/PCB_V2_KiCad.png}
     \caption{Second Iteration PCB in KiCad}
     \label{fig:PCB_DESIGN_V2}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/Assembled_PCB.jpg}
+    \includegraphics[width=0.4\textwidth]{images/Assembled_PCB.jpg}
     \caption{Assembled High Current PCB}
     \label{fig:Assembled_PCB}
 \end{figure}
 
+\pagebreak
 \subsection{Physical Enclosure Construction}
 \noindent The designed of the physical enclosure was inspired by the need for sufficient area to grow up to 6 plants, a discrete way to route wiring, and a way to protect the electronics from water damage. The first draft of the enclosure was freehand drawn (\ref{fig:freehand}) and then modeled in Fusion 360 (\ref{fig:blueprints}). 
 \begin{figure}[H]
@@ -397,6 +553,8 @@ where:
     \caption{Physical Enclosure Design Blueprints}
     \label{fig:blueprints}
 \end{figure}
+
+\pagebreak
 \noindent The dimensioned design in Fusion 360 was rendered to provide a visual representation of the enclosure's layout and size (\ref{fig:renderings}). The enclosure was designed to house the hydroponics system's components, including the sensors, microcontroller, motor control circuit, and power supply. The enclosure features a top cover that can be removed for easy access to the system's components, allowing for maintenance and troubleshooting. The enclosure's dimensions were carefully chosen to accommodate the system's components while providing sufficient space for plant growth and water circulation. The enclosure's design ensures that the system's components are protected from water damage and environmental factors, ensuring reliable operation and longevity.
 \begin{figure}[H]
     \centering
@@ -423,13 +581,137 @@ where:
     \caption{3D Renderings of the Physical Enclosure}
     \label{fig:renderings}
 \end{figure}
+
+
+\noindent Upon the finalization of the design and renderings, the physical construction took place. The physical structure (\ref{fig:initialconstruction}) was created from a 4"x8" unit of Oriented Strand Board (OSB). The OSB was cut to size using prior to purchasing and was then transported and finally assembled using and screws and furring strips. The design consisted of two boxes that sat on top of each other: the lower portion houses the reservoir and circuitry and the upper portion holds the plants and plant containers. The enclosure was then painted with a water-resistant sealant to protect the wood from moisture and environmental factors. The top cover was designed to be removable to allow for easy access to the system's components. The 1" diameter PVC used to support the roof was cut to size and attached to the enclosure using screws. The PVC was left uncovered to allow for easy access to the system's components and to allow for access holes to be drilled in the side to route the LED wires through. By hiding the DHT22 and LED strip wiring in the PVC pipes, the system's wiring was kept organized and out of sight, enhancing the enclosure's aesthetic appeal and functionality.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{images/construction2.jpeg}
-    \caption{Physical Enclosure Initial Construction}
-    \label{fig:initialconstruction}
+    \includegraphics[width=0.8\textwidth]{images/EnclosureSchematic.png}
+    \caption{Luli Hydroponic System Enclosure Schematic}
+    \label{fig: housing schematic}
 \end{figure}
-\noindent Upon the finalization of the design and renderings, the physical construction took place. The physical structure (\ref{fig:initialconstruction}) was created from a 4"x8" unit of Oriented Strand Board (OSB). The OSB was cut to size using prior to purchasing and was then transported and finally assembled using and screws and furring strips. The design consisted of two boxes that sat on top of each other: the lower portion houses the reservoir and circuitry and the upper portion holds the plants and plant containers. The enclosure was then painted with a water-resistant sealant to protect the wood from moisture and environmental factors. The top cover was designed to be removable to allow for easy access to the system's components. The 1" diameter PVC used to support the roof was cut to size and attached to the enclosure using screws. The PVC was left uncovered to allow for easy access to the system's components and to allow for access holes to be drilled in the side to route the LED wires through. By hiding the DHT22 and LED strip wiring in the PVC pipes, the system's wiring was kept organized and out of sight, enhancing the enclosure's aesthetic appeal and functionality.
+
+\noindent The housing of the Luli Hydroponic System is designed to be compact with LEDs and environmental sensors housed in the roof of the enclosure. The body of the system is constructed using an engineered wood material called oriented strand board. This material is often used in large scale constructions for its load bearing properties, due to the lack of internal voids and various orientations of the compressed wood strips. The material is nearly water tight, and the outermost layer requires the application of a water sealant. After cutting the boards to size, three layers of polycrylic sealer were applied to prevent moisture from warping the wood. The housing is split into three individual parts. The design of the bottom enclosure is split into two sections. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/bottomHouse.jpg}
+    \caption{Buttom Section with Seperate Compartments}
+    \label{fig:bottom compartment}
+\end{figure}
+\pagebreak
+\noindent The largest of the two sections will hold the reservoir, diaphragm pump, HC-SR04 ultrasonic sensor, and pH pump. The reservoir chosen for this design is the 2 gallon Chaplin International Replacement tank. This tank can hold a substantial amount of fertilizer solutions in a low profile body that is 21.6 x 6 x 8.5in. The reservoir is typically used to mix industrial strength agricultural fertilizers, and this re-purposing would fit within the specifications of its original design. This guarantees that the tank can hold fertilizer materials without degrading due to the pH of the growing solutions. Next to the tank will sit the diaphragm pump with its wires running to the driver board located in the adjoining compartment.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/topHouse.jpg}
+    \caption{Middle Growing Compartement Before Drilling and Adding Growing Trays}
+    \label{fig:mid Housing}
+\end{figure}
+
+\noindent The second compartment of the bottom enclosure is considerably more compact with a width of 6 inches. This is where the core of electronics will be housed. Most notably the power supply and Raspberry Pi Pico W. Special care was taken to ensure that the components would fit. For example, it was discovered that the power supply was too long to fit alongside the breadboard and printed circuit board. In order to save on horizontal space, it was concluded that the unit would need to be installed vertically. With this in consideration, the electronic hardware all fit within this section with the wire control from the various components serving as the final cause of concern.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/wireHouse.jpg}
+    \caption{Wiring of The Enclosure with Bulkhead Ports Complete}
+    \label{fig:top housing}
+\end{figure}
+
+\noindent The base was constructed with four 24x10in boards and a 24x24in floor. The OSB does not handle drilling very well and tends to fray when drilled into. Therefore, before any screw was driven into the board, an appropriate pilot hole was drilled. The edges of the boards are too small to drill into. As shown in Figure \ref{fig:bottom compartment}, a series of 2x2in furring strips were used to give the walls a surface to drill the separate panels together. This technique of drilling pilot holes proved to be very successful and no cracks were developed when connecting the sides together. To further ensure that a failure of the plumping or pump would not flood the electronic components, a ring of caulking was applied to the corners of all surfaces. The construction of the base was simple and no complications were encountered. 
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/growingTrays.jpg}
+        \caption{Growing Tubs with 4in Grow Baskets}
+        \label{fig:tubGrowbaskets}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/growingTraysBulk.JPG}
+        \caption{Growing Tubs with Bulkhead Fittings}
+        \label{fig:tubBulk}
+    \end{subfigure}
+    \caption{Growing Tubs}
+    \label{fig:renderings}
+\end{figure}
+
+\pagebreak
+\noindent Just above the base, is the growing bed that contains the plant trays, base of the PVC roof supports, and ports for plumbing and electric wires. The growing bed was constructed using 5x24in OSB panels and 24x24in OSB floor. Four furring strips were used to give the panels a foundation to which the panels and floor can be attached to make a square growing tray. Once constructed, a series of holes were drilled into the middle compartment. The first of which were the 3/4in holes for routing piping from the bulkheads of the growing trays back to the solution reservoir. The three growing trays themselves are 6Qt 18x5x8in plastic tubs with a 3/4in hole drilled into the bottom. A PVC bulkhead was attached here to allow for draining of the hydroponics solutions. A pair of 4in holes, depicted in Figure \ref{fig:tubGrowbaskets}, were drilled to the top to hold the growing baskets. The baskets along with their piping system were installed with no issue. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{images/growingCompartment.JPG}
+\caption{Growing Compartment Completed with Wiring, Plumbing, and Roof Support}
+\label{fig:growingCompartment}
+\end{figure}
+
+\pagebreak
+
+\noindent There are seven external components that require wiring back to the Pico and power supply. The LED array and DHT-22 sensors are placed the furthest and would need 18 gauge wires measuring at least 2-3ft. To freely allow these wires to run from the Raspberry Pi Pico W to the sensors, a 1/2in hole was drilled into the floor of the middle housing section and into the PVC leg cap. The wiring for the roof electronics was carefully feed through the middle compartment port and up the leg cap of the PVC pipe. A steel wire was used to grip the end of the electrical wires and pull it through sections of PVC. The DHT-22 sensors were placed at the corners of the roof and the three wires required for the sensor were pulled to each of the four corners. The power and ground wires were colored coded to a traditional black/red, whilst a blue wire was used to indicate a data line. The power wires for the sensors were attached together with zip ties and the data lines were managed in a similar fashion. A small 3/4in hole was drilled into a horizontal PVC pipe of the roof support to supply the LED array with power. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{images/completedProject.JPG}
+\caption{Completed Enclosure}
+\label{fig:Completed Project}
+\end{figure}
+
+\pagebreak
+
+\noindent Placing all the electronic components within the enclosure was difficult work that required constant testing after each component was added to the Enclosure. The power supply was first added to the housing, with the 12V DC power supply screwed in vertically to save on space in the circuit section of the bottom enclosure. Furthermore, the PCB and bread board containing the Raspberry Pi Pico W and terminal connections were placed at the forefront of the circuit housing. The wires routed through the PVC pipes were connected to the appropriate terminals on the breadboard. After each collection of sensors were connected, their operations were tested to ensure that they were wired correctly before adding more components. A triangular enclosure was specifically built for the OLED LCD Screen. As shown in Figure \ref{fig:Completed Project} the LCD screen was attached to the front of the Luli System with the use of this enclosure. Before placing the reservoir into the larger compartment of the base, a series of holes were drilled into the top of the reservoir. The pH probe was placed in the deepest portion of the reservoir to ensure constant contact with the solution. The other holes were drilled to place the HCSR04 ultrasonic sensor on top of the tank. With these electronics in place, the reservoir was placed into the housing. The wires from these sensors where connected to the bread board and PCB concluding the housing construction and implementation. 
+
+
+\subsection{Frontend Design and Development}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/lulisketch.png}
+    \caption{Initial Sketch of The Web Portal}
+    \label{fig: Portal Sketch}
+  \end{figure}
+  
+  \pagebreak
+  
+  When the Luli Hydroponic system is powered and connected to the internet, the user will interact with the device through the use of the Luli Web Portal. The notable hurdles to horticulturalists new to hydroponics is the high learning curve and constant monitoring of the plants. With this in mind, the design philosophy of the web application places emphasis on user friendly design with a minimalist layout. As shown in Figure \ref{fig: Portal Sketch}, the original sketch of the website gives the user a minimal navigation panel. The user would need to first sign in order to see the real time measurements in the bottom right corner of the sketch. The colors scheme was chosen to give the portal a retro appearance mixed with earthy colors.
+  
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/luliCreateAccount.png}
+    \caption{Create Account Portal}
+    \label{fig: create account}
+  \end{figure}
+  
+  The front-end was developed using HTML, CSS, and JavaScript, which adds dynamic elements to the static pages. The implementation of the portal is depicted in Figure \ref{fig: create account}, and some key changes were made to the original design. Users now have the option to view their friend's list, post to the cite forum, and adjust their system's settings. Most notably, the measurements were moved from the bottom right corner onto their own separate page. As shown in \ref{fig: plant page}, the plant page is neatly organized with the data presented clear and in a manner that is intuitive. The left panel presents the user with real time measurements served by the Flask supported back-end server. The container left of the measurements is a plant info panel that gives the user information about which plants are currently in the enclosure, important dates, and a field indicating which container holds the plant. 
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/luliPlants.png}
+    \caption{Plant Information Page}
+    \label{fig: plant page}
+  \end{figure}
+  
+  The settings page gives the user the ability to modify the default settings of their hydroponic system. From settings, the user can choose how often their plants get watered, the amount of water the plants receive, and the duration of the light cycles. Furthermore, users can adjust the plant info panel from this page to better reflect the plants present in their grow trays.
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/settings.png}
+    \caption{Settings Control Panel}
+    \label{fig: friends page}
+  \end{figure}
+  
+  The social component of the Luli Hydroponic System is demonstrated in Figure \ref{fig: friends page}, where users can give updates about their plant through their about section. The Down arrow is a button where users can download each other settings, which is then applied to their system. Each time the settings page is updated, these friend settings are overwritten. The Luli website establishes a platform where users are able to freely connect, share growing techniques, and building communities with open access to nutritious choices. 
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/luliFriends.png}
+    \caption{Luli Website Friends Page}
+    \label{fig: friends page}
+  \end{figure}
 
 \subsection{Server Configuration}
 \noindent The central server is configured to house the web application and manage the data 
@@ -459,6 +741,8 @@ from the hydroponics systems. The server runs on a Debian operating system. Debi
     \caption{3D Renderings of the Physical Enclosure}
     \label{fig:serverrack}
 \end{figure}
+
+\pagebreak
 \noindent Running on the Debian host machine is a Flask server. Flask is a simple and flexible framework for building web applications using Python. It helps developers create websites by providing tools for handling web page requests, organizing URLs, and displaying content. In Flask, routes serve as mappings between specific URLs and Python functions, enabling the application to respond to different requests. You can define custom functions for each URL endpoint, allowing dynamic content generation based on user interactions. Using the \verb|@app.route()| decorator, you specify the URL pattern associated with a particular function. Dynamic URLs can include variable parts, passed as arguments to the associated function, facilitating personalized responses. Within these functions, you can implement logic to generate dynamic content, such as fetching data from databases or processing user inputs. This approach enables the creation of dynamic web applications where each URL endpoint serves specific functionalities, thus offering a tailored user experience.
 \newline
 \newline
@@ -471,6 +755,8 @@ from the hydroponics systems. The server runs on a Debian operating system. Debi
 \noindent Fail2ban is an intrusion prevention software framework that operates by monitoring log files for patterns indicating unsuccessful login attempts or other malicious activity. Upon detection of such patterns, fail2ban dynamically updates firewall rules to block the IP addresses associated with the detected activity. By effectively blocking malicious actors attempting unauthorized access, fail2ban enhances the server's security posture and mitigates the risk of successful brute-force attacks.
 \newline
 \newline
+
+\pagebreak
 \noindent UFW, or Uncomplicated Firewall, is a front-end for managing firewall rules in Linux-based systems. It provides a user-friendly interface for configuring firewall settings and managing network traffic. UFW simplifies the process of creating and maintaining firewall rules, enabling administrators to define access policies based on specific criteria such as IP addresses, ports, and protocols. By leveraging UFW to enforce firewall rules, administrators can restrict access to services running on the server, thereby reducing the attack surface and enhancing overall security.
 \newline
 \newline
@@ -545,7 +831,7 @@ In simple terms, a route is a URL pattern associated with a specific function in
 \newline
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.25} % Adjust the cell padding
+    \renewcommand{\arraystretch}{1.2} % Adjust the cell padding
     \begin{tabular}{|c|c|}
         \hline
         \textbf{Endpoint} & \textbf{Supported Methods}\\
@@ -592,7 +878,29 @@ In simple terms, a route is a URL pattern associated with a specific function in
     \caption{Available API Endpoints}
     \label{tab:API_Endpoints}
 \end{table}
-
+\subsubsection{MongoDB Database}
+\noindent The backend database used for the hydroponics system is MongoDB. MongoDB is a "NoSQL" database that stores data in flexible, JSON documents. It is a popular choice for web applications due to its scalability, flexibility, and ease of use. MongoDB's document-based data model allows for the storage of complex data structures, making it well-suited for applications with dynamic data requirements. The database is hosted on a remote server and accessed by the Flask application to store and retrieve user data, sensor readings, and system settings. MongoDB provides a robust and reliable data storage solution for the hydroponics system, enabling efficient data management and seamless integration with the web application.
+\newline
+\newline
+\noindent There were four collection within the database: credentials (\ref{fig:mongoDBCreds}), data, settings, and messages (\ref{fig:mongoDBMsgs}). The credentials collection stores user account information, including usernames, hashed passwords, first names, last names, and the paths to profile pictures. The data collection stores sensor readings and system data, such as temperature, humidity, pH, and water level. The settings collection stores user-specific settings, such as watering frequency, light duration, and nutrient levels. The messages collection stores user messages and forum posts, enabling community-driven interactions and discussions. Each collection is designed to store specific types of data and facilitate efficient data retrieval and management within the hydroponics system.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[c]{0.85\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/credentials_mongo.png}
+        \caption{Credentials Collection Sample Entry}
+        \label{fig:mongoDBCreds}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[c]{0.85\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/messages_mongo.png}
+        \caption{Messages Collection Sample Entry}
+        \label{fig:mongoDBMsgs}
+    \end{subfigure}
+    \caption{MongoDB Credentials and Messages Collections}
+    \label{fig:mongo}
+\end{figure}
 % Future Work
 \pagebreak
 \section{Future Work}
@@ -605,7 +913,7 @@ In simple terms, a route is a URL pattern associated with a specific function in
 \noindent Finally, a .com domain should be purchased for the website. This would make the website more professional and easier to remember. The website should also be hosted on a cloud server such as AWS or Google Cloud. This would allow for more reliable uptime and faster load times. The website currently uses a self-signed SSL certificate. This should be replaced with a valid SSL certificate from a trusted certificate authority. This would ensure that all data transmitted between the user and the server is encrypted and secure.
 % Conclusion
 \section{Conclusion}
-\noindent The Luli Hydroponics System is a comprehensive solution for growing plants without soil. The system integrates a variety of sensors, a microcontroller, and a web application to monitor and control the hydroponics environment. Designed to provide real-time data on pH, temperature, humidity, UV light, and water level, the LuLi system enables users to optimize their plant growth conditions. The Raspberry Pi Pico W microcontroller serves as the central processing unit, interfacing with the sensors and controlling the system's components. The microcontroller communicates with the central server through an API, enabling data exchange and system control. The server hosts a web application that allows users to monitor sensor data, adjust settings, and interact with other users through a community platform. The physical enclosure provides a secure and organized environment for the system's components, ensuring reliable operation and ease of maintenance. The system's modular design allows for future expansion and customization, enabling users to tailor the system to their specific needs. The Luli Hydroponics System represents a versatile and user-friendly solution for growing plants hydroponically, offering a comprehensive platform for plant cultivation and environmental monitoring.
+\noindent he Luli Hydroponics System offers an innovative and socially connected platform for soilless plant cultivation, integrating a variety of sensors and a microcontroller with a user-friendly web application. Central to its operation is the Raspberry Pi Pico W microcontroller, which orchestrates the environment monitoring by gathering real-time data on critical parameters such as pH, temperature, humidity, UV light, and water level. This allows for precise control and optimization of plant growth conditions. Users can access the LuLi web portal not only to monitor their system but also to connect with a wider community of urban horticulturalists, sharing insights and hydroponic data, thus creating a democratized hub for hydroponic enthusiasts. The system’s modular architecture not only provides a robust physical environment but also facilitates future enhancements and customizations to meet diverse horticultural needs. Developed within a nine-month period on a budget of \$500, the project showcases the effective application of engineering skills, with the team demonstrating efficient time management and collaborative problem-solving to meet the project timeline. The Luli Hydroponics System stands as a testament to the fusion of technology and social connectivity in modern urban agriculture.
 
 % Appendices
 \appendix
@@ -2553,6 +2861,1440 @@ TANK_EMPTY_DISTANCE = 12 # Distance in cm when the tank is empty
     
 \end{pythoncode}
 \pagebreak
+\subsection{Frontend HTML/CSS/Javascript Code}
+\begin{htmlcode}[caption={Control Panel Html}]
+
+    <!-- control_panel.html -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Control Panel - LuLi Hydroponics</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='scripts/controlPanel.js') }}"></script>
+    </head>
+    <body>
+    <header>
+        <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+        <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+        <div class = "corner_topRight"> </div>
+    </header>
+    <nav class = "nav_list">
+          
+        <div class = "button" > 
+           <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+           <label class="button_label"> Login </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+           <label class="button_label"> Plants </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Friends </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Forum </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Settings </label> 
+        </div>
+           <div class = "corner_bottomLeft"> </div>
+       </nav>
+    <article>
+        <div id="controls">
+            <button onclick="sendCommand('motor', 'on')">Turn Motor On</button>
+            <button onclick="sendCommand('motor', 'off')">Turn Motor Off</button>
+            <button onclick="sendCommand('leds', 'on')">Turn LEDs On</button>
+            <button onclick="sendCommand('leds', 'off')">Turn LEDs Off</button>
+        </div>
+    </article>
+    <script>
+        function sendCommand(device, action) {
+            const data = { [device]: action };
+            fetch(`/api/update_manual_override/{{ device_id }}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Command sent:', data))
+            .catch(error => console.error('Error sending command:', error));
+        }
+    </script>
+    </body>
+    </html>
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={Create Account HTML}]
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    <title> LuLi Hydroponics </title>
+    
+    <link href="style.css" 
+          rel = "stylesheet">
+    
+    </head>
+    
+    <body>
+     
+       <header>
+          <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+          <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+          <div class = "corner_topRight"> </div>
+       </header>
+    
+       <nav class = "nav_list">
+          
+        <div class = "button" > 
+           <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+           <label class="button_label"> Login </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+           <label class="button_label"> Plants </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Friends </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Forum </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Settings </label> 
+        </div>
+           <div class = "corner_bottomLeft"> </div>
+       </nav>
+         
+    <article>
+          
+          <div id = "createAccount" class="createAccount">
+            <div class = "circleLogo">
+                <div class = "logoFrontPage">
+                    <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 160 height= 160 style="float: center" >
+                </div>
+                <div></div>
+    
+            </div>
+    
+            <form id="createAccountForm" class = "createAccountForm" action = "/create_account"  method = "POST" enctype="multipart/form-data">
+    
+                <div id = "welcomeMessage" class = "welcomeMessage">Welcome to Luli Hydroponics!</div>
+    
+                <div class="formGroup">  
+                   <label for="first-name">First Name:</label>
+                   <input type="text" id="first-name" name="first-name" required>
+                </div>
+                <div class="formGroup">
+                   <label for="last-name">Last Name:</label>
+                   <input type="text" id="last-name" name="last-name" required>
+                </div>
+                <div class="formGroup">
+                   <label for="username">Username:</label>
+                   <input type="text" id="username" name="username" required>
+                </div>
+                <div class="formGroup">
+                   <label for="password">Password:</label>
+                   <input type="password" id="password" name="password" required>
+                </div>
+                <div class="formGroup">  
+                   <label for="profile_pic">Profile Picture:</label>
+                   <input type="file" id="profile_pic" name="profile_pic" accept="image/jpeg, image/jpg">
+                </div>
+                <button type="submit" class = "createAccountButton">Create Account</button>
+            </form>       
+    
+          </div>
+    </article> 
+       
+    </body>
+    </html>
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={Forum HTML}]
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    <title> LuLi Hydroponics </title>
+    
+    <link href="style.css" 
+          rel = "stylesheet">
+    
+    
+    </head>
+    
+    <body>
+     
+       <header>
+          <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+          <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+          <div class = "corner_topRight"> </div>
+       </header>
+    
+       <nav class = "nav_list">
+          
+          <div class = "button" > 
+             <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+             <label class="button_label"> Login </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+             <label class="button_label"> Plants </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Friends </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Forum </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Settings </label> 
+          </div>
+             <div class = "corner_bottomLeft"> </div>
+         </nav>
+         
+         <article>
+          <div id="forumContainer" class="forumContainer">
+             <div id="forumPosts" class="forumPosts"> 
+                {% for post in posts %}
+                   <div class="post">
+                      <div class="name" style="margin:15px">{{ post.name }}</div>
+                      <!-- Check if 'created' exists before using it -->
+                      {% if post.get('created') %}
+                         <div class="date" style="margin:15px">{{ post.created.strftime('%m/%d/%y %I:%M%p') }}</div>
+                      {% else %}
+                         <div class="date" style="margin:15px">Date not available</div>
+                      {% endif %}
+                      <div class="message" style="margin:15px">{{ post.message }}</div>
+                      {% if post.image_path %}
+                         <img src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="max-width: 500px;">
+                      {% endif %}
+                   </div>
+                   {% endfor %}
+             </div>
+             <div id="forumMenu" class="forumMenu">
+                <button id="addPostButton">Add Post</button>
+             </div>
+          </div>
+        
+          <!-- Modal for Adding a New Post -->
+          <div id="postModal" class="modal">
+             <div class="modal-content">
+                 <span class="close">&times;</span>
+                 <form action="/add_post" method="post" enctype="multipart/form-data">
+                     <label for="message">Message:</label>
+                     <textarea id="message" name="message" required></textarea><br>
+                     <label for="image">Image (optional):</label>
+                     <input type="file" id="image" name="image"><br>
+                     <button type="submit">Submit</button>
+                 </form>
+             </div>
+         </div>
+        </article>
+        
+        <script src="scripts/modal.js"></script>
+        
+    </body>
+    
+    
+    
+    </html>
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={Friends Page HTML}]
+    
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    <title> LuLi Hydroponics </title>
+    
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    
+    </head>
+    
+    <body>
+     
+       <header>
+          <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+          <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+          <div class = "corner_topRight"> </div>
+       </header>
+    
+       <nav class = "nav_list">
+          
+          <div class = "button" > 
+             <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+             <label class="button_label"> Login </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+             <label class="button_label"> Plants </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Friends </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Forum </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Settings </label> 
+          </div>
+             <div class = "corner_bottomLeft"> </div>
+         </nav>
+         
+         <article id="friendList" class="friendList">
+          {% for friend in friends %}
+          <div class="friendModule">
+              <div class="userProfile">
+                <img src="{{ url_for('static', filename='PROFILE_PICS/' + friend.username + '.jpg') }}" alt="profile pic" class="profileImage"/>
+                  <div class="userName">{{ friend.username }}</div>
+              </div>
+              <div class="userInfo">
+                  <p class="userAbout">Download my settings to your Luli Hydroponics system!</p>
+                  <div class="userInteraction">
+                      <button type="button" class="downloadSettings" onclick="handleDownloadSettings(this)" data-friend-id="{{ friend.user_id }}">
+                          <img src="{{ url_for('static', filename='images/download.png')}}" alt="download" width="80%"/>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </article>
+    
+       <script src="scripts/settingsDownload.js"></script>
+    
+    </body>
+    </html>
+    
+    \end{htmlcode}
+    
+    
+    
+    
+    \pagebreak
+    
+    
+    
+    \begin{htmlcode}[caption={Login Page HTML}]
+    
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    <title> LuLi Hydroponics </title>
+    
+    <link href="style.css" 
+          rel = "stylesheet">
+    
+    
+    </head>
+    <script>
+       window.onload = function() {
+           const params = new URLSearchParams(window.location.search);
+           const msg = params.get('msg');
+           if (msg) {
+               alert(msg);
+           }
+       };
+    </script>
+    
+    <body>
+     
+       <header>
+          <img class="logo" src = "images/hydroponic.png" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+          <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+          <div class = "corner_topRight"> </div>
+       </header>
+    
+         <nav class = "nav_list">
+          
+          <div class = "button" > 
+             <a href="/" target=" _self"><img src = "images/user.png" alt = "login" height= 50 width = 50></a>
+             <label class="button_label"> Login </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/plants" target=" _self"> <img src = "images/pot.png" alt = "plant" height= 50 width = 50> </a>
+             <label class="button_label"> Plants </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/friends" target=" _self"> <img src = "images/friends.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Friends </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/forum" target=" _self"> <img src = "images/discussion.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Forum </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/settings" target=" _self"> <img src = "images/setting.png" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Settings </label> 
+          </div>
+             <div class = "corner_bottomLeft"> </div>
+         </nav>
+         
+         <article>
+          <form action="/login" method="POST">
+          <div class="module_login">
+                <div class = "user">
+                </div>
+                <div>
+                <label for="username" class="profile" > Username:</label>
+                <input type="text" id="username" name="username" style="margin-bottom: 15px;">
+                </div>
+                <div>
+                <label for="password" class="password" >Password:</label>
+                <input type="password" id="password" name="password" style="margin-bottom: 15px;">
+                </div>
+                <button type="submit">Login</button>
+                <a href = "/create_account"> <button type ="button">Create Account</button> </a>
+             </form>
+          </div>
+       </article> 
+       
+       
+    
+    </body>
+    
+    
+    
+    </html>
+    
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={Plant Page HTML}]
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    <title> LuLi Hydroponics </title>
+    
+    <link href="{{ url_for('static', filename='style.css')}}" 
+          rel = "stylesheet">
+    
+    
+    </head>
+    
+    <body>
+     
+       <header>
+          <img class="logo" src = "{{ url_for('static', filename='images/hydroponic.png')}}" alt = "hydroPlant"  width = 50 height =50 style = "float: left;" >   
+          <img src = "{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width = 60 height= 60 style="float: left">
+          <div class = "corner_topRight"> </div>
+       </header>
+    
+       <nav class = "nav_list">
+          
+          <div class = "button" > 
+             <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+             <label class="button_label"> Login </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/plants"><img src="{{ url_for('static', filename='images/pot.png')}}" alt="plant" height="50" width="50"></a>
+             <label class="button_label"> Plants </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Friends </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Forum </label> 
+          </div>
+          <div class = "button" > 
+             <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+             <label class="button_label"> Settings </label> 
+          </div>
+             <div class = "corner_bottomLeft"> </div>
+         </nav>
+         
+         <article>
+          
+         <div class = "measurements">
+    
+         <div class = "measurementBar"> 
+          <div class = "barProgress" style="  
+          height: 20%;
+          width: 35px;
+          background: gold; "> 
+          </div>
+          </div> 
+    
+         <div class = "measurementBar"> 
+          <div class = "barProgress" style="   
+          height: 20%;
+          width: 35px;
+          background: red; "> 
+          </div>
+          </div> 
+    
+         <div class = "measurementBar"> 
+          <div class = "barProgress" style="   
+          height: 20%;
+          width: 35px;
+          background: aqua; "> 
+          </div>
+          </div> 
+    
+         <div class = "measurementBar"> 
+          <div class = "barProgress" style="   
+          height: 20%;
+          width: 35px;
+          background: orange; "> 
+          </div>
+          </div> 
+    
+         <div class = "measurementBar"> 
+          <div class = "barProgress" style="   
+          height: 20%;
+          width: 35px;
+          background:greenyellow; "> 
+          </div>
+          </div> 
+     
+    
+         <div class = "type"> {{sensor_data.light}} </div>
+         <div class = "type"> {{sensor_data.temp}}</div>
+         <div class = "type"> {{sensor_data.humidity}} </div>
+         <div class = "type"> {{sensor_data.ph}} </div>
+         <div class = "type"> {{sensor_data.tank}} </div>
+    
+         <div class = "type"> LIGHT </div>
+         <div class = "type"> TEMP </div>
+         <div class = "type"> HUMIDITY </div>
+         <div class = "type"> pH </div>
+         <div class = "type"> TANK </div>
+    
+         </div>
+    
+        <div class = "plantSection">
+    
+         <div class = "plantInfo">
+    
+          <div>
+             <img src = "{{ url_for('static', filename='images/plants/spinach.jpeg')}}" alt = "spinach" height = 90% width = 90% class = "plantImages">
+          </div>
+         
+          <div> SPINACH</div>
+    
+          <div>Container: </div>
+          <div> A </div>
+    
+          <div>Planted: </div>
+          <div>5/25/24 </div>
+    
+          <div>Harvest: </div>
+          <div>6/7/24 </div>
+    
+         </div>
+    
+         <div class = "plantInfo">
+    
+          <div>
+             <img src = "{{ url_for('static', filename='images/plants/kale.jpeg')}}" alt = "Kale" height = 90% width = 90% class = "plantImages">
+          </div>
+         
+          <div> Kale</div>
+    
+          <div>Container: </div>
+          <div> A </div>
+    
+          <div>Planted: </div>
+          <div>5/25/24 </div>
+    
+          <div>Harvest: </div>
+          <div>6/7/24 </div>
+    
+         </div>
+    
+         <div class = "plantInfo">
+    
+          <div>
+             <img src = "{{ url_for('static', filename='images/plants/romaine.jpeg')}}" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
+          </div>
+         
+          <div> Lettuce</div>
+    
+          <div>Container: </div>
+          <div> B </div>
+    
+          <div>Planted: </div>
+          <div>5/25/24 </div>
+    
+          <div>Harvest: </div>
+          <div>6/7/24 </div>
+    
+         </div>
+    
+        </div>
+        </article> 
+    
+    </body>
+    </html>
+    
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={Settings Page HTML}]
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    
+    <title>LuLi Hydroponics</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script src="scripts/settingsSlide.js"></script>
+    
+    </head>
+    <body>
+    <header>
+        <img class="logo" src="{{ url_for('static', filename='images/hydroponic.png')}}" alt="hydroPlant" width="50" height="50" style="float: left;">
+        <img src="{{ url_for('static', filename='images/luli_logo.png')}}" alt="Luli Hydroponics" width="60" height="60" style="float: left;">
+        <div class="corner_topRight"></div>
+    </header>
+    <nav class = "nav_list">
+          
+        <div class = "button" > 
+           <a href="/" target=" _self"><img src = "{{ url_for('static', filename='images/user.png')}}" alt = "login" height= 50 width = 50></a>
+           <label class="button_label"> Login </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/plants" target=" _self"> <img src = "{{ url_for('static', filename='images/pot.png')}}" alt = "plant" height= 50 width = 50> </a>
+           <label class="button_label"> Plants </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/friends" target=" _self"> <img src = "{{ url_for('static', filename='images/friends.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Friends </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/forum" target=" _self"> <img src = "{{ url_for('static', filename='images/discussion.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Forum </label> 
+        </div>
+        <div class = "button" > 
+           <a href="/settings" target=" _self"> <img src = "{{ url_for('static', filename='images/setting.png')}}" alt = "plant" height= 50 width=50> </a>
+           <label class="button_label"> Settings </label> 
+        </div>
+           <div class = "corner_bottomLeft"> </div>
+       </nav>
+    <article>
+    
+        <form id="settingsForm" action="/save_settings" method="POST">
+            <div class="settingsContainer">
+                
+                <label for="water_interval" id="water_intervalLabel">Water plants every <span id="water_intervalValue">{{ settings.get('water_interval', 12) }} hours</span></label>
+                <div class="sliderContainer">
+                    <input type="range" id="water_interval" name="water_interval" min="1" max="24" value="{{ settings.get('water_interval', 12) }}" oninput="document.getElementById('water_intervalValue').textContent = this.value + ' hours'">
+                </div>
+        
+                
+                <label for="led_duration" id="led_durationLabel">Turn on LEDs for <span id="led_durationValue">{{ settings.led_duration if settings.led_duration else '12' }}</span> hours</label>
+                <div class="sliderContainer">
+                    <input type="range" id="led_duration" name="led_duration" min="1" max="24" value="{{ settings.led_duration if settings.led_duration else '12' }}" oninput="document.getElementById('led_durationValue').textContent = this.value">
+                </div>
+        
+                <label for="pump_duration" id="pump_durationLabel">Water for <span id="pump_durationValue">{{ settings.pump_duration if settings.pump_duration else '5' }}</span> minutes per cycle</label>
+    
+                <div class="sliderContainer">
+                    <input type="range" id="pump_duration" name="pump_duration" min="1" max="15" value="{{ settings.pump_duration if settings.pump_duration else '5' }}" oninput="document.getElementById('pump_durationValue').textContent = this.value">
+                </div>
+        
+                <div class="settingsButton">
+                    <button type="submit" id="saveSettingsButton">Save Settings</button>
+                </div>
+            </div>
+        </form>
+        
+        <div class = "plantInfoSettingsContainer">
+        
+            <div id = "plantAmount" class = "plantAmount" >
+                <label for="quantity">Number of Plants:</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="6" class = "spinVisible" onchange = "updateSettingsCarousel()">
+            </div>
+    
+            <div id = "plantCarousel" class = "plantCarousel">
+                <div id="indPlantSettings" class = "indPlantSettings" >
+    
+                    <div>
+                        <label for="plantType">Plant Type:</label>
+                        <select id="plantType" name="plantType">
+                                <option value="Spinach">Spinach</option>
+                                <option value="Romaine">Romaine</option>
+                                <option value="Basil">Basil</option>
+                                <option value="Cilantro">Cilantro</option>
+                                <option value="Green Onions">Green Onions</option>
+                                <option value="Kale">Kale</option>
+                                <option value="Mint">Mint</option>
+                                <option value="Oregano">Oregano</option>
+                                <option value="Parsley">Parsley</option>
+                                <option value="Radish">Radish</option>
+    
+                        </select>
+                    </div>
+    
+                    <div>
+                        <label for="start">Date Planted:</label>
+                        <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" class="custom-calendar"/>
+                    </div>
+                    
+                    <div>
+                        <label for="start">Date of Harvest:</label>
+                        <input type="date" id="start" name="trip-start" value="2024-01-01" min="2023-01-01" max="2026-12-31" />
+                    </div>
+                
+                    <div>
+                        <label for="letters">Choose Container:</label>
+                        <select id="letters" name="letters">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+    </article>
+    <script src="scripts/settingsSlide.js"  defer></script>
+    <script src="scripts/dynamicSettingsCarousel.js"  defer></script>
+    </body>
+    </html>
+    
+    \end{htmlcode}
+    
+    \pagebreak
+    
+    \begin{htmlcode}[caption={CSS Stlye Sheet}]
+    
+    .nav_list
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+        
+        
+        
+    .button
+    {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       padding: 10px 10px ;
+       border: 3px solid black;
+       width: 70px; 
+       height: 70px; 
+       background: rgb(206 249 173);
+       box-shadow: 4px 4px 4px black;
+       border-radius: 15px 15px;
+       margin-top: auto;
+    }
+        
+    .user 
+    {
+       display: inline-block;
+       width: 150px;
+       height: 150px;
+       border-radius: 15px 15px 15px 15px;
+       margin-top: 40px;
+       margin-bottom: 60px;
+       background-repeat: no-repeat;
+       background-position: center center;
+       background-size: cover;
+       background-image: url('hydroponic.png');
+    }
+        
+    .profile
+    {
+       margin-right: 04px;
+    }
+        
+    .password
+    {
+       margin-right: 4px;
+    }
+    
+    
+    .createAccount
+    {
+       display:grid;
+       grid-template-columns: 40% 60%;
+       width: 80%;
+       height: 80%;
+       background: rgb(206 249 173);
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       border-radius: 15px 15px 15px 15px;
+       justify-content: center;
+       align-items: center;
+    
+    }
+    
+    .welcomeMessage
+    {
+       display:flex;
+       background-color:rgb(237 176 102); 
+       width: 100%;
+       height: 25%;
+       border-radius: 0px 11px 0px 0px;
+       justify-content: center;
+       align-items: center;
+       margin-top: -41px;
+       
+    }
+    
+    .createAccountForm
+    {
+       display: flex;
+       flex-direction: column;
+       gap: 40px;
+       height: 100%;
+       width: 100%;
+       justify-content: center;
+       align-items: center;
+    
+    }
+    
+    .createAcountButton 
+    {
+    width: 100px;
+    }
+    
+    
+    
+    .circleLogo
+    {
+       display: flex;
+       flex-direction: column;
+       background-color: rgb(126 198 204);
+       border-radius: 12px 0px 0px 12px;
+       width: 100%;
+       height: 100%;
+       justify-content: center;
+       align-items: center;
+       gap: 20px;
+    }
+        
+    
+    .logoFrontPage
+    {
+       background-color: rgb(132 158 214);
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       border-radius: 50%;
+       padding: 30px;
+    }
+    
+    
+    .module_login
+    {
+       font-size: 23px;
+       display: flex;
+       gap:15px;
+       flex-direction:column;
+       align-items: center;
+       width: 400px;
+       height: 500px;
+       background: rgb(206 249 173);
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       border-radius: 15px 15px 15px 15px;
+    }
+        
+    .module_login div 
+    {
+       display: flex;
+       flex-direction: row;       
+    }
+        
+     .button_label
+    {
+       font-size: 18px;
+    }
+        
+    .button:hover
+    {
+       background: gainsboro;
+       transform: scale(1.05, 1.05);
+    }
+        
+    body
+    {
+      
+       background: rgba(206, 249, 173, 0.578);
+       display: grid;
+       grid-template-columns: 130px 1fr;
+       grid-template-rows:auto 670px;
+       grid-template-areas: 
+       "header header "
+       "nav art ";
+       font-size: 2em;
+       text-align: center;
+       border-radius:15px;
+       box-shadow: 4px 4px 4px black;
+       min-width: 700px;
+       font-family: monospace;
+    }
+        
+        
+    header 
+    {
+       grid-area:header;
+       background: rgb(126 198 204);
+       line-height: 100%;
+       border-radius:15px 15px 0px 0px;
+       margin-bottom: 2px;
+       border: 4px solid black;
+    }
+        
+    .corner_topRight
+    {
+       background: rgb(206 249 173);
+       line-height: 100%;
+       width: 10%;
+       height: 100%;
+       border-left: 4px solid black;
+       border-radius: 0px 11px 0px 0px;
+       float:right;
+    }
+        
+    .corner_bottomLeft
+    {
+       background: rgb(206 249 173);
+       width:100%;
+       height:20%;
+       border-top: 4px solid black;
+       border-radius: 0px 0px 0px 10px;
+       margin-top: auto;       
+    }
+        
+    nav 
+    {
+       grid-area:nav;
+       background: rgb(132 158 214);
+       border: 4px solid black;
+       border-radius: 0px 0px 0px 15px;
+       margin-top: -4px;
+       margin-right: -4px;    
+    }
+         
+    article
+    {
+       grid-area: art;
+       display: flex;
+       background: rgb(237 176 102);
+       border-radius: 0px 0px 15px 0px;
+       width: auto;
+       border: 4px solid black;
+       margin-top: -4px;
+       justify-content: center;
+       align-items: center;
+        
+    }
+    
+    
+    .measurements
+    {
+       font-size: 23px;
+       display: grid;
+       grid-template-columns: 20% 20% 20% 20% 20% ;
+       grid-template-rows: 85% 7.5% 7.5%;
+       width: 500px;
+       height: 500px;
+       background: rgb(206 249 173);
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       border-radius: 15px 15px 15px 15px;
+       place-items: center;
+       margin: auto 2% auto 2%
+    
+    }
+    
+    .plantSection
+    {
+       font-size: 23px;
+       display: flex;
+       scroll-snap-type: x mandatory;
+       background-color: rgb(206 249 173);
+       overflow-x: auto;
+       width: 450px;
+       height: 500px;
+       border-radius: 15px 15px 15px 15px;
+       place-items: center;
+       max-width: 350;
+       position: relative;
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       overflow: auto;
+    }
+    
+    
+    
+    .plantInfo
+    {
+       font-size: 23px;
+       display: grid;
+       flex-shrink: 0;
+       scroll-snap-align: start;
+       scroll-behavior: smooth;
+       scroll-snap-type:proximity;
+       grid-template-columns: 50% 50% ;
+       grid-template-rows: 30% 17.5% 17.5% 17.5% 17.5%;
+       width: 450px;
+       height: 100%;
+       background: rgb(206 249 173);
+       place-items: center;
+       scroll-snap-align: center;
+     
+    
+    }
+    
+    .plantImages
+    {
+    margin: 15px auto auto 15px;
+    border-radius:15px;
+    height: 50%;
+    box-shadow: 2px 2px 2px black;
+    }
+    
+    /* width */
+    ::-webkit-scrollbar {
+       width: 2px;
+       height: 20px;
+       border-radius: 15px;
+     }
+     
+     /* Track */
+     ::-webkit-scrollbar-track {
+       background: rgb(132 158 214);
+       border: 4px 0px 0px 0px solid black;
+       border-radius: 0px 0px 10px 10px  ;
+     }
+     
+     /* Handle */
+     ::-webkit-scrollbar-thumb {
+       background: rgb(126 198 204);
+       border-radius: 15px;
+    }
+     
+     /* Handle on hover */
+     ::-webkit-scrollbar-thumb:hover {
+       background: rgb(237 176 102);
+     }
+    
+    .measurementBar
+    {
+       position: relative;
+       height: 380px;
+       width : 35px;
+       border-radius: 15px 15px 15px 15px;
+       border: 4px solid black;
+       background: white;
+       margin: auto auto auto auto;
+    }
+    
+    .barProgress {
+       position: absolute; 
+       bottom: 0; 
+       border-radius: 0px 0px 11px 11px; 
+       margin: auto; 
+    }
+    
+    
+    .forumContainer
+    {
+       display:grid;
+       grid-template-columns: 80% 20%;
+       grid-area: 
+       "forumPost" "forumMenu" ;
+       overflow: auto;
+       width: 100%;
+       height: 100%;
+       place-items: center;
+       justify-content: center;
+       overflow: auto;
+    }
+    
+    .forumPosts
+    {
+       display: flex;
+       flex-direction: column;
+       gap:15px;
+       height: 100%;
+       width: 90%;
+      
+    }
+    
+    .post
+    {
+    
+       width: 100%;
+       height: 400px;
+       border: 4px solid black;
+       box-shadow:  2px 2px 2px black;
+       background-color: rgb(132 158 214);
+       text-align: left;
+    }
+    
+    .forumMenu
+    { 
+       position: fixed;
+       bottom: 100px; /* Adjust as needed */
+       right: 40px; /* Adjust as needed */
+       display: flex;
+       flex-direction: column;
+       height: 200px;
+       width : 200px;
+       justify-content:end;
+    
+    
+    }
+    
+    .forumButton
+    {
+       width:40% ;
+       height:30%;
+       background-color: rgb(206 249 173);
+       border-radius: 15px;
+       border: 4px solid black;
+       box-shadow:  2px 2px 2px black;
+    }
+    
+    .forumButton:hover
+    {
+       transform: scale(1.1);
+    }
+    
+    
+    .settingsContainer
+    {
+       font-size: 23px;
+       display: grid;
+       background-color: rgb(132 158 214) ;
+       grid-template-columns: 20% 80%;
+       grid-template-rows: 25% 25% 25% 25% ;
+       grid-area: 
+       "waterCycle" "waterCycle"
+       "waterAmount" "waterAmount"
+       "Lightcycle" "Lightcycle"
+       "LightDuration" "LightDuration";
+       place-items: center;
+       width: 45%;
+       height: 80%;
+       border-radius: 15px 15px 15px 15px;
+       border: 4px solid black;
+       box-shadow:  2px 2px 2px black;
+       margin: auto;
+    }
+    
+    .plantInfoSettingsContainer
+    {
+       font-size: 23px;
+       display: grid;
+       background-color: rgb(206 249 173) ;
+       grid-template-rows: 20% 80%;
+       place-items: center;
+       width: 30%;
+       height: 80%;
+       border-radius: 15px 15px 15px 15px;
+       border: 4px solid black;
+       box-shadow:  2px 2px 2px black;
+       margin: auto;
+    }
+    
+    .plantAmount
+    {
+       display: flex;
+       width: 100%;
+       height:100%;
+       background-color: rgb(132 158 214);
+       border-radius: 12px 12px 0px 0px;
+       flex-direction: row;
+       gap: 10px;
+       place-items: center;
+       justify-content: center;
+    }
+    
+    .indPlantSettings
+    {
+       display: flex;
+       flex-direction: column;
+       gap: 15px;
+       width:100%;
+       height:100%;
+       flex-shrink: 0;
+       scroll-snap-align: start;
+       scroll-behavior: smooth;
+       scroll-snap-type:proximity;
+       scroll-snap-align: center;
+       place-items: center;
+       justify-content: center;
+    
+    }
+    
+    .plantCarousel
+    {
+       display: flex;
+       flex-direction: row;
+       height:100%;
+       width:100%;
+       font-size: 23px;
+       scroll-snap-align: start;
+       scroll-behavior: smooth;
+       scroll-snap-type:proximity;
+       scroll-snap-align: center;
+       overflow: auto;
+       scroll-snap-type: x mandatory;
+       
+    }
+    .friendList {
+       display: flex;
+       flex-direction: row;
+       scroll-snap-align: start;
+       scroll-behavior: smooth;
+       scroll-snap-type: x mandatory;
+       overflow: auto;
+       justify-content:start;
+    }
+    
+    .friendModule
+    {
+       font-size: 23px;
+       display: grid;
+       grid-template-rows: 50% 50%;
+       grid-template-columns: 100%;
+       width: 500px;
+       height: 500px;
+       background: rgb(206 249 173);
+       box-shadow: 4px 4px 4px black;
+       border: 4px solid black;
+       border-radius: 15px 15px 15px 15px;
+       flex-shrink: 0;
+       justify-content: start;
+       margin: 10px;
+    }
+    
+    .userProfile
+    {
+       display: grid;
+       grid-template-columns: 50% 50%;
+       justify-content: center;
+       align-items: center;
+       background-color: rgb(132 158 214);
+       width: 100%;
+       height: 100%;
+       border-radius: 11px 11px 0px 0px;
+    
+    }
+    
+    .profileImage
+    {
+          width: 100%;
+          height: 80%;
+          border-radius: 15px;
+          background-color: #ccc;
+          background-size: cover;
+          background-position: center;
+          margin:10px;
+          box-shadow: 4px 4px 4px black;
+          border: 2px solid black;
+    }
+    
+    .userInfo
+    {
+       display:grid;
+       grid-template-columns: 80% 20%;
+       height: 100%;
+       width: 100%;
+    
+    }
+    
+    .userAbout
+    {
+       text-align: left;
+       margin:10px
+    }
+    
+    
+    .userInteraction
+    {
+       background-color: rgb(126 198 204);
+       width: 100%;
+       height: 100%;
+       border-radius: 0px 0px 11px 0px;
+    }
+    
+    
+    .downloadSettings{
+       background-color: rgb(237 176 102);
+       width: 80%;
+       height: 30%;
+       border-radius: 15px;
+       box-shadow: 4px 4px 4px black;
+       border: 2px solid black;
+       margin: 10px;
+       cursor: pointer;
+       transition: transform 0.2s; 
+    }
+    
+    .downloadSettings:hover {
+       transform: scale(1.1);
+    }
+    
+    
+    .spinVisible::-webkit-outer-spin-button,
+    .spinVisible::-webkit-inner-spin-button 
+    {
+        opacity: 1;
+    }
+    
+    /* width */
+    input[type="range"] {
+       width: 85%;
+       height: 5px;
+       -webkit-appearance:none;
+       appearance: none;
+       border: 3px solid rgb(206 249 173);
+       background-color: rgb(206 249 173);
+       box-shadow: 3px 3px 3px black;
+       /* Add rounded corners */
+       border-radius: 20px;
+     }
+    
+     input[type="range"]::-webkit-slider-thumb 
+     {
+       width: 20px;
+       height: 30px;
+       background: rgb(237 176 102);
+       border-radius: 25%;
+       border: 2px solid black;
+       box-shadow: 1px 1px 1px black;
+       -webkit-appearance: none;
+    
+     }
+    
+     .settingsContainer input[type="range"]:active::-webkit-slider-thumb {
+       transform: scale(1.3);
+    }
+    
+    .settingInput
+    {
+       width: auto;
+       height: auto;
+       display: flex;
+       flex-direction: row;
+       gap: 10px;
+    }
+    
+    #slideLabel
+    {
+       display:block;
+       width: 100%;
+       height: 100%;
+       background-color: rgb(126 198 204);
+       border-radius: 0px 0px 0px 0px;
+       align-content: center;
+      
+       margin-left:auto;
+       font-size: 20px;
+    }
+    
+    #slideLabelTop
+    {
+       display:block;
+       width: 100%;
+       height: 100%;
+       background-color: rgb(126 198 204);
+       border-radius: 12px 0px 0px 0px;
+       align-content: center;
+       margin-left:auto;
+       font-size: 20px;
+    }
+    #containerSlideValue
+    {
+      
+       display: flex;
+       flex-direction: row;
+       gap: 15px;
+       margin-left: 5px;
+    }
+    
+    #slideValue
+    {
+       font-size: 18px;
+       margin: auto;
+    }
+    
+    
+    
+    #slideLabelBottom
+    {
+       display:block;
+       width: 100%;
+       height: 100%;
+       background-color: rgb(126 198 204);
+       border-radius: 0px 0px 0px 12px;
+       align-content: center;
+       margin-left:auto;
+       font-size: 20px;
+    }
+    
+    .type
+    {
+       font-size: 20px;
+       font-family: monospace;
+       margin: auto auto 80% auto;
+    }
+    
+    aside 
+    {
+       background: goldenrod;
+       line-height: 180px;
+    }
+        
+    section 
+    {
+       background: lightsteelblue;
+       line-height: 90px;
+    }
+        
+    footer 
+    {
+       background: lemonchiffon;
+       line-height: 40px;
+    }
+        
+    .logo
+    {
+       margin-top: 5px;
+       margin-left: 10px;
+       margin-right: 10px;
+    }
+        
+    \end{htmlcode}
 \section{Hardware Appendix}
 \subsection{Datasheet: Raspberry Pi Pico W}
 \includepdf[pages=-]{Datasheets/PICO.pdf}
@@ -2576,6 +4318,9 @@ TANK_EMPTY_DISTANCE = 12 # Distance in cm when the tank is empty
 \subsection{Datasheet: LTR-390UV-01}
 \label{appendix:ltr390}
 \includepdf[pages=-]{Datasheets/LTR390.pdf}
+\subsection{Datasheet: DHT22}
+\label{appendix:dht22}
+\includepdf[pages=-]{Datasheets/DHT22.pdf}
 \pagebreak
 % References
 \begin{thebibliography}{99}
