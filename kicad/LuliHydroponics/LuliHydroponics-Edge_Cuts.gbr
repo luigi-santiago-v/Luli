@@ -1,0 +1,23 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,8.0.1*%
+%TF.CreationDate,2024-04-17T15:42:03-07:00*%
+%TF.ProjectId,LuliHydroponics,4c756c69-4879-4647-926f-706f6e696373,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Profile,NP*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 8.0.1) date 2024-04-17 15:42:03*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%TA.AperFunction,Profile*%
+%ADD10C,0.050000*%
+%TD*%
+G04 APERTURE END LIST*
+D10*
+X26000000Y-22000000D02*
+X176000000Y-22000000D01*
+X176000000Y-152000000D01*
+X26000000Y-152000000D01*
+X26000000Y-22000000D01*
+M02*
