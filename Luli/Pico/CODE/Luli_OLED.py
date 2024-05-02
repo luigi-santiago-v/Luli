@@ -48,17 +48,20 @@ class OLEDMenuDisplay:
         self.display.text('Humidity: ' + str(humidity), 0, 51, 1)
         self.display.show()
 
-    def print_plant_menu(self, plant_name='Spinach', planted_date='5/5/24', harvest_date='9/3/24'):
+    def print_plant_menu(self, plant_name='Oregano', planted_date='4/29/24', harvest_date='5/27/24'):
+        # Green Oregano: Planted Date: 04/29/24 Harvest Date: 05/27/24
+        # Beefsteak Tomato: Planted Date: 04/29/24 Harvest Date: 07/28/24
+        # Sweet Basil: Planted Date: 04/29/24 Harvest Date: 05/20/24
         self.display.fill(0)
         self.display.text('Plants', 0, 0, 1)
         self.display.text(f'Plant: {plant_name}', 0, 16, 1)
         self.display.text(f'Planted: {planted_date}', 0, 27, 1)
         self.display.text(f'Harvest: {harvest_date}', 0, 39, 1)
         self.display.show()
-
+    
 def main():
     display = OLEDMenuDisplay()
-    #display.init_main_menu()
+    display.init_main_menu()
     time.sleep(1)
 
     # Loop through menu printing functions as an example
@@ -70,5 +73,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

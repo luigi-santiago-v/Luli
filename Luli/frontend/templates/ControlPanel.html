@@ -38,11 +38,25 @@
        <div class = "corner_bottomLeft"> </div>
    </nav>
 <article>
-    <div id="controls">
-        <button onclick="sendCommand('motor', 'on')">Turn Motor On</button>
-        <button onclick="sendCommand('motor', 'off')">Turn Motor Off</button>
-        <button onclick="sendCommand('leds', 'on')">Turn LEDs On</button>
-        <button onclick="sendCommand('leds', 'off')">Turn LEDs Off</button>
+    <div class = "demopage">
+
+        <div class = "circleLogo">
+            <div class = "logoFrontPage">
+                <img src = "images/luli_logo.png" alt="Luli Hydroponics" width = 200 height= 200 style="float: center" >
+            </div>
+            <div></div>
+
+        </div>
+        <div class = "demoInteractive">
+        <div id = "demoMessage" class = "demoMessage">Welcome to Projects Day!</div>
+        
+        <div id="control" class = "control">
+                <button onclick="sendCommand('motor', 'on')"  class = "controlButton" > <img src = images/drop.png alt = "motor on" height= 50 width = 50> </button>
+                <button onclick="sendCommand('motor', 'off')" class = "controlButton" > <img src = images/dropoff.png alt = "motor off" height= 50 width = 50> </button>
+                <button onclick="sendCommand('leds', 'on')"   class = "controlButton" > <img src = images/idea.png alt = "light on" height= 50 width = 50> </button>
+                <button onclick="sendCommand('leds', 'off')"  class = "controlButton" > <img src = images/lightbulb.png alt = "light off" height= 50 width = 50> </button>
+        </div>
+        </div>
     </div>
 </article>
 <script>

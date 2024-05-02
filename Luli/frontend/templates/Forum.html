@@ -48,22 +48,25 @@
          <div id="forumPosts" class="forumPosts"> 
             {% for post in posts %}
                <div class="post">
-                  <div class="name" style="margin:15px">{{ post.name }}</div>
+                  <div id = "name" class="name" style="margin:0px"><div class = "textPost">{{ post.name }}</div></div>
                   <!-- Check if 'created' exists before using it -->
                   {% if post.get('created') %}
-                     <div class="date" style="margin:15px">{{ post.created.strftime('%m/%d/%y %I:%M%p') }}</div>
+                     <div id ="date" class="date" style="margin:0px"><div class = "textPost">{{ post.created.strftime('%m/%d/%y %I:%M%p') }} </div></div>
                   {% else %}
-                     <div class="date" style="margin:15px">Date not available</div>
+                     <div id = "date" class="date" style="margin:0px"> <div class = "textPost"></div>Date not available </div></div>
                   {% endif %}
-                  <div class="message" style="margin:15px">{{ post.message }}</div>
+                  <div id = "message" class="message" style="margin:0px"><div class = "textPost">{{ post.message }}</div></div>
                   {% if post.image_path %}
-                     <img src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="max-width: 500px;">
+                  <div class = "postImgDiv">
+                     <img id ="postImg" class = "postImg" src="{{ url_for('static', filename=post.image_path) }}" alt="Post Image" style="width: 40%; height:90%;">
+                     <div class = "imgColumn"> </div>
+                  </div>
                   {% endif %}
                </div>
                {% endfor %}
          </div>
          <div id="forumMenu" class="forumMenu">
-            <button id="addPostButton">Add Post</button>
+            <button id="addPostButton" class = "forumButton"><img src = "images/addition.png" alt = "add" width = 50 height =50></button>
          </div>
       </div>
     

@@ -3,10 +3,9 @@
 <head>
 <meta charset = "UTF-8">
 <title> LuLi Hydroponics </title>
-
+<meta http-equiv="refresh" content="5">
 <link href="{{ url_for('static', filename='style.css')}}" 
       rel = "stylesheet">
-
 
 </head>
 
@@ -57,7 +56,7 @@
 
      <div class = "measurementBar"> 
       <div class = "barProgress" style="   
-      height: 20%;
+      height: {{sensor_data.temp}}%;
       width: 35px;
       background: red; "> 
       </div>
@@ -65,23 +64,23 @@
 
      <div class = "measurementBar"> 
       <div class = "barProgress" style="   
-      height: 20%;
+      height: {{sensor_data.humidity}}%;
       width: 35px;
       background: aqua; "> 
       </div>
       </div> 
 
      <div class = "measurementBar"> 
-      <div class = "barProgress" style="   
-      height: 20%;
+      <div id = "ph" class = "barProgress" style="   
+      height: {{sensor_data.ph}}%;
       width: 35px;
       background: orange; "> 
       </div>
       </div> 
 
      <div class = "measurementBar"> 
-      <div class = "barProgress" style="   
-      height: 20%;
+      <div id = "tank" class = "tankbarProgress" style="   
+      height: {{sensor_data.tank}}%;
       width: 35px;
       background:greenyellow; "> 
       </div>
@@ -107,57 +106,57 @@
      <div class = "plantInfo">
 
       <div>
-         <img src = "{{ url_for('static', filename='images/plants/spinach.jpeg')}}" alt = "spinach" height = 90% width = 90% class = "plantImages">
+         <img src = "{{ url_for('static', filename='images/plants/oregano.jpeg')}}" alt = "oregano" height = 90% width = 90% class = "plantImages">
       </div>
      
-      <div> SPINACH</div>
+      <div> Oregano</div>
 
       <div>Container: </div>
       <div> A </div>
 
       <div>Planted: </div>
-      <div>5/25/24 </div>
+      <div>4/29/24 </div>
 
       <div>Harvest: </div>
-      <div>6/7/24 </div>
+      <div>5/27/24 </div>
 
      </div>
 
      <div class = "plantInfo">
 
       <div>
-         <img src = "{{ url_for('static', filename='images/plants/kale.jpeg')}}" alt = "Kale" height = 90% width = 90% class = "plantImages">
+         <img src = "{{ url_for('static', filename='images/plants/tomato.jpeg')}}" alt = "tomato" height = 90% width = 90% class = "plantImages">
       </div>
      
-      <div> Kale</div>
-
-      <div>Container: </div>
-      <div> A </div>
-
-      <div>Planted: </div>
-      <div>5/25/24 </div>
-
-      <div>Harvest: </div>
-      <div>6/7/24 </div>
-
-     </div>
-
-     <div class = "plantInfo">
-
-      <div>
-         <img src = "{{ url_for('static', filename='images/plants/romaine.jpeg')}}" alt = "Lettuce" height = 90% width = 90% class = "plantImages">
-      </div>
-     
-      <div> Lettuce</div>
+      <div> Tomato </div>
 
       <div>Container: </div>
       <div> B </div>
 
       <div>Planted: </div>
-      <div>5/25/24 </div>
+      <div>4/29/24 </div>
 
       <div>Harvest: </div>
-      <div>6/7/24 </div>
+      <div>7/28/24 </div>
+
+     </div>
+
+     <div class = "plantInfo">
+
+      <div>
+         <img src = "{{ url_for('static', filename='images/plants/basil.jpeg')}}" alt = "basil" height = 90% width = 90% class = "plantImages">
+      </div>
+     
+      <div> Basil </div>
+
+      <div>Container: </div>
+      <div> C </div>
+
+      <div>Planted: </div>
+      <div>4/29/24 </div>
+
+      <div>Harvest: </div>
+      <div>5/20/24 </div>
 
      </div>
 
@@ -167,6 +166,39 @@
 
     </article> 
    
+
+    <script>
+      function convertPhToPercentage(phValue) {
+          // Ensure the pH value is within the valid range of 0 to 14
+          phValue = Math.min(14, Math.max(0, phValue));
+          
+          // Calculate the percentage relative to 0 and 14
+          return (phValue / 14) * 100;
+      }
+      
+      var ph = {{ sensor_data.ph }};
+      var phPercentage = convertPhToPercentage(ph);
+      document.getElementById('ph').style.height = phPercentage + '%';
+      </script>
+
+
+   <script>
+      function restrictTankHeight() {
+         var tankElement = document.getElementById('tank');
+         var tankHeight = parseFloat(tankElement.style.height);
+         
+         // Ensure the height is no more than 99%
+         if (tankHeight > 99) {
+            tankHeight = 99;
+         }
+         
+         tankElement.style.height = tankHeight + '%';
+      }
+
+      // Call the function to restrict the height
+      restrictTankHeight();
+   </script>
+      
    
 
 </body>

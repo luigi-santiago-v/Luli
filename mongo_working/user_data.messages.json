@@ -1,0 +1,12 @@
+[{
+  "_id": {
+    "$oid": "662fed2b32510c74817af0d7"
+  },
+  "user_id": "662dea38974511e984f14e22",
+  "name": "Liam",
+  "message": "Can't wait to get started with LuLi",
+  "created": {
+    "$date": "2024-04-29T11:55:39.774Z"
+  },
+  "image_path": "USER_IMAGES/fc7cfb3a-d2c0-424f-9a35-e82622d622e4.jpg"
+}]

@@ -25,7 +25,7 @@ from functools import wraps
     - /api/update_temp_data         POST
     - /api/update_humidity_data     POST
     - /api/update_tank_data         POST
-    - /api/update_all_sensors_data  POST
+    - /api/update_all_sensor_data  POST
     - /api/update_manual_override   POST
     - /api/get_manual_override      GET
 '''
@@ -54,30 +54,35 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
             return None  # or handle as needed
         
     def validate_API_key(device_id):
-        # Device ID will come from: request.headers.get('X-Device-ID')
+        print(f"Validating Device ID: {device_id}")  # Debug output
+        # Ensure device ID is provided
         if device_id is None:
             return False, None, jsonify({'message': 'X-Device-ID is required'}), 400
-        else: 
-            # Check if the device ID is a string
-            if not isinstance(device_id, str):
-                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
-            
-            # Check if the length of the hardware ID is correct
-            if len(device_id) != 16:  # Assuming 16 characters for a 128-bit ID
-                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
-    
-            # Check if the hardware ID contains only hexadecimal characters
-            valid_chars = set("0123456789abcdefABCDEF")
-            if not all(char in valid_chars for char in device_id):
-                return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
-    
-        user = users_data_collection.find_one({"device_id": device_id})
-        if user is None:
-            return False, None, jsonify({'message': 'Unauthorized - Device not recognized'}), 401
         
-        return True, ensure_object_id(user['_id']), jsonify({'message': 'Authentication Successful'}), 200
-    
-    # Custom Decorator to require an API key on certain routes
+        # Ensure device ID is a valid hexadecimal and correct length
+        if len(device_id) != 16 or not all(c in '0123456789abcdefABCDEF' for c in device_id):
+            return False, None, jsonify({'message': 'Invalid X-Device-ID format'}), 400
+        if device_id is None:
+            return False, None, 'X-Device-ID is required', 400
+
+        if not isinstance(device_id, str):
+            print("Device ID is not a string")  # Debug output
+            return False, None, 'Invalid X-Device-ID format', 400
+
+
+        valid_chars = set("0123456789abcdefABCDEF")
+        if not all(char in valid_chars for char in device_id):
+            print(f"Device ID contains non-hex characters: {device_id}")  # Debug output
+            return False, None, 'Invalid X-Device-ID format', 400
+
+        user = users_collection.find_one({"device_id": device_id})
+        
+        if user is None:
+            print(f"Device ID {device_id} not found in database")  # Debug output
+            return False, None, 'Unauthorized - Device not recognized', 401
+
+        return True, ensure_object_id(user['_id']), 'Authentication Successful', 200
+
     def require_api_key(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -116,13 +121,21 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
     
 
     ## USER SETTINGS
-    @app.route('/api/get_settings', methods=['GET'])
-    @require_api_key
-    def api_get_settings(user_id):
-        user_settings = users_settings_collection.find_one({'user_id': user_id})
+    @app.route('/api/get_settings/<device_id>', methods=['GET'])
+    def api_get_settings(device_id):
+        user = users_collection.find_one({'device_id': device_id})
+        if not user:
+            return jsonify({'error': 'No user found for this device.'}), 404
+
+        user_id = user['_id']
+        user_settings = users_settings_collection.find_one({'user_id': ObjectId(user_id)})
         if not user_settings:
-            return "No settings found for this user."
-        return user_settings['settings']
+            return jsonify({'error': 'No settings found for this user.'}), 404
+
+        # Convert ObjectId to string if needed
+        user_settings = {k: str(v) if isinstance(v, ObjectId) else v for k, v in user_settings.items()}
+        return jsonify(user_settings)
+
 
     @app.route('/api/update_settings', methods=['POST'])
     @require_api_key
@@ -236,23 +249,39 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
     @app.route('/api/update_temp_data', methods=['POST'])
     @require_api_key
     def api_update_temp_data(user_id):
-        user_data = users_data_collection.find_one({'user_id': user_id})
-        if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'temp': request.json})
-        else:
-            users_data_collection.update_one({'user_id': user_id}, {'$set': {'temp': request.json}})
-        #return "Temperature Data updated successfully."
+        temp_data = request.get_json().get('temp')
+        if temp_data is None:
+            return jsonify({'message': 'No temperature data provided'}), 400
+        
+        timestamp = datetime.now().isoformat().replace('.', ':')
+        update_result = users_data_collection.update_one(
+            {'_id': user_id},
+            {'$set': {f'sensor_data.{timestamp}.temp': temp_data}},
+            upsert=True
+        )
+        
+        if update_result.modified_count == 0:
+            return jsonify({'message': 'Temperature data update failed'}), 500
+
         return jsonify({'message': 'Temperature Data updated successfully'}), 200
 
     @app.route('/api/update_humidity_data', methods=['POST'])
     @require_api_key
     def api_update_humidity_data(user_id):
-        user_data = users_data_collection.find_one({'user_id': user_id})
-        if not user_data:
-            users_data_collection.insert_one({'user_id': user_id, 'humidity': request.json})
-        else:
-            users_data_collection.update_one({'user_id': user_id}, {'$set': {'humidity_data': request.json}})
-        #return "Humidity Data updated successfully."
+        humidity_data = request.get_json().get('humidity')
+        if humidity_data is None:
+            return jsonify({'message': 'No humidity data provided'}), 400
+        
+        timestamp = datetime.now().isoformat().replace('.', ':')
+        update_result = users_data_collection.update_one(
+            {'_id': user_id},
+            {'$set': {f'sensor_data.{timestamp}.humidity': humidity_data}},
+            upsert=True
+        )
+        
+        if update_result.modified_count == 0:
+            return jsonify({'message': 'Humidity data update failed'}), 500
+
         return jsonify({'message': 'Humidity Data updated successfully'}), 200
 
     @app.route('/api/update_tank_data', methods=['POST'])
@@ -273,23 +302,25 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
         sensor_data = request.get_json()
         if not sensor_data:
             return jsonify({'message': 'No sensor data provided'}), 400
-        # Update the document with new sensor data at the specified timestamp
-        print(f"TIMESTAMP IS: {timestamp}")    
+        
+        # Generate a timestamp for the current data entry
         timestamp = datetime.datetime.now().isoformat().replace('.', ':')
-        # Check if the user already has sensor data
-        if users_data_collection.count_documents({'_id': user_id, 'sensor_data': {'$exists': True}}) == 0:
-            # If not, create a new document with sensor_data as a dictionary
-            users_data_collection.insert_one({'_id': user_id, 'sensor_data': {timestamp: sensor_data}})
-        else:
-            # If sensor_data exists, update the existing document with new sensor data at the specified timestamp
-            users_data_collection.update_one(
-                {"_id": user_id},
-                {"$set": {f"sensor_data.{timestamp}": sensor_data}},
-                upsert=True
-            )
+        print(f"TIMESTAMP IS: {timestamp}")
 
-        #return "All sensor data updated successfully."
-        return jsonify({'message': 'All sensor data updated successfully'}), 200
+        # Update the user's sensor data, adding the new data under the current timestamp
+        update_result = users_data_collection.update_one(
+            {"_id": user_id},
+            {"$set": {f"sensor_data.{timestamp}": sensor_data}},
+            upsert=True
+        )
+
+        if update_result.matched_count == 0:
+            # If no document was found and updated, create a new one
+            users_data_collection.insert_one({'_id': user_id, 'sensor_data': {timestamp: sensor_data}})
+
+        # Return a successful response
+        return jsonify({'message': 'All sensor data updated successfully', 'timestamp': timestamp}), 200
+
     
     @app.route('/api/test', methods=['GET'])
     def api_test():
@@ -300,6 +331,7 @@ def register_api_routes(app, users_settings_collection, users_data_collection, u
         content = request.json
         if device_id not in device_override_commands:
             device_override_commands[device_id] = {}
+        print(f"Received {content} for {device_id}")
         device_override_commands[device_id].update(content)
         return jsonify(success=True, commands=device_override_commands[device_id]), 200
 

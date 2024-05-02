@@ -13,6 +13,10 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from datetime import datetime
 import uuid
+import logging
+from logging.handlers import RotatingFileHandler
+
+
 
 """
 ROUTES and METHODS
@@ -201,11 +205,13 @@ def plants():
     if not user_id:
         return redirect(url_for('login'))
 
-    sensor_data_document = users_data_collection.find_one({'user_id': ObjectId(user_id)})
+    sensor_data_document = users_data_collection.find_one({'_id': ObjectId(user_id)})
 
     if sensor_data_document and 'sensor_data' in sensor_data_document:
         sensor_data = sensor_data_document['sensor_data']
-        latest_sensor_data = list(sensor_data.values())[-1] if sensor_data else {}
+        # Fetch the latest timestamp entry
+        latest_timestamp = max(sensor_data, key=lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S:%f"), default=None)
+        latest_sensor_data = sensor_data[latest_timestamp] if latest_timestamp else {}
     else:
         # Default empty data if there's no sensor data available
         latest_sensor_data = {
@@ -287,15 +293,17 @@ def friends():
     user_document = users_collection.find_one({'_id': ObjectId(user_id)})
 
     if 'friends' in user_document:
-        # Extract the user_id of each friend and convert to ObjectId
         friend_ids = [ObjectId(friend['user_id']) for friend in user_document['friends']]
         friends = users_collection.find({'_id': {'$in': friend_ids}})
         friends_list = list(friends)  # Convert cursor to list for passing to template
+
+        # Debugging: Print to console or log to file to inspect
+        for friend in friends_list:
+            print(friend.get('_id'))  # Ensure this field is correctly populated
+
         return render_template('Friends.html', friends=friends_list)
     else:
-        # Handle case where no friends are stored or the field is missing
         return render_template('Friends.html', friends=[])
-
 
 
 
@@ -347,22 +355,35 @@ def settings_page():
         # If settings exist, remove MongoDB's _id before passing to template
         settings.pop('_id', None)
     
-    return render_template('settings.html', settings=settings)
+    return render_template('Settings.html', settings=settings)
 
 @app.route('/download_settings/<friend_id>')
 def download_settings(friend_id):
     print("SAVING SETTINGS FROM FRIEND: ", friend_id)
-    settings = users_settings_collection.find_one({'user_id': ObjectId(friend_id)})
-    if settings:
-        del settings['_id']  # Remove the MongoDB ID before sending
-        return jsonify(settings)
-    # Now get current user's document
-    user_id = session['user_id']
-    user_settings = users_settings_collection.find_one({'user_id': ObjectId(user_id)})
-    # Now overwrite user_settings with settings from friend
-    # But don't overwrite the user_id
-    user_settings.update(settings)
-    return jsonify({'error': 'Settings not found'}), 404
+    # Find the friend's settings using friend_id
+    friend_settings = users_settings_collection.find_one({'user_id': ObjectId(friend_id)})
+    if friend_settings:
+        # Remove the MongoDB ID from friend's settings to avoid conflicts
+        friend_settings.pop('_id', None)
+
+        # Get current user's user_id from session
+        current_user_id = session['user_id']
+        # Find current user's settings
+        user_settings = users_settings_collection.find_one({'user_id': ObjectId(current_user_id)})
+        
+        if user_settings:
+            # Update user_settings with friend_settings, except for user_id
+            updated_settings = {**user_settings, **friend_settings}
+            # Ensure the user_id is not overwritten
+            updated_settings['user_id'] = ObjectId(current_user_id)
+            
+            # Save the updated settings back to the database
+            users_settings_collection.update_one({'user_id': ObjectId(current_user_id)}, {'$set': updated_settings})
+            return jsonify(updated_settings)
+        else:
+            return jsonify({'error': 'Your settings not found'}), 404
+    else:
+        return jsonify({'error': 'Friend settings not found'}), 404
 
 
 #################
@@ -400,3 +421,13 @@ if __name__ == "__main__":
 
     print("Starting Flask server...")
     app.run(debug=True, port=9696, host="0.0.0.0")
+    if not app.debug:
+        file_handler = RotatingFileHandler('/home/luli/flask_app.log', maxBytes=1024 * 1024 * 100, backupCount=20)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s '
+            '[in %(pathname)s:%(lineno)d]'
+        ))
+        app.logger.setLevel(logging.INFO)
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+        app.logger.info('Flask app started')

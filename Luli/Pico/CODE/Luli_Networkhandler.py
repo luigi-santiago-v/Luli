@@ -2,15 +2,16 @@ import network
 import urequests as requests
 import ujson
 import machine
+#import ubinascii
 import Luli_CONFIG
 class NetworkHandler:
     def get_hardware_id(self):
         # Get the unique hardware ID
         unique_id = machine.unique_id()
-        # Convert ID bytes to hexadecimal string
-        hex_string = "".join("{:02x}".format(byte) for byte in unique_id)
+        # Convert ID bytes to hexadecimal string using hex and string manipulation
+        hex_string = ''.join('{:02x}'.format(x) for x in unique_id)
         print("Unique Hardware ID:", hex_string)
-        return unique_id
+        return hex_string
     
 
     
@@ -20,6 +21,8 @@ class NetworkHandler:
         self.base_url = Luli_CONFIG.SERVER_URL
         self.wlan = network.WLAN(network.STA_IF)
         self.hardware_id = str(self.get_hardware_id())
+        #self.mac = ubinascii.hexlify(network.WLAN().config('mac'),':').decode()
+        #print(self.mac)
 
     def connect_wifi(self):
         """Connects to WiFi using the SSID and password provided during initialization."""
@@ -35,6 +38,7 @@ class NetworkHandler:
         """Sends data to a specified API endpoint using HTTP POST."""
         headers = {'Content-Type': 'application/json', 'X-Device-ID': self.hardware_id}
         try:
+            #print(f"SENDING TO {self.base_url + endpoint}")
             response = requests.post(self.base_url + endpoint, data=ujson.dumps(data), headers=headers)
             print(response.text)
             # Free up memory once the request is complete
@@ -43,8 +47,24 @@ class NetworkHandler:
             return response
         except Exception as e:
             print("Failed to send data:", e)
+            #raise e
             return None
         
+    def fetch_and_apply_settings(self):
+        """Fetch settings from the server and apply them to the local config."""
+        response = requests.get(self.base_url + Luli_CONFIG.ENDPOINT_GET_SETTINGS + '/' + self.hardware_id)
+        if response.status_code == 200:
+            settings = response.json()
+            # Update config variables
+            if 'led_duration' in settings:
+                Luli_CONFIG.DURATION_LED_CYCLE = int(settings['led_duration']) * 60  # Convert minutes to seconds
+            if 'pump_duration' in settings:
+                Luli_CONFIG.DURATION_WATER_CYCLE = int(settings['pump_duration']) * 3600  # Convert hours to seconds
+            if 'water_interval' in settings:
+                Luli_CONFIG.NEXT_WATER_CYCLE = int(settings['water_interval']) * 3600  # Convert hours to seconds
+            print("Updated settings:", Luli_CONFIG.DURATION_LED_CYCLE, Luli_CONFIG.DURATION_WATER_CYCLE, Luli_CONFIG.NEXT_WATER_CYCLE)
+        else:
+            print("Failed to fetch settings, status code:", response.status_code)
     
     def get_manual_override(self):
         """Checks for manual override commands from the server using device-specific endpoint."""
@@ -64,28 +84,14 @@ class NetworkHandler:
             if 'response' in locals():
                 response.close()
 
-    def fetch_and_update_settings(self):
-        headers = {'X-Device-ID': Luli_CONFIG.DEVICE_ID}
-        try:
-            response = requests.get(self.base_url + Luli_CONFIG.ENDPOINT_GET_SETTINGS, headers=headers)
-            if response.status_code == 200:
-                new_settings = response.json()
-                return new_settings
-            else:
-                print("Failed to fetch settings:", response.text)
-        except Exception as e:
-            print("Failed to fetch settings:", e)
-            return None
-        finally:
-            if 'response' in locals():
-                response.close()
 
-    
+ 
+
 
 if __name__ == '__main__':
-    ssid = 'YourSSID'
-    password = 'YourPassword'
-    base_url = 'http://yourapi.com'
+    ssid = Luli_CONFIG.WIFI_SSID
+    password = Luli_CONFIG.WIFI_PASSWORD
+    base_url = Luli_CONFIG.SERVER_URL
     endpoint = '/api/update_all_sensor_data'
     sensor_data = {
         "temp": 23.5,
@@ -94,8 +100,18 @@ if __name__ == '__main__':
         "ph": 7.0,
         "tank": 80
     }
+    
 
     network_handler = NetworkHandler(ssid, password, base_url)
     network_handler.connect_wifi()
-    network_handler.send_data(endpoint, sensor_data)
-
+    print(f"BEFORE UPDATE: LED DURATION IS {Luli_CONFIG.DURATION_LED_CYCLE} SECONDS")
+    print(f"BEFORE UPDATE: PUMP DURATION IS {Luli_CONFIG.DURATION_WATER_CYCLE} SECONDS")
+    print(f"BEFORE UPDATE: PUMP INTERVAL IS {Luli_CONFIG.NEXT_WATER_CYCLE} SECONDS")
+    network_handler.fetch_and_apply_settings()
+    print(f"AFTER UPDATE: LED DURATION IS {Luli_CONFIG.DURATION_LED_CYCLE} SECONDS")
+    print(f"AFTER UPDATE: PUMP DURATION IS {Luli_CONFIG.DURATION_WATER_CYCLE} SECONDS")
+    print(f"AFTER UPDATE: PUMP INTERVAL IS {Luli_CONFIG.NEXT_WATER_CYCLE} SECONDS")
+    #network_handler.send_data(endpoint, sensor_data)
+    #network_handler.get_manual_override()
+    while True:
+        pass

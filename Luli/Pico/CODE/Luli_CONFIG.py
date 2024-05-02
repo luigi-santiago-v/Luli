@@ -7,11 +7,11 @@
 PIN_UV_SENSOR_SDA = 0
 PIN_UV_SENSOR_SCL = 1
 
-PIN_OLED_SCK = 10
-PIN_OLED_MOSI = 11
-PIN_OLED_CS = 13
-PIN_OLED_RST = 14
-PIN_OLED_DC = 15
+PIN_OLED_SCK = 14
+PIN_OLED_MOSI = 11 
+PIN_OLED_CS = 13 # marked
+PIN_OLED_RST = 10 
+PIN_OLED_DC = 15 
 
 PIN_ULTRASONIC_ECHO = 9
 PIN_ULTRASONIC_TRIG = 17
@@ -38,8 +38,8 @@ DELAY_UV_STARTUP = 1 # seconds
 TEMP_HUMIDITY_READ_INTERVAL = 30 # seconds
 UV_READ_INTERVAL = 120 # seconds
 MANUAL_OVERRIDE_CHECK_INTERVAL = 30 # seconds
-SETTINGS_UPDATE_INTERVAL = 120 # seconds
-DURATION_WATER_CYCLE = 60 # seconds
+#DURATION_WATER_CYCLE = 600 # seconds
+DURATION_WATER_CYCLE = 60
 NEXT_WATER_CYCLE = 3600 # seconds
 DURATION_LED_CYCLE = 3600 # seconds
 
@@ -50,7 +50,8 @@ DURATION_LED_CYCLE = 3600 # seconds
 #########################
 WIFI_SSID = 'Liam'
 WIFI_PASSWORD = 'liampassword'
-SERVER_URL = 'https://luli-hydroponics.ddns.net'
+#WIFI_PASSWORD = None
+SERVER_URL = 'https://lulihydroponics.ddns.net'
 
 
 
@@ -67,7 +68,7 @@ ENDPOINT_UPDATE_TEMP_DATA = '/api/update_temp_data'
 ENDPOINT_UPDATE_HUMIDITY_DATA = '/api/update_humidity_data'
 ENDPOINT_UPDATE_TANK_DATA = '/api/update_tank_data'
 ENDPOINT_UPDATE_ALL_SENSOR_DATA = '/api/update_all_sensor_data'
-ENDPOINT_MANUAL_OVERRIDE = '/api/get/manual_override'
+ENDPOINT_MANUAL_OVERRIDE = '/api/get_manual_override'
 
 
 ######################

@@ -6,6 +6,79 @@ Author URI: https://github.com/luigi-santiago-v
 Tags: retro,bright,colorful,simple
 */
 
+.demopage
+{
+   display:grid;
+   grid-template-columns: 40% 60%;
+   width: 80%;
+   height: 80%;
+   background: rgb(206 249 173);
+   box-shadow: 4px 4px 4px black;
+   border: 4px solid black;
+   border-radius: 15px 15px 15px 15px;
+   justify-content: center;
+   align-items: center;
+
+}
+
+.control
+{
+   display:flex;
+   gap:20px;
+   height: 100%;
+   width: 100%;
+   justify-content: center;
+   align-items: center;
+}
+
+.controlButton
+{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 10px 10px ;
+   border: 3px solid black;
+   width: 90px; 
+   height: 90px; 
+   background: rgb(126 198 204);
+   box-shadow: 4px 4px 4px black;
+   border-radius: 15px 15px;
+   margin-top: 15px;
+}
+.controlButton:hover {
+   transform: scale(1.1);
+   background: gainsboro;
+   
+ }
+
+ .controlButton:active {
+   transform: scale(0.9);
+ }
+
+.demoInteractive
+{
+   display: grid;
+   grid-template-rows: 20% 80%;
+   grid-template-columns: 100%;
+   height: 100%;
+   width: 100%;
+   justify-content: center;
+   align-items: center;
+}
+
+.demoMessage
+{
+   display:flex;
+   background-color:rgb(237 176 102); 
+   width: 100%;
+   height: 100%;
+   border-radius: 0px 11px 0px 0px;
+   justify-content: center;
+   align-items: center;
+   font-size: 40px;
+
+}
+
 .nav_list
 {
     display: flex;
@@ -76,7 +149,7 @@ Tags: retro,bright,colorful,simple
    display:flex;
    background-color:rgb(237 176 102); 
    width: 100%;
-   height: 25%;
+   height: 20%;
    border-radius: 0px 11px 0px 0px;
    justify-content: center;
    align-items: center;
@@ -88,12 +161,11 @@ Tags: retro,bright,colorful,simple
 {
    display: flex;
    flex-direction: column;
-   gap: 40px;
+   gap: 32.7px;
    height: 100%;
    width: 100%;
    justify-content: center;
    align-items: center;
-
 }
 
 .createAccountButton 
@@ -341,6 +413,13 @@ box-shadow: 2px 2px 2px black;
    margin: auto; 
 }
 
+.tankbarProgress {
+   position: absolute; 
+   bottom: 0; 
+   border-radius: 5px 5px 11px 11px; 
+   margin: auto; 
+}
+
 
 .forumContainer
 {
@@ -360,32 +439,103 @@ box-shadow: 2px 2px 2px black;
 {
    display: flex;
    flex-direction: column;
-   gap:15px;
-   height: 100%;
+   gap:5px;
+   height: 600px;
    width: 90%;
-  
+}
+
+.name
+{
+   background-color: rgb(206 249 173);
+   height:100%;
+   width:100%;
+   border-radius: 15px 15px 0px 0px;
+}
+
+.date
+{
+   background-color: rgb(206 249 173);
+   height:100%;
+   width:100%;
+}
+
+.message
+{
+   background-color: rgb(206 249 173);
+   height:100%;
+   width:100%;
+}
+
+.name .textPost {
+   /* This targets the text within the container */
+   /* Adjust the padding or margin to move the text over */
+   padding-left: 20px; /* Adjust this value as needed */
+}
+
+.date .textPost {
+   /* This targets the text within the container */
+   /* Adjust the padding or margin to move the text over */
+   padding-left: 20px; /* Adjust this value as needed */
+}
+
+.message .textPost {
+   /* This targets the text within the container */
+   /* Adjust the padding or margin to move the text over */
+   padding-left: 20px; /* Adjust this value as needed */
+}
+
+.postImgDiv
+{
+   display: flex;
+   flex-direction: row;
+   width:100%;
+   height:100%;
+   gap: 257px;
+}
+
+.imgColumn
+{
+background-color: rgb(126 198 204);
+border-radius:  0px 0px 15px 0px;
+width:30%;
+height:100%;
+
+}
+
+
+.postImg
+{
+   padding-top:5px;
+   padding-left: 20px;
+   width:90%;
+   height:90%;
 }
 
 .post
 {
-
+   display: grid;
+   grid-template-rows: 10% 10% 10% 70%;
+   grid-area: "name" "date" "messaage" "postImg";
    width: 100%;
-   height: 400px;
+   height: 100%;
    border: 4px solid black;
    box-shadow:  2px 2px 2px black;
    background-color: rgb(132 158 214);
    text-align: left;
+   border-radius: 20px;
 }
+
+
 
 .forumMenu
 { 
    position: fixed;
-   bottom: 100px; /* Adjust as needed */
+   bottom:150px; /* Adjust as needed */
    right: 40px; /* Adjust as needed */
    display: flex;
    flex-direction: column;
-   height: 200px;
-   width : 200px;
+   height: 150px;
+   width : 130px;
    justify-content:end;
 
 
@@ -393,11 +543,11 @@ box-shadow: 2px 2px 2px black;
 
 .forumButton
 {
-   width:40% ;
-   height:30%;
+   width:50% ;
+   height:40%;
    background-color: rgb(206 249 173);
    border-radius: 15px;
-   border: 4px solid black;
+   border: 2px solid black;
    box-shadow:  2px 2px 2px black;
 }
 

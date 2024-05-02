@@ -6,8 +6,8 @@ class WaterLevelSensor:
     def __init__(self, trig_pin=Luli_CONFIG.PIN_ULTRASONIC_TRIG, echo_pin=Luli_CONFIG.PIN_ULTRASONIC_ECHO):
         self.trig = machine.Pin(trig_pin, machine.Pin.OUT)
         self.echo = machine.Pin(echo_pin, machine.Pin.IN)
-        self.tank_full_distance = None
-        self.tank_empty_distance = None
+        self.tank_full_distance = 3
+        self.tank_empty_distance = Luli_CONFIG.TANK_EMPTY_DISTANCE
 
     def read_distance(self):
         self.trig.low()
@@ -70,15 +70,20 @@ class WaterLevelSensor:
 
     def get_water_level(self):
         distance = self.read_distance()
-        if distance is not None and distance > 2:
+        if distance is not None:
             if self.tank_full_distance is not None and self.tank_empty_distance is not None:
-                water_level = self.tank_empty_distance - distance
+                # Calculate the current water level above the sensor
+                water_level = distance - self.tank_full_distance
+                # Calculate the total possible water level (empty minus full)
                 tank_capacity = self.tank_empty_distance - self.tank_full_distance
-                percent_full = (water_level / tank_capacity) * 100
+                # Calculate the percentage of water left in the tank
+                percent_full = ((tank_capacity - water_level) / tank_capacity) * 100
                 return round(percent_full, 2)
             else:
+                print("Tank calibration not set.")
                 return None
         else:
+            print("Sensor error or out of range.")
             return None
 
 def main():
@@ -93,4 +98,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

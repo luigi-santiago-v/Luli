@@ -51,7 +51,7 @@
           <div class="userInfo">
               <p class="userAbout">Download my settings to your Luli Hydroponics system!</p>
               <div class="userInteraction">
-                  <button type="button" class="downloadSettings" onclick="handleDownloadSettings(this)" data-friend-id="{{ friend.user_id }}">
+                  <button type="button" class="downloadSettings" onclick="handleDownloadSettings(this)" data-friend-id="{{ friend._id }}">
                       <img src="{{ url_for('static', filename='images/download.png')}}" alt="download" width="80%"/>
                   </button>
               </div>

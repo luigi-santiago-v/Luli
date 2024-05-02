@@ -11,7 +11,7 @@ class MotorAndLEDControl:
     def motor_on(self):
         # Turn the motor on
         print("MOTOR ON")
-        self.motor_gate.value(1)
+        #self.motor_gate.value(1)
 
     def motor_off(self):
         # Turn the motor off
@@ -36,15 +36,15 @@ if __name__ == "__main__":
     control.motor_off()
     control.leds_off()
     time.sleep(3)
+    control.leds_on()
     control.motor_on()
-    time.sleep(45)
+    time.sleep(360)
     control.motor_off()
     time.sleep(5)
 
     # Testing LED Control
-    while True:
-        control.led_on()
-        time.sleep(1)
-        control.led_off()
-        time.sleep(1)
-
+    #while True:
+    #    control.led_on()
+    #    time.sleep(1)
+    #    control.led_off()
+    #    time.sleep(1)
